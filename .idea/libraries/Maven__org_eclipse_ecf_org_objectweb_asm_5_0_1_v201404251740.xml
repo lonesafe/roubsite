@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.eclipse.ecf:org.objectweb.asm:5.0.1.v201404251740">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/ecf/org.objectweb.asm/5.0.1.v201404251740/org.objectweb.asm-5.0.1.v201404251740.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/ecf/org.objectweb.asm/5.0.1.v201404251740/org.objectweb.asm-5.0.1.v201404251740-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/ecf/org.objectweb.asm/5.0.1.v201404251740/org.objectweb.asm-5.0.1.v201404251740-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

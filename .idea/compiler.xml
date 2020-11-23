@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="RoubSiteSecurity" />
+        <module name="RoubSiteFramework" />
+        <module name="RoubSiteSmarty4j" />
+        <module name="RoubSiteCodeSign" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="RoubSite" target="1.5" />
+      <module name="RoubSite (1)" target="1.5" />
+      <module name="RoubSite (2)" target="1.5" />
+      <module name="RoubSiteAdmin" target="1.8" />
+      <module name="RoubSiteAdmin-web" target="1.8" />
+      <module name="RoubSiteCodeSign" target="1.8" />
+      <module name="RoubSiteFramework" target="1.8" />
+      <module name="RoubSiteSecurity" target="1.8" />
+      <module name="RoubSiteSmarty4j" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

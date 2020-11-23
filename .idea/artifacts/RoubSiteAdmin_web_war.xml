@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="RoubSiteAdmin-web:war">
+    <output-path>$PROJECT_DIR$/RoubSiteAdmin-web/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>RoubSiteAdmin-web</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="RoubSiteAdmin-web-3.1.9.war">
+      <element id="artifact" artifact-name="RoubSiteAdmin-web:war exploded" />
+    </root>
+  </artifact>
+</component>
