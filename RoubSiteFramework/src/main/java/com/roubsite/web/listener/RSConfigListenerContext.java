@@ -30,12 +30,12 @@ public class RSConfigListenerContext implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		// tomcat启动时执行
-		System.out.println("-------------------------------------------------");
-		System.out.println("-------------------------------------------------");
-		System.out.println("----------------RS框架初始化配置-----------------");
+		System.out.println("------------------------------------------------");
+		System.out.println("------------------------------------------------");
+		System.out.println("-------------------RS框架初始化配置----------------");
 		System.out.println("------------官网 http://www.routsite.com---------");
-		System.out.println("------------------------V2.0---------------------");
-		System.out.println("-------------------------------------------------");
+		System.out.println("------------------------V3----------------------");
+		System.out.println("------------------------------------------------");
 		System.out.println("");
 		ServletContext sc = arg0.getServletContext();
 		if ("true".equals(PropertiesUtil.getConfigString("DataSourcePool.console"))) {
