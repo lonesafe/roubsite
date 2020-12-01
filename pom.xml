@@ -11,7 +11,7 @@
     <url>https://www.roubsite.com</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <roubsite_version>3.1.9</roubsite_version>
+        <roubsite_version>3.2.0</roubsite_version>
     </properties>
     <scm>
         <connection>scm:git:git://github.com/lonesafe/roubsite.git</connection>
