@@ -9,6 +9,8 @@
 	<artifactId>RoubSiteCodeSign</artifactId>
 	<packaging>jar</packaging>
 	<version>${roubsite_version}</version>
+	<description>RoubSiteFrame Code generator module</description>
+	<url>https://www.roubsite.com</url>
 	<dependencies>
 		<dependency>
 			<groupId>com.roubsite</groupId>

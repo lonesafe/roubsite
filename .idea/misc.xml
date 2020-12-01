@@ -10,12 +10,6 @@
         <option value="$PROJECT_DIR$/pom.xml.versionsBackup" />
       </list>
     </option>
-    <option name="ignoredFiles">
-      <set>
-        <option value="$PROJECT_DIR$/RoubSiteAdmin-web/pom.xml" />
-        <option value="$PROJECT_DIR$/RoubSiteAdmin/pom.xml" />
-      </set>
-    </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 </project>
