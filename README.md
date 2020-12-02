@@ -14,6 +14,35 @@ RoubSite是一个简单、轻量、易上手的java web开发框架，项目研�
 ## 软件架构
 整个框架分为Action（前端控制器）、Dao（数据访问层）、Bean（实体类）这三层；  
 页面模板实现了类似PHP中的smarty框架的一个模板引擎，使用起来十分方便。
+## maven仓库
+Smarty是框架的依赖项，会自动引入。  
+引入框架：
+```
+<dependency>
+  <groupId>com.roubsite</groupId>
+  <artifactId>RoubSiteFramework</artifactId>
+  <version>3.2.1</version>
+  <type>pom</type>
+</dependency>
+```
+引入权限管理：
+```
+<dependency>
+  <groupId>com.roubsite</groupId>
+  <artifactId>RoubSiteSecurity</artifactId>
+  <version>3.2.1</version>
+  <type>pom</type>
+</dependency>
+```
+引入代码生成机：
+```
+<dependency>
+  <groupId>com.roubsite</groupId>
+  <artifactId>RoubSiteCodeSign</artifactId>
+  <version>3.2.1</version>
+  <type>pom</type>
+</dependency>
+```
 
 ## RoubSite都包含那些模块
 
