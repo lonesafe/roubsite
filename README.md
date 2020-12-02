@@ -6,10 +6,10 @@
 [![Build Status](https://www.travis-ci.org/lonesafe/roubsite.svg?branch=master)](https://www.travis-ci.org/lonesafe/roubsite)
 ## 介绍
 RoubSite是一个简单、轻量、易上手的java web开发框架，项目研发的初衷是写一个可以让刚入行的程序猿快速掌握java web开发的这么一个框架。  
-🔥🔥RoubSiteAdmin是基于RoubSite开发的一套后台权限管理框架，用户、角色、权限、菜单一整套都写好了，结合代码生成机，简单增删改查，通过配置就可以搞定。
-
+🔥🔥RoubSiteAdmin是基于RoubSite开发的一套后台权限管理框架，用户、角色、权限、菜单一整套都写好了，结合代码生成机，简单增删改查，通过配置就可以搞定。  
+[官网https://www.roubsite.com](https://www.roubsite.com)
 ## 演示地址
-[🔥🔥RoubSiteAdmin后台管理框架](https://test.roubsite.com)
+[🔥🔥RoubSiteAdmin后台管理框架](https://test.roubsite.com)  
 账号：admin   密码：admin
 ## 软件架构
 整个框架分为Action（前端控制器）、Dao（数据访问层）、Bean（实体类）这三层；  
@@ -20,8 +20,8 @@ RoubSite是一个简单、轻量、易上手的java web开发框架，项目研�
 1.  RoubSiteFramework RoubSite框架，Action、Dao的代码实现都在里面。
 2.  RoubSiteSecurity 权限管理，在Action中使用注解方式对方法进行权限控制，自己写权限管理可以不用它。
 3.  RoubSiteSmarty4j 模板解释器，参考了github上的代码，原作者实在是没找到。
-4.  RoubSiteCodeSign 代码生成机，这可是一个重头戏，它可以直接将数据库的表生成对应的增删改查的代码，页面也同时生成，减少工作量的首选。
-5.  RoubSiteAdmin 一个完整的后台管理框架，可以直接拿来用，权限啥的都写好了（`VIP免费获取`）
+4.  RoubSiteCodeSign 代码生成机，这可是一个重头戏，它可以直接将数据库的表生成对应的增删改查的代码，页面也同时生成，减少工作量的首选。(`页面需要加群获取`)
+5.  RoubSiteAdmin 一个完整的后台管理框架，可以直接拿来用，权限啥的都写好了（`加群获取`）
 
 ## RoubSite框架讨论QQ群1022159442
 群里提供使用手册和教程哦

@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RoubSite.iml" filepath="$PROJECT_DIR$/RoubSite.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RoubSite (1).iml" filepath="$PROJECT_DIR$/RoubSite (1).iml" />
-      <module fileurl="file://$PROJECT_DIR$/RoubSite (2).iml" filepath="$PROJECT_DIR$/RoubSite (2).iml" />
       <module fileurl="file://$PROJECT_DIR$/RoubSiteCodeSign/RoubSiteCodeSign.iml" filepath="$PROJECT_DIR$/RoubSiteCodeSign/RoubSiteCodeSign.iml" />
       <module fileurl="file://$PROJECT_DIR$/RoubSiteFramework/RoubSiteFramework.iml" filepath="$PROJECT_DIR$/RoubSiteFramework/RoubSiteFramework.iml" />
       <module fileurl="file://$PROJECT_DIR$/RoubSiteSecurity/RoubSiteSecurity.iml" filepath="$PROJECT_DIR$/RoubSiteSecurity/RoubSiteSecurity.iml" />

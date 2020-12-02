@@ -134,10 +134,6 @@ public class BaseCURD implements IBaseCURD {
 					if (resultset.getObject(k) instanceof java.sql.Clob) {
 						re = clobToString((java.sql.Clob) re);
 					}
-//					else if (resultset.getObject(k) instanceof java.sql.Clob) {
-//						re = clobToString((java.sql.Clob) re);
-//					}
-
 					rowData.put(metaDateKey, re);
 				}
 				list.add(rowData);
@@ -175,42 +171,6 @@ public class BaseCURD implements IBaseCURD {
 		}
 		return list;
 	}
-
-	/**
-	 * 将Clob转成String ,静态方法
-	 * 
-	 * @param clob 字段
-	 * @return 内容字串，如果出现错误，返回 null
-	 */
-//	private String clobToString(Clob clob) {
-//		if (clob == null)
-//			return null;
-//		StringBuffer sb = new StringBuffer();
-//		Reader clobStream = null;
-//		try {
-//			clobStream = clob.getCharacterStream();
-//			char[] b = new char[60000];// 每次获取60K
-//			int i = 0;
-//			while ((i = clobStream.read(b)) != -1) {
-//				sb.append(b, 0, i);
-//			}
-//		} catch (Exception ex) {
-//			this.conn.setError(true);
-//			sb = null;
-//		} finally {
-//			try {
-//				if (clobStream != null) {
-//					clobStream.close();
-//				}
-//			} catch (Exception e) {
-//				log.error("关闭stream出错", e);
-//			}
-//		}
-//		if (sb == null)
-//			return null;
-//		else
-//			return sb.toString();
-//	}
 
 	/**
 	 * 将Clob转成String ,静态方法
