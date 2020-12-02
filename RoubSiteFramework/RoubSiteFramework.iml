@@ -37,7 +37,6 @@
     <orderEntry type="library" name="Maven: org.apache.xmlgraphics:batik-i18n:1.11" level="project" />
     <orderEntry type="library" name="Maven: org.apache.xmlgraphics:batik-xml:1.11" level="project" />
     <orderEntry type="library" name="Maven: xml-apis:xml-apis-ext:1.3.04" level="project" />
-    <orderEntry type="library" name="Maven: com.roubsite.extension:activiti-all:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.ecf:org.objectweb.asm:5.0.1.v201404251740" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.8.1" level="project" />
