@@ -5,13 +5,13 @@
     <groupId>com.roubsite</groupId>
     <artifactId>RoubSite</artifactId>
     <packaging>pom</packaging>
-    <version>3.2.0</version>
+    <version>3.2.1</version>
     <name>RoubSite</name>
     <description>RoubSite Framework parent project</description>
     <url>https://www.roubsite.com</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <roubsite_version>3.2.0</roubsite_version>
+        <roubsite_version>3.2.1</roubsite_version>
     </properties>
     <scm>
         <connection>scm:git:git://github.com/lonesafe/roubsite.git</connection>
@@ -155,6 +155,13 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>releases</id>
+            <name>releases</name>
+            <url>http://ip.roubsite.com:78/repository/maven-releases/</url>
+        </repository>
+    </repositories>
     <distributionManagement>
         <!--        <repository>-->
         <!--            <id>releases</id>-->
