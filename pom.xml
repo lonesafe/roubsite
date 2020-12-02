@@ -57,11 +57,6 @@
             <version>1.11</version>
         </dependency>
         <dependency>
-            <groupId>com.roubsite.extension</groupId>
-            <artifactId>activiti-all</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.eclipse.ecf</groupId>
             <artifactId>org.objectweb.asm</artifactId>
             <version>5.0.1.v201404251740</version>
@@ -150,13 +145,6 @@
             </plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>releases</id>
-            <name>releases</name>
-            <url>http://ip.roubsite.com:78/repository/maven-releases/</url>
-        </repository>
-    </repositories>
     <distributionManagement>
         <!--        <repository>-->
         <!--            <id>releases</id>-->
