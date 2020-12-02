@@ -2,10 +2,11 @@ language: java
 
 jdk:
   - openjdk8
-
+before_install:
+  - chmod +x mvnw
 script:
-  - ./mvn -version
-  - ./mvn clean package -P full -Dmaven.javadoc.skip=true -Dgpg.skip
+  - ./mvnw -version
+  - ./mvnw clean package -P full -Dmaven.javadoc.skip=true -Dgpg.skip
 
 branches:
   only:
