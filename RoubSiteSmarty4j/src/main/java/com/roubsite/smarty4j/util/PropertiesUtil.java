@@ -12,13 +12,13 @@ public class PropertiesUtil {
         return getString(key, "config.properties");
     }
 
-    public static Logger log = Logger.getLogger(PropertiesUtil.class);
+    public final static Logger log = Logger.getLogger(PropertiesUtil.class);
 
     /**
      * 指定文件读取配置
      *
-     * @param key
-     * @param propertiesFile
+     * @param key key
+     * @param propertiesFile 配置文件
      */
     public static String getString(String key, String propertiesFile) {
 
@@ -26,8 +26,12 @@ public class PropertiesUtil {
         InputStream inputStream = null;
         try {
             inputStream = PropertiesUtil.class.getClassLoader().getResourceAsStream(propertiesFile);
-            BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
-            tmpProperties.load(bf);
+            if(null != inputStream){
+                BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
+                tmpProperties.load(bf);
+            }else{
+                log.error("读取配置文件：" + propertiesFile + "失败");
+            }
         } catch (Exception e) {
 			log.error("获取配置文件：" + propertiesFile + "的配置项失败", e);
         } finally {
@@ -36,7 +40,6 @@ public class PropertiesUtil {
                     inputStream.close();
                     inputStream = null;
                 } catch (Exception e) {
-					log.error("读取配置文件：" + propertiesFile + "错误", e);
                 }
             }
         }

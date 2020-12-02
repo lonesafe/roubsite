@@ -22,7 +22,7 @@ public class SystemUtils {
 
 	private static String linuxVersion = null;
 
-	public static Logger logger = Logger.getLogger(SystemUtils.class);
+	public final static Logger logger = Logger.getLogger(SystemUtils.class);
 
 	public double getCpuRatio() {
 		// 操作系统

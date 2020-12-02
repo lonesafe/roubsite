@@ -10,13 +10,18 @@
 	<packaging>jar</packaging>
 	<artifactId>RoubSiteFramework</artifactId>
 	<version>${roubsite_version}</version>
-	<description>RoubSiteFrame main module</description>
+	<description>RoubSite Framework main module</description>
 	<url>https://www.roubsite.com</url>
 	<dependencies>
 		<dependency>
 			<groupId>com.roubsite</groupId>
 			<artifactId>RoubSiteSmarty4j</artifactId>
 			<version>${roubsite_version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.13</version>
 		</dependency>
 	</dependencies>
 	<build>

@@ -1,10 +1,16 @@
 # RoubSite
+[![GitHub license](https://img.shields.io/github/license/lonesafe/roubsite?style=flat-square)](https://github.com/lonesafe/roubsite/blob/master/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/lonesafe/roubsite?style=flat-square)](https://github.com/lonesafe/roubsite/stargazers)
+[![Javadocs](http://www.javadoc.io/badge/com.roubsite/RoubSiteFramework.svg)](https://www.javadoc.io/doc/com.roubsite/RoubSiteFramework)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.roubsite/RoubSite/badge.svg?style=blue)](https://maven-badges.herokuapp.com/maven-central/com.roubsite/RoubSite)
+[![Build Status](https://www.travis-ci.org/lonesafe/roubsite.svg?branch=master)](https://www.travis-ci.org/lonesafe/roubsite)
 ## 介绍
 RoubSite是一个简单、轻量、易上手的java web开发框架，项目研发的初衷是写一个可以让刚入行的程序猿快速掌握java web开发的这么一个框架。  
 🔥🔥RoubSiteAdmin是基于RoubSite开发的一套后台权限管理框架，用户、角色、权限、菜单一整套都写好了，结合代码生成机，简单增删改查，通过配置就可以搞定。
 
 ## 演示地址
 [🔥🔥RoubSiteAdmin后台管理框架](https://test.roubsite.com)
+账号：admin   密码：admin
 ## 软件架构
 整个框架分为Action（前端控制器）、Dao（数据访问层）、Bean（实体类）这三层；  
 页面模板实现了类似PHP中的smarty框架的一个模板引擎，使用起来十分方便。

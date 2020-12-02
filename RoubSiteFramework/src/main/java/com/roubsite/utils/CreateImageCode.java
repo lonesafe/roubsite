@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -20,7 +21,7 @@ public class CreateImageCode {
 
 	// 使用到Algerian字体，系统里没有的话需要安装字体，字体只显示大写，去掉了1,0,i,o几个容易混淆的字符
 	public static final String VERIFY_CODES = "3456789ABCDEFGHJKMNPQRSTUVWXYabcdefghjkmnpqrstuvwxy";
-	private static Random random = new Random();
+	private static SecureRandom random = new SecureRandom();
 
 	/**
 	 * 使用系统默认字符源生成验证码
@@ -47,7 +48,7 @@ public class CreateImageCode {
 			sources = VERIFY_CODES;
 		}
 		int codesLen = sources.length();
-		Random rand = new Random(System.currentTimeMillis());
+		SecureRandom rand = new SecureRandom();
 		StringBuilder verifyCode = new StringBuilder(verifySize);
 		for (int i = 0; i < verifySize; i++) {
 			verifyCode.append(sources.charAt(rand.nextInt(codesLen - 1)));
@@ -126,7 +127,7 @@ public class CreateImageCode {
 	public static void outputImage(int w, int h, OutputStream os, String code) throws IOException {
 		int verifySize = code.length();
 		BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-		Random rand = new Random();
+		SecureRandom rand = new SecureRandom();
 		Graphics2D g2 = image.createGraphics();
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		Color[] colors = new Color[5];
@@ -147,7 +148,7 @@ public class CreateImageCode {
 		g2.fillRect(0, 2, w, h - 4);
 
 		// 绘制干扰线
-		Random random = new Random();
+		SecureRandom random = new SecureRandom();
 		g2.setColor(getRandColor(160, 200));// 设置线条的颜色
 		for (int i = 0; i < 20; i++) {
 			int x = random.nextInt(w - 1);

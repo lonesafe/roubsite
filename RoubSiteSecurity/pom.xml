@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 	<artifactId>RoubSiteSecurity</artifactId>
 	<version>${roubsite_version}</version>
-	<description>RoubSiteFrame Authentication module</description>
+	<description>RoubSite Framework Authentication module</description>
 	<url>https://www.roubsite.com</url>
 	<dependencies>
 		<dependency>

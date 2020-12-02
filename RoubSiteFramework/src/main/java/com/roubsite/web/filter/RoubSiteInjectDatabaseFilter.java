@@ -35,7 +35,7 @@ import com.roubsite.web.wrapper.RoubSiteRequestWrapper;
 import com.roubsite.web.wrapper.RoubSiteResponseWrapper;
 
 public class RoubSiteInjectDatabaseFilter implements Filter {
-	public static Logger logger = Logger.getLogger(RoubSiteInjectDatabaseFilter.class);
+	public final static Logger logger = Logger.getLogger(RoubSiteInjectDatabaseFilter.class);
 	private static RequestURIFilter excludes;
 	private final static String isInclude = "__IS__INCLUDE__";
 
