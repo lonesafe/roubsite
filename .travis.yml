@@ -5,7 +5,7 @@ jdk:
 
 script:
   - ./mvn -version
-  - ./mvn clean package -P full
+  - ./mvn clean package -P full -Dmaven.javadoc.skip=true -Dgpg.skip
 
 branches:
   only:
