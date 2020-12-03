@@ -4,8 +4,8 @@ jdk:
   - openjdk8
   
 script:
-  - mvnw -version
-  - mvnw clean package -P full -Dmaven.javadoc.skip=true -Dgpg.skip
+  - mvn -version
+  - mvn clean package -P full -Dmaven.javadoc.skip=true -Dgpg.skip
 
 branches:
   only:
