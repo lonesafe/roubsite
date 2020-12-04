@@ -4,6 +4,8 @@
 [![Javadocs](http://www.javadoc.io/badge/com.roubsite/RoubSiteFramework.svg)](https://www.javadoc.io/doc/com.roubsite/RoubSiteFramework)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.roubsite/RoubSite/badge.svg?style=blue)](https://maven-badges.herokuapp.com/maven-central/com.roubsite/RoubSite)
 [![Build Status](https://www.travis-ci.org/lonesafe/roubsite.svg?branch=master)](https://www.travis-ci.org/lonesafe/roubsite)
+[![水晶萧竹/RoubSite](https://gitee.com/lonesafe/RoubSite/widgets/widget_card.svg?colors=4183c4,ffffff,ffffff,e3e9ed,666666,9b9b9b)](https://gitee.com/lonesafe/RoubSite)
+
 ## 介绍
 RoubSite是一个简单、轻量、易上手的java web开发框架，项目研发的初衷是写一个可以让刚入行的程序猿快速掌握java web开发的这么一个框架。  
 🔥🔥RoubSiteAdmin是基于RoubSite开发的一套后台权限管理框架，用户、角色、权限、菜单一整套都写好了，结合代码生成机，简单增删改查，通过配置就可以搞定。  

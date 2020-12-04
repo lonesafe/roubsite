@@ -13,10 +13,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <roubsite_version>3.2.1</roubsite_version>
     </properties>
+    <organization>
+        <name>RoubSite</name>
+        <url>https://www.roubsite.com</url>
+    </organization>
     <scm>
-        <connection>scm:git:git://github.com/lonesafe/roubsite.git</connection>
-        <developerConnection>scm:git:ssh://github.com/lonesafe/roubsite.git</developerConnection>
-        <url>https://github.com/lonesafe/roubsite/tree/master</url>
+        <connection>scm:git:git://github.com/lonesafe/roubsite</connection>
+        <developerConnection>scm:git:git://github.com/lonesafe/roubsite</developerConnection>
+        <url>https://github.com/lonesafe/roubsite</url>
     </scm>
     <licenses>
         <!-- Apache许可证 -->
@@ -29,7 +33,7 @@
         <developer>
             <name>lonesafe</name>
             <email>lonesafe@qq.com</email>
-            <url>https://github.com/lonesafe</url>
+            <url>https://www.roubsite.com</url>
         </developer>
     </developers>
     <modules>

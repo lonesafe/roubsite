@@ -13,11 +13,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="RoubSite" target="1.5" />
-      <module name="RoubSite (1)" target="1.5" />
-      <module name="RoubSite (2)" target="1.5" />
-      <module name="RoubSiteAdmin" target="1.8" />
-      <module name="RoubSiteAdmin-web" target="1.8" />
+      <module name="RoubSite" target="1.8" />
       <module name="RoubSiteCodeSign" target="1.8" />
       <module name="RoubSiteFramework" target="1.8" />
       <module name="RoubSiteSecurity" target="1.8" />
