@@ -182,10 +182,10 @@ codeSign.outputPath=d:/demo
 复制上面的配置文件后，我们已经创建了一个模块“index”，根据配置文件我们知道“index”对应的包名
 是“com.roubsite.site”，根据这个包名我们新建三个包“com.roubsite.site.action”、“com.roubsite.site.bean”、“com.roubsite.site.dao”，
 这三个包名分别对应“控制器”、“数据库实体”、“数据库操作”。
-我们在“com.roubsite.site.action”下创建一个继承“RSAction”的得类“IndexAction”，并且实现“execute”方法：
-![img.png](img.png)
-然后在“src/webapp/templates/index”下面再添加一个模板文件“index.html”：
-![img_1.png](img_1.png)
+我们在“com.roubsite.site.action”下创建一个继承“RSAction”的得类“IndexAction”，并且实现“execute”方法：  
+![img.png](img.png)  
+然后在“src/webapp/templates/index”下面再添加一个模板文件“index.html”：  
+![img_1.png](img_1.png)  
 然后启动tomcat访问即可看到效果（**_具体控制器和模板的对应关系、url和控制器的对应关系可以查看操作手册_**）
 
 ## RoubSite都包含那些模块
