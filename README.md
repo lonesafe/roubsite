@@ -1,4 +1,5 @@
 # RoubSite
+**如果你喜欢这个项目，请给它一个star**
 [![GitHub license](https://img.shields.io/github/license/lonesafe/roubsite?style=flat-square)](https://github.com/lonesafe/roubsite/blob/master/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/lonesafe/roubsite?style=flat-square)](https://github.com/lonesafe/roubsite/stargazers)
 [![Javadocs](http://www.javadoc.io/badge/com.roubsite/RoubSiteFramework.svg)](https://www.javadoc.io/doc/com.roubsite/RoubSiteFramework)
