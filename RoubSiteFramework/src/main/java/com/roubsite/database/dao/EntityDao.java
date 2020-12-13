@@ -1,25 +1,21 @@
 package com.roubsite.database.dao;
 
+import com.roubsite.database.RSConnection;
+import com.roubsite.database.annotation.bean.KeyFields;
+import com.roubsite.database.bean.Record;
+import com.roubsite.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.log4j.Logger;
-
-import com.roubsite.database.RSConnection;
-import com.roubsite.database.annotation.bean.KeyFields;
-import com.roubsite.database.bean.Record;
-import com.roubsite.utils.StringUtils;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class EntityDao extends BaseCURD {
@@ -40,7 +36,7 @@ public class EntityDao extends BaseCURD {
         return sbr.toString().toUpperCase();
     }
 
-    public final static Logger log = Logger.getLogger(EntityDao.class);
+    public final static Logger log = LoggerFactory.getLogger(EntityDao.class);
 
     /**
      * 根据bean删除数据

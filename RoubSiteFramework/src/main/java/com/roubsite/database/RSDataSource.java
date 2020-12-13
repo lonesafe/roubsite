@@ -1,19 +1,19 @@
 package com.roubsite.database;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.roubsite.database.dao.EntityDao;
+import com.roubsite.database.pool.DataSourcePool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
-import com.alibaba.druid.pool.DruidDataSource;
-import com.roubsite.database.dao.EntityDao;
-import com.roubsite.database.pool.DataSourcePool;
-
 public class RSDataSource {
 	private Map<String, DataSourcePool> dataSourcePoolMap = new HashMap<String, DataSourcePool>();
-	static Logger log = Logger.getLogger(EntityDao.class);
+	static Logger log = LoggerFactory.getLogger(EntityDao.class);
 
 	public RSDataSource() {
 	}

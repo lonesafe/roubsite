@@ -1,0 +1,5 @@
+RoubSite:
+  security:
+    class: com.roubsite.security.filter.SecurityFilter
+    missing: "*.jpg,*.css,*.png,*.js,*.gif,*.swf,*.ico,*.rar,*.woff,*.ttf,*.eot"
+    loginUrl: /admin/login

@@ -1,19 +1,5 @@
 package com.roubsite.web.filter;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-
 import com.roubsite.holder.ActionClassBean;
 import com.roubsite.holder.RSFilterContextHolder;
 import com.roubsite.utils.RequestURIFilter;
@@ -22,9 +8,17 @@ import com.roubsite.web.classBean.ClassBean;
 import com.roubsite.web.error.RSErrorPage;
 import com.roubsite.web.wrapper.RoubSiteRequestWrapper;
 import com.roubsite.web.wrapper.RoubSiteResponseWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.lang.reflect.Method;
 
 public class RoubSiteInvokeActionFilter implements Filter {
-	static Logger logger = Logger.getLogger(RoubSiteInvokeActionFilter.class);
+	static Logger logger = LoggerFactory.getLogger(RoubSiteInvokeActionFilter.class);
 	private static RequestURIFilter excludes;
 	private final static String isInclude = "__IS__INCLUDE__";
 

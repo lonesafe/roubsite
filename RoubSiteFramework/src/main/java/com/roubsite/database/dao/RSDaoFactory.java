@@ -1,16 +1,16 @@
 package com.roubsite.database.dao;
 
+import com.roubsite.database.RSConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.apache.log4j.Logger;
-
-import com.roubsite.database.RSConnection;
-
 public class RSDaoFactory implements InvocationHandler {
-	static Logger log = Logger.getLogger(RSDaoFactory.class);
+	static Logger log = LoggerFactory.getLogger(RSDaoFactory.class);
 	Object obj;
 	/**
 	 * 获取dao（自定义数据源）

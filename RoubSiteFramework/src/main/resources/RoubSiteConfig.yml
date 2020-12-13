@@ -1,0 +1,44 @@
+RoubSite:
+  #是否开启防注入拦截器
+  injection: true
+  global:
+    #默认分组
+    defaultGroup: admin
+    #分组
+    group:
+      test: com.test
+      path: com.roubsite.test2
+    #静态资源后缀
+    static_suffix: "*.jpg,*.css,*.png,*.js,*.gif,*.swf,*.ico,*.rar,*.woff,*.ttf,*.eot"
+    #错误页文件路径
+    errorPage:
+    #成功页文件路径
+    successPage:
+  #数据源配置
+  DataSourcePool:
+    #是否开启druid控制台
+    console: true
+    #默认数据源
+    default: dataSource
+    #数据源列表
+    dataSources:
+      #数据源DataSource
+      dataSource:
+        #数据源类型（1：mysql，2：oracle）用于代码生成使用
+        type: 1
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/roubsite?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+        username: root
+        password: root
+        poolSize: 12
+        keepAlive: true
+        maxWaitMillis: 100000
+        maxWaithThreadCount: 12
+      #数据源DataSource2
+      dataSource2:
+        type: 2
+        driverClassName: com.mysql.jdbc.Driver
+        url=jdbc: mysql://127.0.0.1:3306/ls_srr?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+        username: root
+        password: root
+        poolSize: 12

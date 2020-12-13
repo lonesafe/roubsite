@@ -1,5 +1,11 @@
 package com.roubsite.database.dao;
 
+import com.roubsite.database.RSConnection;
+import com.roubsite.utils.ConfUtils;
+import com.roubsite.utils.JsonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.PreparedStatement;
@@ -11,17 +17,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
-import com.roubsite.database.RSConnection;
-import com.roubsite.utils.JsonUtils;
-import com.roubsite.utils.PropertiesUtil;
-
 public class BaseCURD implements IBaseCURD {
 	private RSConnection conn = null;
 	private String dataSource;
 	private PreparedStatement pStatement = null;
-	static Logger log = Logger.getLogger(BaseCURD.class);
+	static Logger log = LoggerFactory.getLogger(BaseCURD.class);
 
 	public void init(RSConnection conn, String ds) throws Exception {
 		this.dataSource = ds;
@@ -29,7 +29,7 @@ public class BaseCURD implements IBaseCURD {
 	}
 
 	public String getDataSourceType() {
-		return PropertiesUtil.getString(this.dataSource + ".type", "dataSource.properties");
+		return ConfUtils.getConf(this.dataSource + ".type", "dataSource.properties",new String[]{"RoubSite","DataSourcePool","dataSources","dataSource","type"});
 	}
 
 	/**

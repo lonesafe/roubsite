@@ -1,2 +1,4 @@
 #------------------代码生成机配置----------------------
-codeSign.outputPath=d:/demo
+RoubSite:
+  codeSign:
+    outputPath: d:/demo

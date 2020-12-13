@@ -1,25 +1,21 @@
 package com.roubsite.database.dao;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.roubsite.holder.RSDataSourceHolder;
+import com.roubsite.utils.JsonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
-import com.alibaba.druid.pool.DruidDataSource;
-import com.roubsite.holder.RSDataSourceHolder;
-import com.roubsite.utils.JsonUtils;
-
 public class DBUtils {
 	private DruidDataSource dataSource;
-	static Logger log = Logger.getLogger(BaseCURD.class);
+	static Logger log = LoggerFactory.getLogger(BaseCURD.class);
 
 	public DBUtils(String dataSourceName, String driverClassName, String url, String username, String password,
 			int size, boolean keepAlive, long maxWaitMillis, int maxWaitThreadCount) throws SQLException {

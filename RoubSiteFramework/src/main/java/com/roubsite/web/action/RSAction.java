@@ -1,34 +1,29 @@
 package com.roubsite.web.action;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-
 import com.roubsite.holder.RSFilterContextHolder;
 import com.roubsite.smarty4j.Context;
 import com.roubsite.smarty4j.Engine;
 import com.roubsite.smarty4j.Template;
+import com.roubsite.utils.ConfUtils;
 import com.roubsite.utils.JsonUtils;
-import com.roubsite.utils.PropertiesUtil;
 import com.roubsite.utils.StringUtils;
 import com.roubsite.web.classBean.ClassBean;
 import com.roubsite.web.wrapper.Method;
 import com.roubsite.web.wrapper.RoubSiteRequestWrapper;
 import com.roubsite.web.wrapper.RoubSiteResponseWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class RSAction implements IRSAction {
-    protected final static Logger logger = Logger.getLogger(RSAction.class);
+    protected final static Logger logger = LoggerFactory.getLogger(RSAction.class);
     public RoubSiteRequestWrapper request;
     public HttpServletResponse response;
     private Context context = new Context();
@@ -369,11 +364,11 @@ public abstract class RSAction implements IRSAction {
         String successPage = "";
         String errorPage = "";
 
-        if (StringUtils.isNotEmpty(PropertiesUtil.getConfigString("errorPage"))) {
-            errorPage = PropertiesUtil.getConfigString("errorPage");
+        if (StringUtils.isNotEmpty(ConfUtils.getConf("errorPage", "config.properties",new String[]{"RoubSite","global","errorPage"}))) {
+            errorPage = ConfUtils.getConf("errorPage", "config.properties",new String[]{"RoubSite","global","errorPage"});
         }
-        if (StringUtils.isNotEmpty(PropertiesUtil.getConfigString("successPage"))) {
-            successPage = PropertiesUtil.getConfigString("successPage");
+        if (StringUtils.isNotEmpty(ConfUtils.getConf("successPage", "config.properties",new String[]{"RoubSite","global","successPage"}))) {
+            successPage = ConfUtils.getConf("successPage", "config.properties",new String[]{"RoubSite","global","successPage"});
         }
 
         this.response.reset();

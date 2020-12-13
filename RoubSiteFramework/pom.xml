@@ -23,7 +23,7 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.13</version>
 		</dependency>
-	</dependencies>
+    </dependencies>
 	<build>
 		<defaultGoal>compile</defaultGoal>
 	</build>

@@ -1,6 +1,8 @@
 package com.roubsite.smarty4j.util;
 
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -12,7 +14,7 @@ public class PropertiesUtil {
         return getString(key, "config.properties");
     }
 
-    public final static Logger log = Logger.getLogger(PropertiesUtil.class);
+    public final static Logger log = LoggerFactory.getLogger(PropertiesUtil.class);
 
     /**
      * 指定文件读取配置

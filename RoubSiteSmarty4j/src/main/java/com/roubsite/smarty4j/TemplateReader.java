@@ -5,10 +5,11 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 
 import com.roubsite.smarty4j.ParseMessage.Level;
 import com.roubsite.smarty4j.util.SimpleStack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 模板的文本输入对象，与java.io.LineNumberReader不同，它读取单行时，
@@ -20,7 +21,7 @@ import com.roubsite.smarty4j.util.SimpleStack;
  * @since Smarty 1.1
  */
 public class TemplateReader extends Reader {
-	Logger log = Logger.getLogger(TemplateReader.class);
+	Logger log = LoggerFactory.getLogger(TemplateReader.class);
 	/** 文本输入流数据来源 */
 	private Reader in;
 

@@ -1,7 +1,8 @@
 package com.roubsite.utils;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 @SuppressWarnings({"rawtypes", "deprecation"})
 public class StringUtils {
-    private static Logger log = Logger.getLogger(StringUtils.class);
+    private static Logger log = LoggerFactory.getLogger(StringUtils.class);
     private static StringBuffer buffer = new StringBuffer(
             "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 

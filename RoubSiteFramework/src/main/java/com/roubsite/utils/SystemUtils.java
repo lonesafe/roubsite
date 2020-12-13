@@ -1,16 +1,12 @@
 package com.roubsite.utils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
+import com.sun.management.OperatingSystemMXBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.util.StringTokenizer;
-
-import org.apache.log4j.Logger;
-
-import com.sun.management.OperatingSystemMXBean;
 
 /**
  * @author Rick Jone 王振骁
@@ -22,7 +18,7 @@ public class SystemUtils {
 
 	private static String linuxVersion = null;
 
-	public final static Logger logger = Logger.getLogger(SystemUtils.class);
+	public final static Logger logger = LoggerFactory.getLogger(SystemUtils.class);
 
 	public double getCpuRatio() {
 		// 操作系统

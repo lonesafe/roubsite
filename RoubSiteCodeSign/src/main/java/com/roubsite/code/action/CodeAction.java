@@ -23,10 +23,7 @@ import com.roubsite.code.dao.ICodeDao;
 import com.roubsite.database.RSConnection;
 import com.roubsite.database.dao.RSDaoFactory;
 import com.roubsite.holder.RSDataSourceHolder;
-import com.roubsite.utils.JsonUtils;
-import com.roubsite.utils.PropertiesUtil;
-import com.roubsite.utils.SystemBean;
-import com.roubsite.utils.SystemUtils;
+import com.roubsite.utils.*;
 import com.roubsite.web.action.RSAction;
 
 public class CodeAction extends RSAction {
@@ -63,7 +60,7 @@ public class CodeAction extends RSAction {
 				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection()));
 		try {
 			// 通过配置文件获取数据库类型
-			String type = PropertiesUtil.getString(dataSource + ".type", "dataSource.properties");
+			String type = ConfUtils.getConf(dataSource + ".type", "dataSource.properties",new String[]{"RoubSite","DataSourcePool","dataSources","dataSource","type"});
 			String tableName = this.g("tableName");
 			String model = this.g("mode");
 			String[] _searchFields = this.request.getParameterValues("searchFields");
@@ -135,7 +132,7 @@ public class CodeAction extends RSAction {
 				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection()));
 		try {
 //			ICodeDao codeDao = (ICodeDao) new RSDaoFactory().getDao(CodeDao.class, dataSource);
-			String type = PropertiesUtil.getString(dataSource + ".type", "dataSource.properties");
+			String type = ConfUtils.getConf(dataSource + ".type", "dataSource.properties",new String[]{"RoubSite","DataSourcePool","dataSources","dataSource","type"});
 			String sql = "select   *   from   user_tables";
 			switch (type) {
 			case "1":
@@ -162,7 +159,7 @@ public class CodeAction extends RSAction {
 		ICodeDao codeDao = (ICodeDao) new RSDaoFactory().getDao(CodeDao.class, dataSource,
 				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection()));
 		try {
-			String type = PropertiesUtil.getString(dataSource + ".type", "dataSource.properties");
+			String type = ConfUtils.getConf(dataSource + ".type", "dataSource.properties",new String[]{"RoubSite","DataSourcePool","dataSources","dataSource","type"});
 			String sql = "";
 			switch (type) {
 			case "1":
