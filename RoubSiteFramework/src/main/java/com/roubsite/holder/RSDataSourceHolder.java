@@ -9,40 +9,29 @@ import java.util.Properties;
 import java.util.Set;
 
 import com.roubsite.database.RSDataSource;
+import com.roubsite.utils.ConfUtils;
+import com.roubsite.utils.StringUtils;
 
 public class RSDataSourceHolder {
-	private RSDataSource rds = null;
+    private RSDataSource rds = null;
 
-	private static class LazyHolder {
-		private static final RSDataSourceHolder INSTANCE = new RSDataSourceHolder();
-	}
+    private static class LazyHolder {
+        private static final RSDataSourceHolder INSTANCE = new RSDataSourceHolder();
+    }
 
-	private RSDataSourceHolder() {
-		try {
-			rds = new RSDataSource();
-			InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("dataSource.properties");
-			BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
-			Properties pro = new Properties();
-			pro.load(bf);
-			Set<Entry<Object, Object>> ent = pro.entrySet();
-			ent = pro.entrySet();
-			for (Entry<Object, Object> e : ent) {
-				String tmpString = e.getKey().toString();
-				if (tmpString.indexOf("type") != -1) {
-					rds.registerDataSource(tmpString.split("\\.")[0]);
-				}
-			}
+    private RSDataSourceHolder() {
+        rds = new RSDataSource();
+        String defaultDataSource = ConfUtils.getConf(new String[]{"RoubSite", "DataSourcePool", "default"}, "");
+        if (StringUtils.isNotEmpty(defaultDataSource)) {
+            rds.registerDataSource(defaultDataSource);
+        }
+    }
 
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-	}
+    public static final RSDataSourceHolder getInstance() {
+        return LazyHolder.INSTANCE;
+    }
 
-	public static final RSDataSourceHolder getInstance() {
-		return LazyHolder.INSTANCE;
-	}
-
-	public RSDataSource get() {
-		return this.rds;
-	}
+    public RSDataSource get() {
+        return this.rds;
+    }
 }

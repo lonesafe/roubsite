@@ -276,7 +276,6 @@ public class Engine {
      *                   modifier is created
      * @return {@code null} if function and variable modifier not found, otherwise
      * the function or variable modifier node
-     * @see template.smarty4j.statement.IFunction
      */
     public Object createNode(String name, boolean isFunction) {
         Map<String, Class<?>> classes = isFunction ? funcs : mods;

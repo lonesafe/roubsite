@@ -30,14 +30,14 @@ public class PropertiesUtil {
             BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
             tmpProperties.load(bf);
         } catch (Exception e) {
-            logger.error("获取配置文件：" + propertiesFile + "的配置项失败", e);
+//            logger.error("获取配置文件：" + propertiesFile + "的配置项失败", e);
         } finally {
             if (null != inputStream) {
                 try {
                     inputStream.close();
                     inputStream = null;
                 } catch (Exception e) {
-                    logger.error("关闭流失败", e);
+//                    logger.error("关闭流失败", e);
                 }
             }
         }
