@@ -41,6 +41,7 @@
         <module>RoubSiteFramework</module>
         <module>RoubSiteSecurity</module>
         <module>RoubSiteCodeSign</module>
+        <module>RoubSiteUtils</module>
     </modules>
     <dependencies>
         <dependency>
@@ -95,6 +96,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>1.1.23</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.13</version>
         </dependency>
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
@@ -165,14 +171,14 @@
             </plugin>
         </plugins>
     </build>
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+    <!--    <distributionManagement>-->
+    <!--        <snapshotRepository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
+    <!--        </snapshotRepository>-->
+    <!--        <repository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+    <!--        </repository>-->
+    <!--    </distributionManagement>-->
 </project>

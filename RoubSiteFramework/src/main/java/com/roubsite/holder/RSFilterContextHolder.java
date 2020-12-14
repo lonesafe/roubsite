@@ -1,7 +1,7 @@
 package com.roubsite.holder;
 
 import com.roubsite.context.RSFilterContext;
-import com.roubsite.web.classBean.ClassBean;
+import com.roubsite.utils.ClassBean;
 
 public class RSFilterContextHolder {
 	private final static ThreadLocal<RSFilterContext> contexts = new ThreadLocal<RSFilterContext>();

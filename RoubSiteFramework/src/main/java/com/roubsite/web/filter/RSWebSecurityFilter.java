@@ -131,10 +131,10 @@ public class RSWebSecurityFilter implements Filter {
         String sql = "INSERT INTO RS_ATTACK_LOG(ID, IP, TIME, PAGE, METHOD, P_KEY, P_VALUE, UA, URL) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String dataSource = "dataSource";
         DBUtils db = new DBUtils(dataSource,
-                ConfUtils.getConf(dataSource + ".driverClassName", "dataSource.properties", new String[]{"RoubSite", "DataSourcePool", "dataSources", dataSource}),
-                ConfUtils.getConf(dataSource + ".url", "dataSource.properties", new String[]{"RoubSite", "DataSourcePool", "dataSources", dataSource}),
-                ConfUtils.getConf(dataSource + ".username", "dataSource.properties", new String[]{"RoubSite", "DataSourcePool", "dataSources", dataSource}),
-                ConfUtils.getConf(dataSource + ".password", "dataSource.properties", new String[]{"RoubSite", "DataSourcePool", "dataSources", dataSource}), 12, true, 100L, 100);
+                ConfUtils.getConf(dataSource + ".driverClassName", "dataSource.properties", new String[]{"RoubSite", "DataSourcePool", "dataSources", dataSource, "driverClassName"}),
+                ConfUtils.getConf(dataSource + ".url", "dataSource.properties", new String[]{"RoubSite", "DataSourcePool", "dataSources", dataSource, "url"}),
+                ConfUtils.getConf(dataSource + ".username", "dataSource.properties", new String[]{"RoubSite", "DataSourcePool", "dataSources", dataSource, "username"}),
+                ConfUtils.getConf(dataSource + ".password", "dataSource.properties", new String[]{"RoubSite", "DataSourcePool", "dataSources", dataSource, "password"}), 12, true, 100L, 100);
         db.execUpdate(sql, new String[]{UuidUtils.getUuid(), ip, time, page, method, rKey, rData.toString(),
                 user_agent, request_uri});
 

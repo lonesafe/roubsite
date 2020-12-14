@@ -7,10 +7,10 @@ import com.roubsite.database.dao.RSDaoFactory;
 import com.roubsite.holder.ActionClassBean;
 import com.roubsite.holder.RSDataSourceHolder;
 import com.roubsite.holder.RSFilterContextHolder;
+import com.roubsite.utils.ClassBean;
 import com.roubsite.utils.ClassUtils;
 import com.roubsite.utils.RequestURIFilter;
 import com.roubsite.utils.StringUtils;
-import com.roubsite.web.classBean.ClassBean;
 import com.roubsite.web.error.RSErrorPage;
 import com.roubsite.web.wrapper.RoubSiteRequestWrapper;
 import com.roubsite.web.wrapper.RoubSiteResponseWrapper;
@@ -61,7 +61,6 @@ public class RoubSiteInjectDatabaseFilter implements Filter {
                     chain.doFilter(request, resp);
                     return;
                 } else {
-
                     // 反射实例化获取action类
                     ActionClassBean acb = new ActionClassBean(cb.getClassPath(), cb.getMethod());
                     RSFilterContextHolder.setLocalRequestContext(acb, cb);

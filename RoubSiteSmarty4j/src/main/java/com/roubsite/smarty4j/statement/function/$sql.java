@@ -32,7 +32,7 @@ public class $sql extends Block {
 		String varName = PARAMETERS[2].toString();
 		mv.visitLdcInsn(dataSource);
 		mv.visitLdcInsn(sql);
-		mv.visitMethodInsn(INVOKESTATIC, "com/roubsite/smarty4j/util/DBUtil", "execQuery",
+		mv.visitMethodInsn(INVOKESTATIC, "com/roubsite/database/dao/SmartyDBUtil", "execQuery",
 				"(Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;");
 		this.writeVariable(mv, local, vm, varName, null);
 		mv.visitEnd();

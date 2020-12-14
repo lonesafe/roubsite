@@ -1,7 +1,7 @@
 package com.roubsite.context;
 
 import com.roubsite.holder.ActionClassBean;
-import com.roubsite.web.classBean.ClassBean;
+import com.roubsite.utils.ClassBean;
 
 public class RSFilterContext {
 	private ClassBean classBean;

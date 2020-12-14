@@ -88,7 +88,7 @@ public class CodeDao extends EntityDao implements ICodeDao {
         tableName = tableName.toLowerCase();
         String modeName = CodeUtils.getModeName(tableName);
         String _modeName = modeName.substring(0, 1).toLowerCase() + modeName.substring(1);
-        String pack = ConfUtils.getConf("global.group." + groupName, "config.properties", new String[]{"RoubSite", "global", "group", "groupName"});
+        String pack = ConfUtils.getConf("global.group." + groupName, "config.properties", new String[]{"RoubSite", "global", "group", groupName});
         String packPath = pack.replaceAll("\\.", "/");
         String basePath = ConfUtils.getConf("codeSign.outputPath", "codeSign.properties",new String[]{"RoubSite","codeSign","outputPath"});
 

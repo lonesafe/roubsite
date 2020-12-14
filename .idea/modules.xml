@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/RoubSiteFramework/RoubSiteFramework.iml" filepath="$PROJECT_DIR$/RoubSiteFramework/RoubSiteFramework.iml" />
       <module fileurl="file://$PROJECT_DIR$/RoubSiteSecurity/RoubSiteSecurity.iml" filepath="$PROJECT_DIR$/RoubSiteSecurity/RoubSiteSecurity.iml" />
       <module fileurl="file://$PROJECT_DIR$/RoubSiteSmarty4j/RoubSiteSmarty4j.iml" filepath="$PROJECT_DIR$/RoubSiteSmarty4j/RoubSiteSmarty4j.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RoubSiteUtils/RoubSiteUtils.iml" filepath="$PROJECT_DIR$/RoubSiteUtils/RoubSiteUtils.iml" />
     </modules>
   </component>
 </project>

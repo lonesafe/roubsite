@@ -1,5 +1,4 @@
-package com.roubsite.smarty4j.util;
-
+package com.roubsite.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,17 +9,17 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 
 public class PropertiesUtil {
+    private final static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
+
     public static String getConfigString(String key) {
         return getString(key, "config.properties");
     }
 
-    public final static Logger log = LoggerFactory.getLogger(PropertiesUtil.class);
-
     /**
      * 指定文件读取配置
      *
-     * @param key key
-     * @param propertiesFile 配置文件
+     * @param key
+     * @param propertiesFile
      */
     public static String getString(String key, String propertiesFile) {
 
@@ -28,20 +27,17 @@ public class PropertiesUtil {
         InputStream inputStream = null;
         try {
             inputStream = PropertiesUtil.class.getClassLoader().getResourceAsStream(propertiesFile);
-            if(null != inputStream){
-                BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
-                tmpProperties.load(bf);
-            }else{
-                log.error("读取配置文件：" + propertiesFile + "失败");
-            }
+            BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
+            tmpProperties.load(bf);
         } catch (Exception e) {
-			log.error("获取配置文件：" + propertiesFile + "的配置项失败", e);
+            logger.error("获取配置文件：" + propertiesFile + "的配置项失败", e);
         } finally {
             if (null != inputStream) {
                 try {
                     inputStream.close();
                     inputStream = null;
                 } catch (Exception e) {
+                    logger.error("关闭流失败", e);
                 }
             }
         }

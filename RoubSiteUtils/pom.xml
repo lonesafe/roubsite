@@ -8,22 +8,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <artifactId>RoubSiteFramework</artifactId>
+    <artifactId>RoubSiteUtils</artifactId>
     <version>${roubsite_version}</version>
-    <description>RoubSite Framework main module</description>
+    <description>RoubSite Framework utils module</description>
     <url>https://www.roubsite.com</url>
-    <dependencies>
-        <dependency>
-            <groupId>com.roubsite</groupId>
-            <artifactId>RoubSiteSmarty4j</artifactId>
-            <version>${roubsite_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.roubsite</groupId>
-            <artifactId>RoubSiteUtils</artifactId>
-            <version>${roubsite_version}</version>
-        </dependency>
-    </dependencies>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
     <build>
         <defaultGoal>compile</defaultGoal>
     </build>

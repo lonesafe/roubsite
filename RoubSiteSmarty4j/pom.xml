@@ -12,7 +12,11 @@
 	<description>RoubSite Framework smarty templet module</description>
 	<url>https://www.roubsite.com</url>
 	<dependencies>
-		
+		<dependency>
+			<groupId>com.roubsite</groupId>
+			<artifactId>RoubSiteUtils</artifactId>
+			<version>${roubsite_version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<defaultGoal>compile</defaultGoal>

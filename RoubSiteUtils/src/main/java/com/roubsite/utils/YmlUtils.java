@@ -1,6 +1,7 @@
 package com.roubsite.utils;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -33,14 +34,14 @@ public class YmlUtils {
         }
     }
 
-    public static String getConfig(String... keys) {
+    public static String getConfig(String[] keys, String defaultValue) {
         String value = "";
         Map temp = new HashMap(config);
         int count = keys.length;
         for (int i = 0; i < count; i++) {
             if (i == count - 1) {
                 try {
-                    value = (String) temp.get(keys[i]);
+                    value = String.valueOf(temp.get(keys[i]));
                 } catch (Exception e) {
                     LOGGER.error("获取配置项错误", e);
                 }

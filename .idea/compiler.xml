@@ -9,6 +9,7 @@
         <module name="RoubSiteSecurity" />
         <module name="RoubSiteFramework" />
         <module name="RoubSiteSmarty4j" />
+        <module name="RoubSiteUtils" />
         <module name="RoubSiteCodeSign" />
       </profile>
     </annotationProcessing>
@@ -18,6 +19,7 @@
       <module name="RoubSiteFramework" target="1.8" />
       <module name="RoubSiteSecurity" target="1.8" />
       <module name="RoubSiteSmarty4j" target="1.8" />
+      <module name="RoubSiteUtils" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

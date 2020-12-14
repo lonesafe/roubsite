@@ -43,5 +43,6 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.12.0" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.23" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.13" level="project" />
   </component>
 </module>

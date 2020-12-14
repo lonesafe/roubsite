@@ -2,9 +2,9 @@ package com.roubsite.web.filter;
 
 import com.roubsite.holder.ActionClassBean;
 import com.roubsite.holder.RSFilterContextHolder;
+import com.roubsite.utils.ClassBean;
 import com.roubsite.utils.RequestURIFilter;
 import com.roubsite.utils.StringUtils;
-import com.roubsite.web.classBean.ClassBean;
 import com.roubsite.web.error.RSErrorPage;
 import com.roubsite.web.wrapper.RoubSiteRequestWrapper;
 import com.roubsite.web.wrapper.RoubSiteResponseWrapper;

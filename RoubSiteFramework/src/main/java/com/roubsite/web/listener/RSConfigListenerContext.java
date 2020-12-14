@@ -1,5 +1,7 @@
 package com.roubsite.web.listener;
 
+import com.roubsite.database.RSDataSource;
+import com.roubsite.database.pool.DataSourcePool;
 import com.roubsite.holder.RSDataSourceHolder;
 import com.roubsite.utils.ConfUtils;
 import com.roubsite.utils.StringUtils;
@@ -18,7 +20,6 @@ public class RSConfigListenerContext implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
         // tomcat结束时执行
-
     }
 
     @Override
@@ -26,9 +27,10 @@ public class RSConfigListenerContext implements ServletContextListener {
         // tomcat启动时执行
         System.out.println("------------------------------------------------");
         System.out.println("------------------------------------------------");
-        System.out.println("-------------------RS框架初始化配置----------------");
-        System.out.println("------------官网 http://www.routsite.com---------");
-        System.out.println("------------------------V3----------------------");
+        System.out.println("---------------RoubSite框架初始化配置--------------");
+        System.out.println("---------官网 http://www.roubsite.com -----------");
+        System.out.println("-----------------------V4-----------------------");
+        System.out.println("-------------------优雅源自从容-------------------");
         System.out.println("------------------------------------------------");
         System.out.println("");
         ServletContext sc = arg0.getServletContext();
@@ -71,19 +73,17 @@ public class RSConfigListenerContext implements ServletContextListener {
         rSInitFilter.setInitParameters(param);
         rSInitFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.INCLUDE), true, "/*");
         // 权限控制器
-        if (new File(this.getClass().getClassLoader().getResource("").getPath() + "security.properties").exists()) {
-            if (StringUtils.isNotEmpty(ConfUtils.getConf("security.class", "security.properties", new String[]{"RoubSite", "security", "class"}))) {
-                log.info("初始化权限控制模块");
-                FilterRegistration securityFilter = sc.addFilter("RSSecFilter",
-                        ConfUtils.getConf("security.class", "security.properties", new String[]{"RoubSite", "security", "class"}));
-                Map<String, String> securityFilterparam = new HashMap<String, String>();
-                securityFilterparam.put("excludes",
-                        ConfUtils.getConf("security.missing", "security.properties", new String[]{"RoubSite", "security", "missing"}));
-                securityFilter.setInitParameters(securityFilterparam);
-                securityFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.INCLUDE),
-                        true, "/*");
-                log.info("初始化权限控制模块完成");
-            }
+        if (StringUtils.isNotEmpty(ConfUtils.getConf("security.class", "security.properties", new String[]{"RoubSite", "security", "class"}))) {
+            log.info("初始化权限控制模块");
+            FilterRegistration securityFilter = sc.addFilter("RSSecFilter",
+                    ConfUtils.getConf("security.class", "security.properties", new String[]{"RoubSite", "security", "class"}));
+            Map<String, String> securityFilterparam = new HashMap<String, String>();
+            securityFilterparam.put("excludes",
+                    ConfUtils.getConf("security.missing", "security.properties", new String[]{"RoubSite", "security", "missing"}));
+            securityFilter.setInitParameters(securityFilterparam);
+            securityFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.INCLUDE),
+                    true, "/*");
+            log.info("初始化权限控制模块完成");
         }
 
         // 反射执行action
@@ -94,7 +94,7 @@ public class RSConfigListenerContext implements ServletContextListener {
 
         // 初始化数据源
         RSDataSourceHolder.getInstance();
-        log.info("启动框架解析器完成");
+        System.out.println("-----------------RoubSite启动成功------------------");
     }
 
     /**
