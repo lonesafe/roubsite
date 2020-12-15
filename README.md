@@ -61,7 +61,94 @@ Smarty是框架的依赖项，会自动引入。
     <listener-class>com.roubsite.web.listener.RSConfigListenerContext</listener-class>
 </listener>
 ```
-### 加入配置文件
+### 配置文件(YML方式V4.0.0及以上版本)
+**强烈推荐使用此方式！**
+配置文件放置在resources中，名字可以随便起，框架会自动扫描所有的配置文件。
+```yaml
+RoubSite:
+  #代码生成机配置
+  codeSign:
+    #代码输出路径
+    outputPath: d:/demo
+  #是否开启防注入拦截器
+  injection: true
+  global:
+    #默认分组
+    defaultGroup: admin
+    #分组
+    group:
+      #分组：对应的包
+      codeSign: com.roubsite.code
+      index: com.roubsite.site
+      admin: com.roubsite.admin
+      sso: com.roubsite.sso
+    #静态资源后缀
+    static_suffix: "*.jpg,*.css,*.png,*.js,*.gif,*.swf,*.ico,*.rar,*.woff,*.ttf,*.eot"
+    #错误页文件路径
+    errorPage:
+    #成功页文件路径
+    successPage:
+  #权限管理框架配置
+  security:
+    #框架拦截器
+    class: "com.roubsite.security.filter.SecurityFilter"
+    #不进行拦截的资源
+    missing: "*.jpg,*.css,*.png,*.js,*.gif,*.swf,*.ico,*.rar,*.woff,*.ttf,*.eot"
+    #登陆地址
+    loginUrl: "/admin/login"
+  #模板设置
+  smarty:
+    #调试模式
+    debug: true
+    #启用cache，如果遇到变量无法刷新的问题，请关闭缓存(cache=off)
+    cache: off
+    #模板文件编码集
+    encoding: UTF-8
+    #左边界定界符
+    left.delimiter: "{"
+    #右边界定界符
+    right.delimiter: "}"
+    #函数扩展包的名称，以:分隔
+    package:
+      function: com.roubsite.smarty4j.statement.function
+      #变量调节器扩展包的名称，以:分隔
+      modifier: com.roubsite.smarty4j.statement.modifier
+
+  #数据源配置
+  DataSourcePool:
+    #是否开启druid控制台
+    console: true
+    #默认数据源
+    default: dataSource
+    #数据源列表
+    dataSources:
+      #数据源DataSource
+      dataSource:
+        #数据源类型（1：mysql，2：oracle）用于代码生成使用
+        type: 1
+        driverClassName: com.mysql.jdbc.Driver
+        url: "jdbc:mysql://127.0.0.1:3306/roubsite_dev?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&autoReconnect=true"
+        username: root
+        password: root
+        #数据库池大小
+        poolSize: 12
+        #是否保持连接
+        keepAlive: true
+        #最大等待时间
+        maxWaitMillis: 100000
+        #最大线程等待时间
+        maxWaithThreadCount: 12
+      #数据源DataSource2
+#      dataSource2:
+#        type: 2
+#        driverClassName: com.mysql.jdbc.Driver
+#        url=jdbc: mysql://127.0.0.1:3306/ls_srr?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+#        username: root
+#        password: root
+#        poolSize: 12
+```
+### 配置文件(XML方式)
+**不建议该种方式，将在后续版本中不再支持**
 配置文件放置在resources中
 #### config.properties(必须)
 ```properties
