@@ -9,13 +9,13 @@
 
 ## 介绍
 RoubSite是一个简单、轻量、易上手的java web开发框架，项目研发的初衷是写一个可以让刚入行的程序猿快速掌握java web开发的这么一个框架。  
-🔥🔥RoubSiteAdmin是基于RoubSite开发的一套后台权限管理框架，用户、角色、权限、菜单一整套都写好了，结合代码生成机，简单增删改查，通过配置就可以搞定。  
+🎉🎉🎉RoubSiteAdmin是基于RoubSite开发的一套后台权限管理框架，用户、角色、权限、菜单一整套都写好了，结合代码生成机，简单增删改查，通过配置就可以搞定。  
 [官网https://www.roubsite.com](https://www.roubsite.com)
 ## RoubSiteAdmin演示地址
 [🔥🔥RoubSiteAdmin后台管理框架](https://test.roubsite.com)  
 账号：admin   密码：admin
 ## RoubSite框架使用Demo
-[🔥🔥RoubSite框架Demo：https://gitee.com/lonesafe/roubsite-demo](https://gitee.com/lonesafe/roubsite-demo)  
+[🎉🎉🎉RoubSite框架Demo：https://gitee.com/lonesafe/roubsite-demo](https://gitee.com/lonesafe/roubsite-demo)  
 ## 软件架构
 整个框架分为Action（前端控制器）、Dao（数据访问层）、Bean（实体类）这三层；  
 页面模板实现了类似PHP中的smarty框架的一个模板引擎，使用起来十分方便。
@@ -27,8 +27,8 @@ Smarty是框架的依赖项，会自动引入。
 <dependency>
   <groupId>com.roubsite</groupId>
   <artifactId>RoubSiteFramework</artifactId>
-  <version>3.2.1</version>
-  <type>pom</type>
+  <version>4.0.0</version>
+  <type>jar</type>
 </dependency>
 ```
 引入权限管理（可选）：
@@ -36,8 +36,8 @@ Smarty是框架的依赖项，会自动引入。
 <dependency>
   <groupId>com.roubsite</groupId>
   <artifactId>RoubSiteSecurity</artifactId>
-  <version>3.2.1</version>
-  <type>pom</type>
+  <version>4.0.0</version>
+  <type>jar</type>
 </dependency>
 ```
 引入代码生成机（可选）：
@@ -45,8 +45,8 @@ Smarty是框架的依赖项，会自动引入。
 <dependency>
   <groupId>com.roubsite</groupId>
   <artifactId>RoubSiteCodeSign</artifactId>
-  <version>3.2.1</version>
-  <type>pom</type>
+  <version>4.0.0</version>
+  <type>jar</type>
 </dependency>
 ```
 ### 配置web.xml
@@ -61,7 +61,7 @@ Smarty是框架的依赖项，会自动引入。
     <listener-class>com.roubsite.web.listener.RSConfigListenerContext</listener-class>
 </listener>
 ```
-### 配置文件(YML方式V4.0.0及以上版本)
+### 配置文件(V4.0.0及以上版本推荐使用YML方式)
 **强烈推荐使用此方式！**
 配置文件放置在resources中，名字可以随便起，框架会自动扫描所有的配置文件。
 ```yaml
