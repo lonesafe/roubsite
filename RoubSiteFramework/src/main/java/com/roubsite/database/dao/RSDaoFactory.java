@@ -15,7 +15,7 @@ public class RSDaoFactory implements InvocationHandler {
 	/**
 	 * 获取dao（自定义数据源）
 	 * 
-	 * @param className      类的全路径
+	 * @param clazz      类的全路径
 	 * @param dataSourceName 数据源名称
 	 * @return Dao接口
 	 */

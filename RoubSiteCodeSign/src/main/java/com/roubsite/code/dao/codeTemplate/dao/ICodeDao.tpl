@@ -4,9 +4,8 @@ import java.util.List;
 
 import com.roubsite.database.bean.Record;
 import com.roubsite.database.dao.DataSet;
-import com.roubsite.database.dao.IBaseCURD;
 
-public interface I${mode}Dao extends IBaseCURD {
+public interface I${mode}Dao {
 	public DataSet queryd(Record record, int start, int rows);
 
 	public DataSet getInfoById(String id);

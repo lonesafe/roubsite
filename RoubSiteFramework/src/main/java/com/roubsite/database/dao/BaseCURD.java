@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class BaseCURD implements IBaseCURD {
+public class BaseCURD {
     private RSConnection conn = null;
     private String dataSource;
     private PreparedStatement pStatement = null;
@@ -208,21 +208,6 @@ public class BaseCURD implements IBaseCURD {
             return sb.toString();
     }
 
-//	private String clobToString(oracle.sql.CLOB clob) {
-//		try {
-//			Reader inStream = clob.getCharacterStream();
-//			char[] c = new char[(int) clob.length()];
-//			inStream.read(c);
-//			String data = new String(c);
-//			inStream.close();
-//			return data;
-//		} catch (Exception e) {
-//			this.conn.setError(true);
-//			log.error(e);
-//			return "";
-//		}
-//	}
-
     /**
      * 执行某个sql语句,并返回影响行数
      *
@@ -300,33 +285,6 @@ public class BaseCURD implements IBaseCURD {
         return re;
 
     }
-
-//	public void closeConn() {
-//		try {
-//			log.debug("释放连接池");
-//			this.conn.getConn().close();
-//		} catch (Exception e) {
-//			log.error("关闭数据库连接出错", e);
-//		}
-//	}
-//
-//	public void closeConn(boolean autoCommit) {
-//		log.debug("释放连接池");
-//		if (!autoCommit) {
-//			try {
-//				this.conn.getConn().commit();
-//			} catch (Exception e) {
-//				log.error("提交事务出错", e);
-//			}
-//		}
-//		try {
-//			this.conn.getConn().close();
-//		} catch (Exception e) {
-//			log.error("关闭数据库连接出错", e);
-//		}
-//		this.conn = null;
-//
-//	}
 
     public RSConnection getConn() {
         return conn;
