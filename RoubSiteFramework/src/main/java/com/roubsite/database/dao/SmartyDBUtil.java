@@ -1,7 +1,6 @@
 package com.roubsite.database.dao;
 
 import com.roubsite.utils.ConfUtils;
-import com.roubsite.utils.PropertiesUtil;
 
 import java.sql.SQLException;
 import java.util.List;

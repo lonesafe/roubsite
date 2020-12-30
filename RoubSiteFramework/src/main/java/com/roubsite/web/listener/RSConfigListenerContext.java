@@ -1,7 +1,5 @@
 package com.roubsite.web.listener;
 
-import com.roubsite.database.RSDataSource;
-import com.roubsite.database.pool.DataSourcePool;
 import com.roubsite.holder.RSDataSourceHolder;
 import com.roubsite.utils.ConfUtils;
 import com.roubsite.utils.StringUtils;
@@ -9,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
-import java.io.File;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +17,7 @@ public class RSConfigListenerContext implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
         // tomcat结束时执行
+        RSDataSourceHolder.getInstance().get().closeAll();
     }
 
     @Override

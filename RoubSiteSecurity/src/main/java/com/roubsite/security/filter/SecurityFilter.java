@@ -80,7 +80,7 @@ public class SecurityFilter implements Filter {
                 resp.setContentType("application/json");
             }
             if (StringUtils.isEmpty(redirectUrl)) {
-                redirectUrl = ConfUtils.getConf("security.login.url", "security.properties",new String[]{"RoubSite", "security", "loginUrl"});
+                redirectUrl = ConfUtils.getConf("security.login.url", "security.properties", new String[]{"RoubSite", "security", "loginUrl"});
             }
             RSSecurityBaseUserInfo rsSecUserInfo = (RSSecurityBaseUserInfo) session.getAttribute("rsSecUserInfo");
             logger.debug("检查权限");

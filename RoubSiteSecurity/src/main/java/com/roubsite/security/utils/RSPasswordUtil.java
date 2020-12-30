@@ -72,11 +72,4 @@ public class RSPasswordUtil {
         }
         return BCrypt.checkpw(rawPassword.toString(), encodedPassword);
     }
-
-    public static void main(String[] args) {
-        RSPasswordUtil d = new RSPasswordUtil();
-        System.out.println(d.encode("admin"));
-        System.out.println(d.encode("asdfasdf"));
-        System.out.println(d.matches("asdfasdf", "$2a$10$jgE5w59ccswnDH9TvXql.OeVPsoLpBtlMJ9xCWhsoJwkEd8muHdUC"));
-    }
 }
