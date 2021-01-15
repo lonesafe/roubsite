@@ -7,6 +7,8 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,25 +37,27 @@ public class YmlUtils {
 
     public static String getConfig(String[] keys, String defaultValue) {
         String value = "";
-        Map<String,Object> temp = new HashMap(config);
+        Map<String, Object> temp = new HashMap(config);
         int count = keys.length;
         for (int i = 0; i < count; i++) {
             if (i == count - 1) {
                 try {
                     Object obj = temp.get(keys[i]);
-                    if(StringUtils.isNotEmptyObject(obj)){
+                    if (StringUtils.isNotEmptyObject(obj)) {
                         value = String.valueOf(obj);
-                    }else{
+                    } else {
                         return "";
                     }
                 } catch (Exception e) {
-                    LOGGER.error("获取配置项错误", e);
+                    LOGGER.warn("不存在的yaml配置" + Arrays.toString(keys));
+                    return defaultValue;
                 }
             } else {
                 try {
                     temp = (Map) temp.get(keys[i]);
                 } catch (Exception e) {
-                    LOGGER.error("获取配置项错误", e);
+                    LOGGER.warn("不存在的yaml配置" + Arrays.toString(keys));
+                    return defaultValue;
                 }
             }
         }
