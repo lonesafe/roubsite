@@ -13,7 +13,8 @@ RoubSite是一个简单、轻量、易上手的java web开发框架，项目研�
 [官网https://www.roubsite.com](https://www.roubsite.com)
 ## RoubSiteAdmin演示地址
 [🔥🔥RoubSiteAdmin后台管理框架](https://test.roubsite.com)  
-账号：admin   密码：admin
+账号：admin   密码：admin  
+不要修改密码，测试用户功能可以新建用户，admin用户不要修改密码！！
 ## RoubSite框架使用Demo
 [🎉🎉🎉RoubSite框架Demo：https://gitee.com/lonesafe/roubsite-demo](https://gitee.com/lonesafe/roubsite-demo)  
 ## 软件架构
