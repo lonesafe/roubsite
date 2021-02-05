@@ -3,6 +3,7 @@ package com.roubsite.web.wrapper;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -11,15 +12,24 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import com.roubsite.utils.StringUtils;
 
 public class RoubSiteRequestWrapper extends HttpServletRequestWrapper {
 	private Map<String, String> $_get = new HashMap<String, String>();
 	private Map<String, Object> $_post = new HashMap<>();
 	private HttpServletRequest request;
+	private HttpServletRequest clone_request;
 
 	public RoubSiteRequestWrapper(HttpServletRequest request) throws UnsupportedEncodingException {
 		super(request);
+		try {
+			clone_request = (HttpServletRequest) BeanUtils.cloneBean(request);
+		} catch (IllegalAccessException | InstantiationException | InvocationTargetException
+				| NoSuchMethodException e) {
+			e.printStackTrace();
+		}
 		request.setCharacterEncoding("UTF-8");
 		this.request = request;
 		if (StringUtils.isNotEmpty(this.request.getQueryString())) {
@@ -28,6 +38,10 @@ public class RoubSiteRequestWrapper extends HttpServletRequestWrapper {
 		if (this.request.getMethod().equalsIgnoreCase("post")) {
 			this.postRequest(request);
 		}
+	}
+
+	public HttpServletRequest getHttpServletRequest() {
+		return clone_request;
 	}
 
 	public String get$_get(String param) {
