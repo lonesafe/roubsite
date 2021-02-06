@@ -74,30 +74,18 @@ public class CodeAction extends RSAction {
 	}
 
 	public void doCodeSignForm() throws ServletException, IOException {
-		Properties pro = new Properties();
-		InputStream inputStream = null;
-		inputStream = this.getClass().getClassLoader().getResourceAsStream("config.properties");
-		BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
-		pro.load(bf);
-		Set<Entry<Object, Object>> ent = pro.entrySet();
+		Map<String, Object> m = YmlUtils.getAllConfig();
+		Map<String, Object> groups = (Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) m
+				.get("RoubSite")).get("global")).get("group");
 		List<String> groupList = new ArrayList<String>();
-		for (Entry<Object, Object> e : ent) {
-			String tmpString = e.getKey().toString();
-			if (tmpString.indexOf("global.group") != -1) {
-				groupList.add(tmpString.substring(13));
-			}
+		for (String key : groups.keySet()) {
+			groupList.add(key);
 		}
-
-		inputStream = this.getClass().getClassLoader().getResourceAsStream("dataSource.properties");
-		bf = new BufferedReader(new InputStreamReader(inputStream));
-		pro.load(bf);
-		ent = pro.entrySet();
+		Map<String, Object> dataSources = (Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) m
+				.get("RoubSite")).get("DataSourcePool")).get("dataSources");
 		List<String> dataSourceList = new ArrayList<String>();
-		for (Entry<Object, Object> e : ent) {
-			String tmpString = e.getKey().toString();
-			if (tmpString.indexOf("type") != -1) {
-				dataSourceList.add(tmpString.split("\\.")[0]);
-			}
+		for (String key : dataSources.keySet()) {
+			dataSourceList.add(key);
 		}
 
 		Map<String, Object> map = new HashMap<>();

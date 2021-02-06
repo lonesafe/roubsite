@@ -6,13 +6,13 @@
 	<groupId>com.roubsite</groupId>
 	<artifactId>RoubSite</artifactId>
 	<packaging>pom</packaging>
-	<version>4.0.3</version>
+	<version>4.0.5</version>
 	<name>RoubSite</name>
 	<description>RoubSite Framework parent project</description>
 	<url>https://www.roubsite.com</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<roubsite_version>4.0.3</roubsite_version>
+		<roubsite_version>4.0.5</roubsite_version>
 	</properties>
 	<organization>
 		<name>RoubSite</name>

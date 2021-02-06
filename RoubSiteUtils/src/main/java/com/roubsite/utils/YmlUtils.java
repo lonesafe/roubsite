@@ -63,4 +63,8 @@ public class YmlUtils {
 		}
 		return value;
 	}
+
+	public static Map<String, Object> getAllConfig() {
+		return new HashMap<String, Object>(config);
+	}
 }
