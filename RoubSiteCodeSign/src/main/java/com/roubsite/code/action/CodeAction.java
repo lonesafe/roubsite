@@ -40,8 +40,7 @@ public class CodeAction extends RSAction {
 				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection()));
 		try {
 			// 通过配置文件获取数据库类型
-			String type = ConfUtils.getConf(dataSource + ".type", "dataSource.properties",
-					new String[] { "RoubSite", "DataSourcePool", "dataSources", dataSource, "type" });
+			String type = ConfUtils.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSource + ".type", "");
 			String tableName = this.g("tableName");
 			String model = this.g("mode");
 			String[] _searchFields = this.request.getParameterValues("searchFields");
@@ -100,9 +99,7 @@ public class CodeAction extends RSAction {
 		ICodeDao codeDao = (ICodeDao) new RSDaoFactory().getDao(CodeDao.class, dataSource,
 				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection()));
 		try {
-//			ICodeDao codeDao = (ICodeDao) new RSDaoFactory().getDao(CodeDao.class, dataSource);
-			String type = ConfUtils.getConf(dataSource + ".type", "dataSource.properties",
-					new String[] { "RoubSite", "DataSourcePool", "dataSources", dataSource, "type" });
+			String type = ConfUtils.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSource + ".type", "");
 			String sql = "select   *   from   user_tables";
 			switch (type) {
 			case "1":
@@ -129,8 +126,7 @@ public class CodeAction extends RSAction {
 		ICodeDao codeDao = (ICodeDao) new RSDaoFactory().getDao(CodeDao.class, dataSource,
 				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection()));
 		try {
-			String type = ConfUtils.getConf(dataSource + ".type", "dataSource.properties",
-					new String[] { "RoubSite", "DataSourcePool", "dataSources", dataSource, "type" });
+			String type = ConfUtils.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSource + ".type", "");
 			String sql = "";
 			switch (type) {
 			case "1":
@@ -144,7 +140,9 @@ public class CodeAction extends RSAction {
 
 			List<?> list = codeDao.query(sql, new String[] { tableName }, new int[] { Types.VARCHAR });
 			this.print(JsonUtils.convertToString(list));
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			e.printStackTrace();
 		} finally {
 			codeDao.getConn().getConn().close();

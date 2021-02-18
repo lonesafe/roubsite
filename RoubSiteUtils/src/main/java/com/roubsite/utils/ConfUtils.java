@@ -1,48 +1,106 @@
 package com.roubsite.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ConfUtils {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConfUtils.class);
 
-    /**
-     * 兼容properties的获取配置方法（兼容方法，配置项逐步使用yaml方式）
-     *
-     * @param propertiesKey  properties的key
-     * @param PropertiesFile properties文件
-     * @param yamlKeys       yaml的keys
-     * @return 配置值
-     */
-    @Deprecated
-    public static String getConf(String propertiesKey, String PropertiesFile, String[] yamlKeys, String defaultValue) {
-        String value = PropertiesUtil.getString(propertiesKey, PropertiesFile);
-        if (StringUtils.isEmpty(value)) {
-            value = YmlUtils.getConfig(yamlKeys, defaultValue);
-        }
-        return value;
-    }
+	/**
+	 * 获取yaml配置项
+	 *
+	 * @param yamlKeys 配置项路径（通过.分割）
+	 * @return 值
+	 */
+	public static String getStringConf(String key, String defaultValue) {
+		Object obj = YmlUtils.getConfig(key);
+		if (StringUtils.isNotEmptyObject(obj)) {
+			try {
+				return obj.toString();
+			} catch (Exception e) {
+				LOGGER.warn("读取配置项[" + key + "]错误", e);
+				return defaultValue;
+			}
+		} else {
+			return defaultValue;
+		}
 
-    /**
-     * 兼容properties的获取配置方法（兼容方法，配置项逐步使用yaml方式）
-     *
-     * @param propertiesKey  properties的key
-     * @param PropertiesFile properties文件
-     * @param yamlKeys       yaml的keys
-     * @return 配置值
-     */
-    @Deprecated
-    public static String getConf(String propertiesKey, String PropertiesFile, String... yamlKeys) {
-        String value = PropertiesUtil.getString(propertiesKey, PropertiesFile);
-        if (StringUtils.isEmpty(value)) {
-            value = YmlUtils.getConfig(yamlKeys, "");
-        }
-        return value;
-    }
+	}
 
-    /**
-     * 获取yaml配置项
-     *
-     * @param yamlKeys 配置项
-     * @return 值
-     */
-    public static String getConf(String[] yamlKeys, String defaultValue) {
-        return YmlUtils.getConfig(yamlKeys, defaultValue);
-    }
+	public static List getListConf(String key) {
+		Object obj = YmlUtils.getConfig(key);
+		if (StringUtils.isNotEmptyObject(obj)) {
+			try {
+				return (List) obj;
+			} catch (Exception e) {
+				LOGGER.warn("读取配置项[" + key + "]错误", e);
+				return new ArrayList();
+			}
+		} else {
+			return new ArrayList();
+		}
+	}
+
+	public static int getIntConf(String key) {
+		Object obj = YmlUtils.getConfig(key);
+		if (StringUtils.isNotEmptyObject(obj)) {
+			try {
+				return Integer.parseInt(String.valueOf(obj));
+			} catch (Exception e) {
+				LOGGER.warn("读取配置项[" + key + "]错误", e);
+				return 0;
+			}
+		} else {
+			return 0;
+		}
+	}
+
+	public static long getLongConf(String key) {
+		Object obj = YmlUtils.getConfig(key);
+		if (StringUtils.isNotEmptyObject(obj)) {
+			try {
+				return Long.parseLong(String.valueOf(obj));
+			} catch (Exception e) {
+				LOGGER.warn("读取配置项[" + key + "]错误", e);
+				return 0;
+			}
+		} else {
+			return 0;
+		}
+	}
+
+	public static double getDoubleConf(String key) {
+		Object obj = YmlUtils.getConfig(key);
+		if (StringUtils.isNotEmptyObject(obj)) {
+			try {
+				return Double.parseDouble(String.valueOf(obj));
+			} catch (Exception e) {
+				LOGGER.warn("读取配置项[" + key + "]错误", e);
+				return 0;
+			}
+		} else {
+			return 0;
+		}
+	}
+
+	public static boolean getBooleanConf(String key) {
+		Object obj = YmlUtils.getConfig(key);
+		if (StringUtils.isNotEmptyObject(obj)) {
+			try {
+				return Boolean.parseBoolean(String.valueOf(obj));
+			} catch (Exception e) {
+				LOGGER.warn("读取配置项[" + key + "]错误", e);
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public static Object getConfig(String key) {
+		return YmlUtils.getConfig(key);
+	}
 }

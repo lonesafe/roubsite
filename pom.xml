@@ -6,13 +6,13 @@
 	<groupId>com.roubsite</groupId>
 	<artifactId>RoubSite</artifactId>
 	<packaging>pom</packaging>
-	<version>4.0.5</version>
+	<version>4.0.6</version>
 	<name>RoubSite</name>
 	<description>RoubSite Framework parent project</description>
 	<url>https://www.roubsite.com</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<roubsite_version>4.0.5</roubsite_version>
+		<roubsite_version>4.0.6</roubsite_version>
 	</properties>
 	<organization>
 		<name>RoubSite</name>
@@ -120,7 +120,7 @@
 	</dependencies>
 	<build>
 		<plugins>
-			<!-- <plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.2.1</version>
@@ -149,7 +149,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
 				<version>1.6</version>
