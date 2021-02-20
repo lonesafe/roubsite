@@ -40,23 +40,36 @@ public abstract class RSAction implements IRSAction {
 		if (null == xsm_file_version || "".equals(xsm_file_version)) {
 			session.setAttribute("xsm_file_version", Long.toString(System.currentTimeMillis()));
 		}
-		context.set("__WEBPATH__", getWebPath());
+		context.set("__WEBPATH__", getWebPath(false));
+		context.set("__FULLWEBPATH__", getWebPath(true));
 
 	}
 
-	public String getWebPath() {
+	public String getWebPath(boolean full) {
 		String contextPath = request.getContextPath();
-		String scheme = request.getScheme();
-		String serverName = request.getServerName();
-		int port = request.getServerPort();
-		if (StringUtils.isNotEmpty(contextPath)) {
-			if (contextPath.startsWith("/")) {
-				return scheme + "://" + serverName + ":" + port + contextPath;
+		if (full) {
+			String scheme = request.getScheme();
+			String serverName = request.getServerName();
+			int port = request.getServerPort();
+			if (StringUtils.isNotEmpty(contextPath)) {
+				if (contextPath.startsWith("/")) {
+					return scheme + "://" + serverName + ":" + port + contextPath;
+				} else {
+					return scheme + "://" + serverName + ":" + port + "/" + contextPath;
+				}
 			} else {
-				return scheme + "://" + serverName + ":" + port + "/" + contextPath;
+				return scheme + "://" + serverName + ":" + port + "/";
 			}
 		} else {
-			return scheme + "://" + serverName + ":" + port + "/";
+			if (StringUtils.isNotEmpty(contextPath)) {
+				if (contextPath.startsWith("/")) {
+					return contextPath;
+				} else {
+					return "/" + contextPath;
+				}
+			} else {
+				return "/";
+			}
 		}
 	}
 
