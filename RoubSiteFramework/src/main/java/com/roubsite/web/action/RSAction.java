@@ -28,53 +28,30 @@ public abstract class RSAction implements IRSAction {
 	public HttpServletResponse response;
 	private Context context = new Context();
 	private Engine e = new Engine();
-
-	public void init(RoubSiteRequestWrapper req, RoubSiteResponseWrapper resp) {
-		this.request = req;
-		this.response = resp;
-		HttpSession session = req.getSession();
-
-		e.setTemplatePath(StringUtils.getWebContentPath() + "/templates/");
-
-		Object xsm_file_version = session.getAttribute("xsm_file_version");
-		if (null == xsm_file_version || "".equals(xsm_file_version)) {
-			session.setAttribute("xsm_file_version", Long.toString(System.currentTimeMillis()));
-		}
-		context.set("__WEBPATH__", getWebPath(false));
-		context.set("__FULLWEBPATH__", getWebPath(true));
-
-	}
-
-	public String getWebPath(boolean full) {
-		String contextPath = request.getContextPath();
-		if (full) {
-			String scheme = request.getScheme();
-			String serverName = request.getServerName();
-			int port = request.getServerPort();
-			if (StringUtils.isNotEmpty(contextPath)) {
-				if (contextPath.startsWith("/")) {
-					return scheme + "://" + serverName + ":" + port + contextPath;
-				} else {
-					return scheme + "://" + serverName + ":" + port + "/" + contextPath;
-				}
-			} else {
-				return scheme + "://" + serverName + ":" + port + "/";
-			}
-		} else {
-			if (StringUtils.isNotEmpty(contextPath)) {
-				if (contextPath.startsWith("/")) {
-					return contextPath;
-				} else {
-					return "/" + contextPath;
-				}
-			} else {
-				return "/";
-			}
-		}
-	}
+	private String templatePrefix = "";
 
 	public boolean __init__(HttpServletRequest req, HttpServletResponse resp, ClassBean classBean) {
 		return true;
+	}
+
+	/**
+	 * get方式获取url参数
+	 *
+	 * @param param
+	 * @return
+	 */
+	public String $_G(String param) {
+		return request.get$_get(param);
+	}
+
+	/**
+	 * 获取post的参数
+	 *
+	 * @param param
+	 * @return
+	 */
+	public Object $_P(String param) {
+		return request.get$_post(param);
 	}
 
 	/**
@@ -85,19 +62,6 @@ public abstract class RSAction implements IRSAction {
 	 */
 	public Object a(String attr) {
 		return request.getAttribute(attr);
-	}
-
-	/**
-	 * 定义模板上的变量
-	 *
-	 * @param name  变量名
-	 * @param value 变量值
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	public void assign(String name, Object value) {
-		// this.request.setAttribute(name, value);
-		context.set(name, value);
 	}
 
 	/**
@@ -124,6 +88,19 @@ public abstract class RSAction implements IRSAction {
 	}
 
 	/**
+	 * 定义模板上的变量
+	 *
+	 * @param name  变量名
+	 * @param value 变量值
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	public void assign(String name, Object value) {
+		// this.request.setAttribute(name, value);
+		context.set(name, value);
+	}
+
+	/**
 	 * 输出模板
 	 *
 	 * @param templatePath 模板相对该Action分组的路径
@@ -132,7 +109,22 @@ public abstract class RSAction implements IRSAction {
 	 */
 	public void display(String templatePath) throws ServletException, IOException {
 		ClassBean cb = RSFilterContextHolder.getRSFilterContext().getClassBean();
-		String jspPath = cb.getTemplate() + "/" + templatePath;
+		if (StringUtils.isNotEmpty(templatePrefix)) {
+			if (!templatePrefix.startsWith("/")) {
+				templatePrefix = "/" + templatePrefix;
+			}
+		}
+		if (StringUtils.isNotEmpty(templatePrefix)) {
+			if (!templatePrefix.endsWith("/")) {
+				templatePrefix = templatePrefix + "/";
+			}
+		}
+		if (StringUtils.isNotEmpty(templatePath)) {
+			if (!templatePath.startsWith("/")) {
+				templatePath = templatePath.substring(1, templatePath.length());
+			}
+		}
+		String jspPath = cb.getTemplate() + templatePrefix + templatePath;
 		if (StringUtils.isEmpty(response.getContentType())) {
 			response.setContentType("text/html;charset=UTF-8");
 		}
@@ -149,216 +141,6 @@ public abstract class RSAction implements IRSAction {
 			error(500, "系统错误，请稍后再试！");
 		}
 		return;
-	}
-
-	public Object getParamSet(boolean returnJsonString) {
-		String _paramSet = this.I("__paramSet__");
-		if (returnJsonString) {
-			return _paramSet;
-		}
-		try {
-			Map data = new HashMap<>();
-			Map paramSet = JsonUtils.readToObject(_paramSet, HashMap.class);
-			int page = getInt(request.get$_post("__offset__"));
-			int limit = getInt(request.get$_post("__limit__"));
-			int offset = (page - 1) * limit;
-			if (StringUtils.isNotEmptyObject(paramSet.get("__data__"))) {
-				data = (Map) paramSet.get("__data__");
-			}
-			paramSet.put("__offset__", offset);
-			paramSet.put("__limit__", limit);
-			paramSet.put("__data__", data);
-			return paramSet;
-		} catch (IOException e) {
-			return null;
-		}
-	}
-
-	private int getInt(Object val) {
-		try {
-			return Integer.parseInt(val.toString());
-		} catch (Exception e) {
-			return 1;
-		}
-	}
-
-	/**
-	 * 获取Request的值(不建议使用该方法，某些第三方测试公司会检测post和get的严谨性)
-	 *
-	 * @param param
-	 * @return
-	 */
-	@Deprecated
-	public String I(String param) {
-		return request.getParameter(param);
-	}
-
-	/**
-	 * 获取Request的值(已废弃，不建议使用，只为兼容旧版本)
-	 *
-	 * @param param
-	 * @return
-	 */
-	@Deprecated
-	public String g(String param) {
-		return request.getParameter(param);
-	}
-
-	/**
-	 * 根据提交方式获取Request的值
-	 *
-	 * @param param
-	 * @return
-	 */
-	public Object I(String param, Method method) {
-		if (method == Method.GET) {
-			return this.$_G(param);
-		} else if (method == Method.POST) {
-			return this.$_P(param);
-		}
-		return request.getParameter(param);
-	}
-
-	/**
-	 * get方式获取url参数
-	 *
-	 * @param param
-	 * @return
-	 */
-	public String $_G(String param) {
-		return request.get$_get(param);
-	}
-
-	/**
-	 * 获取post的参数
-	 *
-	 * @param param
-	 * @return
-	 */
-	public Object $_P(String param) {
-		return request.get$_post(param);
-	}
-
-	/**
-	 * 获取一个session对象
-	 *
-	 * @return
-	 */
-	public HttpSession getSession() {
-		return request.getSession();
-	}
-
-	/**
-	 * 获取一个session对象
-	 *
-	 * @param bool
-	 * @return
-	 */
-	public HttpSession getSession(boolean bool) {
-		return request.getSession(bool);
-	}
-
-	/**
-	 * 向客户端输出内容(该方法于display方法冲突，当有模板输出时，该方法将失效)
-	 *
-	 * @param obj 输出的内容
-	 * @throws IOException
-	 */
-	public void print(Object obj) throws IOException {
-		response.getWriter().print(obj);
-		response.getWriter().flush();
-	}
-
-	/**
-	 * 向客户端输出内容(该方法于display方法冲突，当有模板输出时，该方法将失效)
-	 *
-	 * @param obj 输出的内容
-	 * @throws IOException
-	 */
-	public void println(Object obj) throws IOException {
-		response.getWriter().println(obj);
-		response.getWriter().flush();
-	}
-
-	/**
-	 * 获取Session值
-	 *
-	 * @param sessionAttrName
-	 * @return
-	 */
-	public Object s(String sessionAttrName) {
-		return request.getSession().getAttribute(sessionAttrName);
-	}
-
-	/**
-	 * 输出错误页面（在config.properties中定义errorPage的值）
-	 *
-	 * @param errorCode  错误码
-	 * @param message    错误信息
-	 * @param jumpUrl    跳转链接
-	 * @param isAjax     是否ajax
-	 * @param waitSecond 跳转时间
-	 * @throws IOException
-	 */
-	public void error(int errorCode, String message, String jumpUrl, boolean isAjax, int waitSecond)
-			throws IOException {
-		this.displayAndJump(message, 0, jumpUrl, isAjax, errorCode, waitSecond);
-	}
-
-	/**
-	 * 输出错误页面（在config.properties中定义errorPage的值）
-	 *
-	 * @param errorCode 错误码
-	 * @param message   错误信息
-	 * @throws IOException
-	 */
-	public void error(int errorCode, String message) throws IOException {
-		this.displayAndJump(message, 0, null, false, errorCode, 3);
-	}
-
-	/**
-	 * 输出错误页面（在config.properties中定义errorPage的值）
-	 *
-	 * @param message 错误信息
-	 * @throws IOException
-	 */
-	public void error(Message message) throws IOException {
-		this.displayAndJump(message.getMessage(), 0, message.getJumpUrl(), message.isAjax(), message.getErrorCode(),
-				message.getWaitSecond());
-	}
-
-	/**
-	 * 输出成功页面（在config.properties中定义successPage的值）
-	 *
-	 * @param message    提示信息
-	 * @param jumpUrl    页面跳转地址
-	 * @param isAjax     是否为Ajax方式
-	 * @param waitSecond 跳转时间
-	 * @throws IOException
-	 */
-	public void success(String message, String jumpUrl, boolean isAjax, int waitSecond) throws IOException {
-		this.displayAndJump(message, 1, jumpUrl, isAjax, 200, waitSecond);
-	}
-
-	/**
-	 * 输出成功页面（在config.properties中定义successPage的值）
-	 *
-	 * @param message 提示
-	 * @throws IOException
-	 */
-	public void success(String message) throws IOException {
-		this.displayAndJump(message, 1, null, false, 200, 3);
-	}
-
-	/**
-	 * 输出成功页面（在config.properties中定义successPage的值）
-	 *
-	 * @param message Message
-	 * @throws IOException
-	 */
-	public void success(Message message) throws IOException {
-		this.displayAndJump(message.getMessage(), 1, message.getJumpUrl(), message.isAjax(), 200,
-				message.getWaitSecond());
 	}
 
 	/**
@@ -488,11 +270,258 @@ public abstract class RSAction implements IRSAction {
 		}
 	}
 
+	/**
+	 * 输出错误页面（在config.properties中定义errorPage的值）
+	 *
+	 * @param errorCode 错误码
+	 * @param message   错误信息
+	 * @throws IOException
+	 */
+	public void error(int errorCode, String message) throws IOException {
+		this.displayAndJump(message, 0, null, false, errorCode, 3);
+	}
+
+	/**
+	 * 输出错误页面（在config.properties中定义errorPage的值）
+	 *
+	 * @param errorCode  错误码
+	 * @param message    错误信息
+	 * @param jumpUrl    跳转链接
+	 * @param isAjax     是否ajax
+	 * @param waitSecond 跳转时间
+	 * @throws IOException
+	 */
+	public void error(int errorCode, String message, String jumpUrl, boolean isAjax, int waitSecond)
+			throws IOException {
+		this.displayAndJump(message, 0, jumpUrl, isAjax, errorCode, waitSecond);
+	}
+
+	/**
+	 * 输出错误页面（在config.properties中定义errorPage的值）
+	 *
+	 * @param message 错误信息
+	 * @throws IOException
+	 */
+	public void error(Message message) throws IOException {
+		this.displayAndJump(message.getMessage(), 0, message.getJumpUrl(), message.isAjax(), message.getErrorCode(),
+				message.getWaitSecond());
+	}
+
+	/**
+	 * 获取Request的值(已废弃，不建议使用，只为兼容旧版本)
+	 *
+	 * @param param
+	 * @return
+	 */
+	@Deprecated
+	public String g(String param) {
+		return request.getParameter(param);
+	}
+
+	private int getInt(Object val) {
+		try {
+			return Integer.parseInt(val.toString());
+		} catch (Exception e) {
+			return 1;
+		}
+	}
+
+	public Object getParamSet(boolean returnJsonString) {
+		String _paramSet = this.I("__paramSet__");
+		if (returnJsonString) {
+			return _paramSet;
+		}
+		try {
+			Map data = new HashMap<>();
+			Map paramSet = JsonUtils.readToObject(_paramSet, HashMap.class);
+			int page = getInt(request.get$_post("__offset__"));
+			int limit = getInt(request.get$_post("__limit__"));
+			int offset = (page - 1) * limit;
+			if (StringUtils.isNotEmptyObject(paramSet.get("__data__"))) {
+				data = (Map) paramSet.get("__data__");
+			}
+			paramSet.put("__offset__", offset);
+			paramSet.put("__limit__", limit);
+			paramSet.put("__data__", data);
+			return paramSet;
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * 获取一个session对象
+	 *
+	 * @return
+	 */
+	public HttpSession getSession() {
+		return request.getSession();
+	}
+
+	/**
+	 * 获取一个session对象
+	 *
+	 * @param bool
+	 * @return
+	 */
+	public HttpSession getSession(boolean bool) {
+		return request.getSession(bool);
+	}
+
 	public String getString(Object obj) {
 		if (StringUtils.isNotEmptyObject(obj)) {
 			return obj.toString();
 		}
 		return null;
+	}
+
+	public String getWebPath(boolean full) {
+		String contextPath = request.getContextPath();
+		if (full) {
+			String scheme = request.getScheme();
+			String serverName = request.getServerName();
+			int port = request.getServerPort();
+			if (StringUtils.isNotEmpty(contextPath)) {
+				if (contextPath.startsWith("/")) {
+					return scheme + "://" + serverName + ":" + port + contextPath;
+				} else {
+					return scheme + "://" + serverName + ":" + port + "/" + contextPath;
+				}
+			} else {
+				return scheme + "://" + serverName + ":" + port + "/";
+			}
+		} else {
+			if (StringUtils.isNotEmpty(contextPath)) {
+				if (contextPath.startsWith("/")) {
+					return contextPath;
+				} else {
+					return "/" + contextPath;
+				}
+			} else {
+				return "/";
+			}
+		}
+	}
+
+	/**
+	 * 获取Request的值(不建议使用该方法，某些第三方测试公司会检测post和get的严谨性)
+	 *
+	 * @param param
+	 * @return
+	 */
+	@Deprecated
+	public String I(String param) {
+		return request.getParameter(param);
+	}
+
+	/**
+	 * 根据提交方式获取Request的值
+	 *
+	 * @param param
+	 * @return
+	 */
+	public Object I(String param, Method method) {
+		if (method == Method.GET) {
+			return this.$_G(param);
+		} else if (method == Method.POST) {
+			return this.$_P(param);
+		}
+		return request.getParameter(param);
+	}
+
+	public void init(RoubSiteRequestWrapper req, RoubSiteResponseWrapper resp) {
+		this.request = req;
+		this.response = resp;
+		HttpSession session = req.getSession();
+
+		e.setTemplatePath(StringUtils.getWebContentPath() + "/templates/");
+
+		Object xsm_file_version = session.getAttribute("xsm_file_version");
+		if (null == xsm_file_version || "".equals(xsm_file_version)) {
+			session.setAttribute("xsm_file_version", Long.toString(System.currentTimeMillis()));
+		}
+		context.set("__WEBPATH__", getWebPath(false));
+		context.set("__FULLWEBPATH__", getWebPath(true));
+
+	}
+
+	/**
+	 * 向客户端输出内容(该方法于display方法冲突，当有模板输出时，该方法将失效)
+	 *
+	 * @param obj 输出的内容
+	 * @throws IOException
+	 */
+	public void print(Object obj) throws IOException {
+		response.getWriter().print(obj);
+		response.getWriter().flush();
+	}
+
+	/**
+	 * 向客户端输出内容(该方法于display方法冲突，当有模板输出时，该方法将失效)
+	 *
+	 * @param obj 输出的内容
+	 * @throws IOException
+	 */
+	public void println(Object obj) throws IOException {
+		response.getWriter().println(obj);
+		response.getWriter().flush();
+	}
+
+	/**
+	 * 获取Session值
+	 *
+	 * @param sessionAttrName
+	 * @return
+	 */
+	public Object s(String sessionAttrName) {
+		return request.getSession().getAttribute(sessionAttrName);
+	}
+
+	/**
+	 * 设置模板前缀，设置之后模板路径变为：
+	 * 
+	 * <pre>
+	 * /templates/模板前缀/模块名/display的文件路径
+	 * </pre>
+	 * 
+	 * @param templatePrefix
+	 */
+	public void setTemplatePrefix(String templatePrefix) {
+		this.templatePrefix = templatePrefix;
+	}
+
+	/**
+	 * 输出成功页面（在config.properties中定义successPage的值）
+	 *
+	 * @param message Message
+	 * @throws IOException
+	 */
+	public void success(Message message) throws IOException {
+		this.displayAndJump(message.getMessage(), 1, message.getJumpUrl(), message.isAjax(), 200,
+				message.getWaitSecond());
+	}
+
+	/**
+	 * 输出成功页面（在config.properties中定义successPage的值）
+	 *
+	 * @param message 提示
+	 * @throws IOException
+	 */
+	public void success(String message) throws IOException {
+		this.displayAndJump(message, 1, null, false, 200, 3);
+	}
+
+	/**
+	 * 输出成功页面（在config.properties中定义successPage的值）
+	 *
+	 * @param message    提示信息
+	 * @param jumpUrl    页面跳转地址
+	 * @param isAjax     是否为Ajax方式
+	 * @param waitSecond 跳转时间
+	 * @throws IOException
+	 */
+	public void success(String message, String jumpUrl, boolean isAjax, int waitSecond) throws IOException {
+		this.displayAndJump(message, 1, jumpUrl, isAjax, 200, waitSecond);
 	}
 
 }
