@@ -148,41 +148,7 @@ RoubSite:
 #        password: root
 #        poolSize: 12
 ```
-### 配置文件(XML方式)
-**不建议该种方式，将在后续版本中不再支持**
-配置文件放置在resources中
-#### config.properties(必须)
-```properties
-#默认访问分组名
-default.group=index
 
-#项目模块包名(定义方法：global.group.模块=包名)
-global.group.index=com.roubsite.site
-#项目分组根包名END
-
-#静态资源后缀(框架将不对该文件进行解析)
-global.static_suffix=*.jpg,*.css,*.png,*.js,*.gif,*.swf,*.ico,*.rar,*.woff,*.ttf,*.eot,*.map,*.woff2,*.xml,*.json,*.html
-#数据库池监控（druid）
-DataSourcePool.console=true
-```
-#### dataSource.properties(必须)
-```properties
-#数据库类型（1：mysql；2：oracle）
-#dataSource2.type=1
-#dataSource2.driverClassName=com.mysql.jdbc.Driver
-#dataSource2.url=jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&autoReconnect=true
-#dataSource2.username=root
-#dataSource2.password=root
-#dataSource2.poolSize= 12
-
-#数据库类型（1：mysql；2：oracle）
-dataSource.type=2
-dataSource.driverClassName=oracle.jdbc.driver.OracleDriver
-dataSource.url=jdbc:oracle:thin:@10.10.18.17:1521:orcl
-dataSource.username=demo
-dataSource.password=demo
-dataSource.poolSize=  12
-```
 #### log4j.properties(必须)
 ```properties
 LOG_DIR=D:/RoubSite-log/demo
@@ -240,35 +206,7 @@ log4j.appender.A1.layout= org.apache.log4j.PatternLayout
 log4j.appender.A1.layout.ConversionPattern= %n%m%n 
 log4j.appender.A1.Target= System.out 
 ```
-#### smarty4j.properties(必须)
-```properties
-#-----------------模板配置---------------------
-#调试模式，模板文件更新将自动重新加载
-debug=true
-#启用cache，如果遇到变量无法刷新的问题，请关闭缓存(cache=off)
-cache=off
-#模板文件编码集
-encoding=UTF-8
-#左边界定界符
-left.delimiter={
-#右边界定界符
-right.delimiter=}
-#函数扩展包的名称，以:分隔
-package.function=com.roubsite.smarty4j.statement.function
-#变量调节器扩展包的名称，以:分隔
-package.modifier=com.roubsite.smarty4j.statement.modifier
-```
-#### security.properties(可选加入，如果引入了RoubSiteSecurity则需要该配置项)
-```properties
-security.class=com.roubsite.security.filter.SecurityFilter
-security.missing=*.jpg,*.css,*.png,*.js,*.gif,*.swf,*.ico,*.rar,*.woff,*.ttf,*.eot,*.html
-security.login.url=/admin/login
-```
-#### codeSign.properties(可选加入，如果引入了RoubSiteCodeSign则需要该配置项)
-```properties
-#------------------代码生成机配置----------------------
-codeSign.outputPath=d:/demo
-```
+
 ### hello world
 复制上面的配置文件后，我们已经创建了一个模块“index”，根据配置文件我们知道“index”对应的包名
 是“com.roubsite.site”，根据这个包名我们新建三个包“com.roubsite.site.action”、“com.roubsite.site.bean”、“com.roubsite.site.dao”，
