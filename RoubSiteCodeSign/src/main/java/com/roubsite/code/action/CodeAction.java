@@ -1,9 +1,6 @@
 package com.roubsite.code.action;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -11,9 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 
@@ -23,7 +17,9 @@ import com.roubsite.code.dao.ICodeDao;
 import com.roubsite.database.RSConnection;
 import com.roubsite.database.dao.RSDaoFactory;
 import com.roubsite.holder.RSDataSourceHolder;
-import com.roubsite.utils.*;
+import com.roubsite.utils.ConfUtils;
+import com.roubsite.utils.JsonUtils;
+import com.roubsite.utils.YmlUtils;
 import com.roubsite.web.action.RSAction;
 
 public class CodeAction extends RSAction {
@@ -35,14 +31,14 @@ public class CodeAction extends RSAction {
 	 * @throws SQLException
 	 */
 	public void doCodeSubmitForm() throws SQLException, Exception {
-		String dataSource = this.g("dataSource");
+		String dataSource = getString(this.$_P("dataSource"));
 		ICodeDao codeDao = (ICodeDao) new RSDaoFactory().getDao(CodeDao.class, dataSource,
 				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection()));
 		try {
 			// 通过配置文件获取数据库类型
 			String type = ConfUtils.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSource + ".type", "");
-			String tableName = this.g("tableName");
-			String model = this.g("mode");
+			String tableName = getString(this.$_P("tableName"));
+			String model = getString(this.$_P("mode"));
 			String[] _searchFields = this.request.getParameterValues("searchFields");
 
 			LinkedList<BeanField> searchFields = new LinkedList<BeanField>();
@@ -74,17 +70,14 @@ public class CodeAction extends RSAction {
 
 	public void doCodeSignForm() throws ServletException, IOException {
 		Map<String, Object> m = YmlUtils.getAllConfig();
-		Map<String, Object> groups = (Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) m
-				.get("RoubSite")).get("global")).get("group");
 		List<String> groupList = new ArrayList<String>();
-		for (String key : groups.keySet()) {
-			groupList.add(key);
-		}
-		Map<String, Object> dataSources = (Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) m
-				.get("RoubSite")).get("DataSourcePool")).get("dataSources");
 		List<String> dataSourceList = new ArrayList<String>();
-		for (String key : dataSources.keySet()) {
-			dataSourceList.add(key);
+		for (String key : m.keySet()) {
+			if (key.startsWith("RoubSite.global.group")) {
+				groupList.add(key.replace("RoubSite.global.group.", ""));
+			} else if (key.startsWith("RoubSite.DataSourcePool.dataSources") && key.endsWith(".type")) {
+				dataSourceList.add(key.replace("RoubSite.DataSourcePool.dataSources.", "").replace(".type", ""));
+			}
 		}
 
 		Map<String, Object> map = new HashMap<>();
@@ -95,7 +88,7 @@ public class CodeAction extends RSAction {
 	}
 
 	public void doGetTables() throws Exception {
-		String dataSource = this.g("dataSource");
+		String dataSource = this.$_G("dataSource");
 		ICodeDao codeDao = (ICodeDao) new RSDaoFactory().getDao(CodeDao.class, dataSource,
 				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection()));
 		try {
@@ -121,8 +114,8 @@ public class CodeAction extends RSAction {
 	}
 
 	public void doGetColunms() throws Exception {
-		String dataSource = this.g("dataSource");
-		String tableName = this.g("tableName");
+		String dataSource = this.$_G("dataSource");
+		String tableName = this.$_G("tableName");
 		ICodeDao codeDao = (ICodeDao) new RSDaoFactory().getDao(CodeDao.class, dataSource,
 				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection()));
 		try {
