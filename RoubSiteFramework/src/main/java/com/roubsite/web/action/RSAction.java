@@ -28,6 +28,7 @@ public abstract class RSAction implements IRSAction {
 	public HttpServletResponse response;
 	private Context context = new Context();
 	private Engine e = new Engine();
+	// 模板前缀（一个目录），自动在display的模板路径上加上该前缀
 	private String templatePrefix = "";
 
 	public boolean __init__(HttpServletRequest req, HttpServletResponse resp, ClassBean classBean) {
@@ -113,14 +114,14 @@ public abstract class RSAction implements IRSAction {
 			if (!templatePrefix.startsWith("/")) {
 				templatePrefix = "/" + templatePrefix;
 			}
-		}
-		if (StringUtils.isNotEmpty(templatePrefix)) {
 			if (!templatePrefix.endsWith("/")) {
 				templatePrefix = templatePrefix + "/";
 			}
+		} else {
+			templatePrefix = "/";
 		}
 		if (StringUtils.isNotEmpty(templatePath)) {
-			if (!templatePath.startsWith("/")) {
+			if (templatePath.startsWith("/")) {
 				templatePath = templatePath.substring(1, templatePath.length());
 			}
 		}
