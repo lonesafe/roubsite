@@ -338,7 +338,7 @@ public class EntityDao extends BaseCURD {
 					sql.replaceFirst("(?i)SELECT (.+?) FROM", "SELECT COUNT(1) AS COUNT FROM "), args, types);
 			int total = Integer.parseInt(retCount.get(0).get("COUNT").toString());
 			if (total > 0) {
-				//如果有数据则执行查询方法
+				// 如果有数据则执行查询方法
 				if (isByPage) {
 					ret = (List<Map>) this.queryByPage(sql, args, types, start, rows);
 				} else {
@@ -425,7 +425,7 @@ public class EntityDao extends BaseCURD {
 			beanInfo = Introspector.getBeanInfo(clazz);
 			Field[] fields = clazz.getDeclaredFields();
 			String aiFields = "";
-			String idValue = "";
+			Object idValue = "";
 			for (int i = 0; i < fields.length; i++) {
 				Field f = fields[i];
 				if (f.isAnnotationPresent(KeyFields.class)) {
@@ -454,7 +454,7 @@ public class EntityDao extends BaseCURD {
 					Method getMethod = descriptor.getReadMethod();// 获得get方法
 					Object o = getMethod.invoke(bean);// 执行get方法返回一个Object
 					if (fieldName.equals(aiFields)) {
-						idValue = (String) o;
+						idValue = o;
 						continue;
 					}
 
@@ -464,11 +464,13 @@ public class EntityDao extends BaseCURD {
 				}
 				if (set.toString().length() > 1) {
 					String sql = "UPDATE " + dbName + " SET " + set.toString().substring(0, set.toString().length() - 1)
-							+ " WHERE " + beanName(aiFields) + "='" + idValue + "'";
-					int[] t1 = new int[types.size()];
+							+ " WHERE " + beanName(aiFields) + "=?";
+					int[] t1 = new int[types.size() + 1];
 					for (int k = 0; k < types.size(); k++) {
 						t1[k] = types.get(k);
 					}
+					t1[t1.length - 1] = VARCHAR;
+					valueList.add(idValue);
 					return excute(sql, valueList.toArray(), t1);
 				}
 			}
