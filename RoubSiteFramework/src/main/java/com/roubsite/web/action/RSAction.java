@@ -378,30 +378,45 @@ public abstract class RSAction implements IRSAction {
 
 	public String getWebPath(boolean full) {
 		String contextPath = request.getContextPath();
+		String fullUrl = "";
 		if (full) {
 			String scheme = request.getScheme();
 			String serverName = request.getServerName();
 			int port = request.getServerPort();
-			if (StringUtils.isNotEmpty(contextPath)) {
-				if (contextPath.startsWith("/")) {
-					return scheme + "://" + serverName + ":" + port + contextPath;
-				} else {
-					return scheme + "://" + serverName + ":" + port + "/" + contextPath;
+			String url = scheme + "://" + serverName;
+			if (("http".equals(scheme) && 80 == port) || ("https".equals(scheme) && 443 == port)) {
+				if (StringUtils.isNotEmpty(contextPath)) {
+					if (contextPath.startsWith("/")) {
+						fullUrl = url + contextPath;
+					} else {
+						fullUrl = url + "/" + contextPath;
+					}
 				}
 			} else {
-				return scheme + "://" + serverName + ":" + port + "/";
+				if (StringUtils.isNotEmpty(contextPath)) {
+					if (contextPath.startsWith("/")) {
+						fullUrl = url + ":" + port + contextPath;
+					} else {
+						fullUrl = url + ":" + port + "/" + contextPath;
+					}
+				} else {
+					fullUrl = url + ":" + port + "/";
+				}
 			}
+
 		} else {
 			if (StringUtils.isNotEmpty(contextPath)) {
 				if (contextPath.startsWith("/")) {
-					return contextPath;
+					fullUrl = contextPath;
 				} else {
-					return "/" + contextPath;
+					fullUrl = "/" + contextPath;
 				}
-			} else {
-				return "/";
 			}
 		}
+		if (fullUrl.endsWith("/")) {
+			fullUrl = fullUrl.substring(0, fullUrl.length() - 1);
+		}
+		return fullUrl;
 	}
 
 	/**
