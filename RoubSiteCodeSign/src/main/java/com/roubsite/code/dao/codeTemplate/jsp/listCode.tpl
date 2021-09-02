@@ -17,7 +17,7 @@
 	<script src="{$__WEBPATH__}/static/${groupName}/${_mode}/js/list${mode}.js"></script>
 	<div class="layui-fluid">
 		<div class="layui-card">
-			<div class="layui-card-header">角色管理</div>
+			<div class="layui-card-header">列表</div>
 			<div class='layui-card-body'>
 				<div class="layui-row layui-col-space15">
 					<div class="layui-col-md12">
