@@ -30,17 +30,17 @@ public class ConfUtils {
 
 	}
 
-	public static List getListConf(String key) {
+	public static List<Object> getListConf(String key) {
 		Object obj = YmlUtils.getConfig(key);
 		if (StringUtils.isNotEmptyObject(obj)) {
 			try {
-				return (List) obj;
+				return (List<Object>) obj;
 			} catch (Exception e) {
 				LOGGER.warn("读取配置项[" + key + "]错误", e);
-				return new ArrayList();
+				return new ArrayList<Object>();
 			}
 		} else {
-			return new ArrayList();
+			return new ArrayList<Object>();
 		}
 	}
 

@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,12 +36,12 @@ public class Record {
 		return data;
 	}
 
-	public void fromBeanMap(Map BeabMap) {
-		Map map = new HashMap<>();
-		Iterator<Map.Entry> it = BeabMap.entrySet().iterator();
+	public void fromBeanMap(Map<String, Object> BeabMap) {
+		HashMap<String, Object> map = new HashMap<>();
+		Iterator<Entry<String, Object>> it = BeabMap.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry entry = it.next();
-			String key = (String) entry.getKey();
+			Entry<String, Object> entry = it.next();
+			String key = entry.getKey();
 			Pattern pattern = Pattern.compile("[A-Z]");
 			Matcher matcher = pattern.matcher(key);
 			StringBuffer sbr = new StringBuffer();
@@ -52,33 +53,34 @@ public class Record {
 			key = key.toUpperCase();
 			map.put(key, entry.getValue());
 		}
-		this.data = (HashMap<String, Object>) map;
+		this.data = map;
 	}
 
-	public void fromMap(Map map) {
-		Map retMap = new HashMap<>();
-		Iterator<Map.Entry> it = map.entrySet().iterator();
+	public void fromMap(Map<String, Object> map) {
+		HashMap<String, Object> retMap = new HashMap<>();
+		Iterator<Entry<String, Object>> it = map.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry entry = it.next();
-			String key = (String) entry.getKey();
+			Entry<String, Object> entry = it.next();
+			String key = entry.getKey();
 			key = key.toUpperCase();
 			retMap.put(key, entry.getValue());
 		}
-		this.data = (HashMap<String, Object>) retMap;
+		this.data = retMap;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void fromJson(String json) {
-		Map jsonMap = new HashMap<>();
+		HashMap<String, Object> jsonMap = new HashMap<>();
 		try {
 			jsonMap = JsonUtils.readToObject(json, HashMap.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Map map = new HashMap<>();
-		Iterator<Map.Entry> it = jsonMap.entrySet().iterator();
+		HashMap<String, Object> map = new HashMap<>();
+		Iterator<Entry<String, Object>> it = jsonMap.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry entry = it.next();
-			String key = (String) entry.getKey();
+			Entry<String, Object> entry = it.next();
+			String key = entry.getKey();
 			Pattern pattern = Pattern.compile("[A-Z]");
 			Matcher matcher = pattern.matcher(key);
 			StringBuffer sbr = new StringBuffer();
@@ -92,11 +94,11 @@ public class Record {
 			map.put(key, entry.getValue());
 
 		}
-		this.data = (HashMap<String, Object>) map;
+		this.data = map;
 	}
 
 	public void fromBean(Object bean) {
-		Class type = bean.getClass();
+		Class<? extends Object> type = bean.getClass();
 		try {
 			BeanInfo beanInfo = Introspector.getBeanInfo(type);
 			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
@@ -116,7 +118,7 @@ public class Record {
 					propertyName = sbr.toString();
 					propertyName = propertyName.toUpperCase();
 					// 将驼峰命名法转为数据库命名法end
-					
+
 					Method readMethod = descriptor.getReadMethod();
 					Object result = readMethod.invoke(bean, new Object[0]);
 					if (result != null) {
@@ -131,10 +133,10 @@ public class Record {
 		}
 	}
 
-	public Object toBean(Class clazz) {
+	public Object toBean(Class<?> clazz) {
 		try {
 			BeanInfo beanInfo = Introspector.getBeanInfo(clazz); // 获取类属性
-			Object obj = clazz.newInstance(); // 创建 JavaBean 对象
+			Object obj = clazz.getDeclaredConstructor().newInstance(); // 创建 JavaBean 对象
 			if (null == this.data) {
 				return obj;
 			}
@@ -185,7 +187,7 @@ public class Record {
 		this.data.put(name, o);
 	}
 
-	public Iterator keys() {
+	public Iterator<String> keys() {
 		return this.data.keySet().iterator();
 	}
 
@@ -197,7 +199,7 @@ public class Record {
 		return this.data.get(name);
 	}
 
-	private Object transform(Class paramClass, Object paramObject) {
+	private Object transform(Class<?> paramClass, Object paramObject) {
 		if (paramObject == null)
 			return null;
 		if (paramClass == String.class)
@@ -234,7 +236,7 @@ public class Record {
 		return paramObject;
 	}
 
-	private Object toNumber(Class paramClass, Object paramObject) {
+	private Object toNumber(Class<?> paramClass, Object paramObject) {
 		if ((paramObject == null) || (paramObject.equals("")))
 			return null;
 		if ((paramClass == Integer.TYPE) || (paramClass == Integer.class)) {

@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.roubsite.holder.RSFilterContextHolder;
 import com.roubsite.utils.RequestURIFilter;
-import com.roubsite.utils.StringUtils;
 import com.roubsite.web.wrapper.RoubSiteRequestWrapper;
 import com.roubsite.web.wrapper.RoubSiteResponseWrapper;
 

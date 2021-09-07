@@ -4,7 +4,7 @@
     <parent>
         <artifactId>RoubSite</artifactId>
         <groupId>com.roubsite</groupId>
-        <version>4.1.1</version>
+        <version>4.1.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
@@ -13,11 +13,21 @@
     <description>RoubSite Framework utils module</description>
     <url>https://www.roubsite.com</url>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
     <build>
         <defaultGoal>compile</defaultGoal>
+        <plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<excludes>
+						<!--清理resources下的配置文件-->
+						<exclude>**.yml</exclude>
+						<exclude>**.properties</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
     </build>
 </project>

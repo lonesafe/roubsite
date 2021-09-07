@@ -1,5 +1,6 @@
 package com.roubsite.holder;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class ActionClassBean {
@@ -7,10 +8,11 @@ public class ActionClassBean {
 	private Object actionObject;
 	private Method method;
 
-	public ActionClassBean(String classPath, String methodName) throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException, NoSuchMethodException, SecurityException {
+	public ActionClassBean(String classPath, String methodName)
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException {
 		setClazz(Class.forName(classPath));
-		setActionObject(getClazz().newInstance());
+		setActionObject(getClazz().getDeclaredConstructor().newInstance());
 		setMethod(getClazz().getDeclaredMethod(methodName, new Class[] {}));
 	}
 

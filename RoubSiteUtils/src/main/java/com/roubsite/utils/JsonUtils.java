@@ -32,14 +32,11 @@ public class JsonUtils {
 
 		// 序列化
 		// 禁止序列化空值
-		objectMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
 		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 		objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
-		objectMapper.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true);
 		objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, true);
 
 		objectMapper.configure(SerializationFeature.FLUSH_AFTER_WRITE_VALUE, true);
-		objectMapper.configure(SerializationFeature.WRITE_BIGDECIMAL_AS_PLAIN, true);
 	}
 
 	/**
@@ -59,10 +56,8 @@ public class JsonUtils {
 	/**
 	 * 将json字符串转换成Bean
 	 * 
-	 * @param str
-	 *            json字符串
-	 * @param cla
-	 *            Bean类
+	 * @param str json字符串
+	 * @param cla Bean类
 	 * @return
 	 * @throws IOException
 	 */

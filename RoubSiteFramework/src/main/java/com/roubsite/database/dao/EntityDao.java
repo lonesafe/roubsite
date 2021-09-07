@@ -17,7 +17,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
 public class EntityDao extends BaseCURD {
 	/**
 	 * 将带大写字符的字符串转换成“_”的字符串
@@ -192,10 +191,11 @@ public class EntityDao extends BaseCURD {
 	 * @param rows      取出的数据条数
 	 * @return 查询结果
 	 */
-	public List<?> query(String tableName, Map where, boolean isByPage, int start, int rows) {
+	public List<Map<String, Object>> query(String tableName, Map<String, Object> where, boolean isByPage, int start,
+			int rows) {
 		StringBuffer sql = new StringBuffer("SELECT * FROM " + tableName + " WHERE 1=1");
-		List args = new ArrayList<>();
-		List types = new ArrayList<>();
+		List<Object> args = new ArrayList<>();
+		List<Integer> types = new ArrayList<>();
 
 		Set<String> keys = where.keySet();
 		for (String key : keys) {
@@ -228,11 +228,11 @@ public class EntityDao extends BaseCURD {
 	 * @param bean     bean名称
 	 * @return 查询结果DataSet类型
 	 */
-	public DataSet queryBean(Object bean, Map operator, boolean isByPage, int start, int rows) {
+	public DataSet queryBean(Object bean, Map<String, String> operator, boolean isByPage, int start, int rows) {
 		BeanInfo beanInfo;
 		boolean opIsNotDef = true;
 		if (null == operator || operator.size() <= 0) {
-			operator = new LinkedHashMap();
+			operator = new LinkedHashMap<String, String>();
 			opIsNotDef = true;
 		} else {
 			opIsNotDef = false;
@@ -248,7 +248,7 @@ public class EntityDao extends BaseCURD {
 				dbName = dbName.substring(1, dbName.length());
 				// 给 JavaBean 对象的属性赋值
 				PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-				LinkedHashMap where = new LinkedHashMap<>();
+				LinkedHashMap<String,Object> where = new LinkedHashMap<>();
 				for (int i = 0; i < propertyDescriptors.length; i++) {
 					PropertyDescriptor descriptor = propertyDescriptors[i];
 					String fieldName = descriptor.getName();
@@ -290,18 +290,18 @@ public class EntityDao extends BaseCURD {
 	 * @param bean      bean名称
 	 * @return 查询结果DataSet类型
 	 */
-	public DataSet queryBean(String tableName, Map where, Map operator, boolean isByPage, int start, int rows,
-			Class bean) {
+	public DataSet queryBean(String tableName, Map<String, Object> where, Map<String, String> operator,
+			boolean isByPage, int start, int rows, Class<?> bean) {
 		StringBuffer sql = new StringBuffer("SELECT * FROM " + tableName + " WHERE 1=1");
-		List args = new ArrayList<>();
-		List types = new ArrayList<>();
+		List<Object> args = new ArrayList<>();
+		List<Integer> types = new ArrayList<>();
 
 		Set<String> keys = where.keySet();
 		for (String key : keys) {
 			sql.append(" AND ");
 			String _operator = "";
 			try {
-				_operator = (String) operator.get(key);
+				_operator = operator.get(key);
 			} catch (Exception e) {
 				_operator = "";
 			}
@@ -329,23 +329,23 @@ public class EntityDao extends BaseCURD {
 	 * @return 查询结果DataSet类型
 	 */
 	public DataSet queryBean(String sql, Object[] args, int[] types, boolean isByPage, int start, int rows,
-			Class bean) {
+			Class<?> bean) {
 		DataSet ds = new DataSet();
 		List<Object> recordList = new ArrayList<>();
-		List<Map> ret = new ArrayList<>();
+		List<Map<String, Object>> ret = new ArrayList<>();
 		try {
-			List<Map> retCount = (List<Map>) super.query(
+			List<Map<String, Object>> retCount = super.query(
 					sql.replaceFirst("(?i)SELECT (.+?) FROM", "SELECT COUNT(1) AS COUNT FROM "), args, types);
 			int total = Integer.parseInt(retCount.get(0).get("COUNT").toString());
 			if (total > 0) {
 				// 如果有数据则执行查询方法
 				if (isByPage) {
-					ret = (List<Map>) this.queryByPage(sql, args, types, start, rows);
+					ret = (List<Map<String, Object>>) this.queryByPage(sql, args, types, start, rows);
 				} else {
-					ret = (List<Map>) super.query(sql, args, types);
+					ret = (List<Map<String, Object>>) super.query(sql, args, types);
 				}
 
-				for (Map m : ret) {
+				for (Map<String, Object> m : ret) {
 					Record r = new Record();
 					r.fromMap(m);
 					recordList.add(r.toBean(bean));
@@ -372,7 +372,7 @@ public class EntityDao extends BaseCURD {
 	 * @param rows  取出数量
 	 * @return 查询结果DataSet类型
 	 */
-	public List queryByPage(String sql, Object[] args, int[] types, int start, int rows) {
+	public List<Map<String, Object>> queryByPage(String sql, Object[] args, int[] types, int start, int rows) {
 		switch (super.getDataSourceType()) {
 		case "1":// mysql
 			sql += " limit " + start + "," + rows;

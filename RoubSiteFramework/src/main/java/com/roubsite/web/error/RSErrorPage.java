@@ -15,11 +15,9 @@ public class RSErrorPage {
 	private String errorPage;
 	private String message;
 	private HttpServletResponse resp;
-	private HttpServletRequest req;
 
 	public RSErrorPage(HttpServletResponse resp, HttpServletRequest req) {
 		this.resp = resp;
-		this.req = req;
 	}
 
 	public RSErrorPage(HttpServletResponse resp, HttpServletRequest req, int errorCode, String errorPage,

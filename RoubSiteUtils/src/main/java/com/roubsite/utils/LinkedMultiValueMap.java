@@ -13,49 +13,49 @@ public class LinkedMultiValueMap<K, V> implements MultiValueMap<K, V>, Serializa
 	private final Map<K, List<V>> targetMap;
 
 	public LinkedMultiValueMap() {
-		this.targetMap = new LinkedHashMap();
+		this.targetMap = new LinkedHashMap<K, List<V>>();
 	}
 
 	public LinkedMultiValueMap(int initialCapacity) {
-		this.targetMap = new LinkedHashMap(initialCapacity);
+		this.targetMap = new LinkedHashMap<K, List<V>>(initialCapacity);
 	}
 
 	public LinkedMultiValueMap(Map<K, List<V>> otherMap) {
-		this.targetMap = new LinkedHashMap(otherMap);
+		this.targetMap = new LinkedHashMap<K, List<V>>(otherMap);
 	}
 
 	public void add(K key, V value) {
-		List values = (List) this.targetMap.get(key);
+		List<V> values = this.targetMap.get(key);
 		if (values == null) {
-			values = new LinkedList();
+			values = new LinkedList<V>();
 			this.targetMap.put(key, values);
 		}
 		values.add(value);
 	}
 
 	public V getFirst(K key) {
-		List values = (List) this.targetMap.get(key);
+		List<V> values = this.targetMap.get(key);
 		if (values != null)
-			return (V) values.get(0);
+			return values.get(0);
 		else
 			return null;
 	}
 
 	public void set(K key, V value) {
-		List values = new LinkedList();
+		List<V> values = new LinkedList<V>();
 		values.add(value);
 		this.targetMap.put(key, values);
 	}
 
 	public void setAll(Map<K, V> values) {
-		for (Map.Entry entry : values.entrySet())
-			set((K) entry.getKey(), (V) entry.getValue());
+		for (Map.Entry<K, V> entry : values.entrySet())
+			set(entry.getKey(), entry.getValue());
 	}
 
 	public Map<K, V> toSingleValueMap() {
-		LinkedHashMap singleValueMap = new LinkedHashMap(this.targetMap.size());
-		for (Map.Entry entry : this.targetMap.entrySet()) {
-			singleValueMap.put(entry.getKey(), ((List) entry.getValue()).get(0));
+		LinkedHashMap<K, V> singleValueMap = new LinkedHashMap<K, V>(this.targetMap.size());
+		for (Map.Entry<K, List<V>> entry : this.targetMap.entrySet()) {
+			singleValueMap.put(entry.getKey(), entry.getValue().get(0));
 		}
 		return singleValueMap;
 	}
@@ -77,15 +77,15 @@ public class LinkedMultiValueMap<K, V> implements MultiValueMap<K, V>, Serializa
 	}
 
 	public List<V> get(Object key) {
-		return (List) this.targetMap.get(key);
+		return this.targetMap.get(key);
 	}
 
 	public List<V> put(K key, List<V> value) {
-		return (List) this.targetMap.put(key, value);
+		return this.targetMap.put(key, value);
 	}
 
 	public List<V> remove(Object key) {
-		return (List) this.targetMap.remove(key);
+		return this.targetMap.remove(key);
 	}
 
 	public void putAll(Map<? extends K, ? extends List<V>> m) {

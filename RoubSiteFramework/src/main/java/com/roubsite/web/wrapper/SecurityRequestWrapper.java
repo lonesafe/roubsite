@@ -45,7 +45,7 @@ public class SecurityRequestWrapper extends HttpServletRequestWrapper {
 	 * @return url请求参数部分
 	 * @throws UnsupportedEncodingException
 	 */
-	private void URLRequest(String queryString) {
+	private void URLRequest(String queryString) throws UnsupportedEncodingException {
 
 		String[] arrSplit = null;
 		// 每个键值为一组
@@ -57,7 +57,7 @@ public class SecurityRequestWrapper extends HttpServletRequestWrapper {
 			// 解析出键值
 			if (arrSplitEqual.length > 1) {
 				String word = "";
-				word = URLDecoder.decode(arrSplitEqual[1]);
+				word = URLDecoder.decode(arrSplitEqual[1],"UTF-8");
 				// 正确解析
 				this.$_get.put(arrSplitEqual[0], word);
 

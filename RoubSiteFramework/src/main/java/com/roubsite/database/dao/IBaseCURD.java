@@ -1,8 +1,8 @@
 package com.roubsite.database.dao;
 
 import java.util.List;
+import java.util.Map;
 
-import com.alibaba.druid.pool.DruidPooledConnection;
 import com.roubsite.database.RSConnection;
 
 public interface IBaseCURD {
@@ -17,7 +17,7 @@ public interface IBaseCURD {
 	 * @return 查询结果列表
 	 * @throws Exception
 	 */
-	public List<?> query(String sql, Object[] args, int[] types) throws Exception;
+	public List<Map<String,Object>> query(String sql, Object[] args, int[] types) throws Exception;
 
 	/**
 	 * 执行某个sql语句,并返回影响行数

@@ -327,19 +327,20 @@ public abstract class RSAction implements IRSAction {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object getParamSet(boolean returnJsonString) {
 		String _paramSet = this.I("__paramSet__");
 		if (returnJsonString) {
 			return _paramSet;
 		}
 		try {
-			Map data = new HashMap<>();
-			Map paramSet = JsonUtils.readToObject(_paramSet, HashMap.class);
+			Map<String,Object> data = new HashMap<>();
+			Map<String,Object> paramSet = JsonUtils.readToObject(_paramSet, HashMap.class);
 			int page = getInt(request.get$_post("__offset__"));
 			int limit = getInt(request.get$_post("__limit__"));
 			int offset = (page - 1) * limit;
 			if (StringUtils.isNotEmptyObject(paramSet.get("__data__"))) {
-				data = (Map) paramSet.get("__data__");
+				data = (Map<String,Object>) paramSet.get("__data__");
 			}
 			paramSet.put("__offset__", offset);
 			paramSet.put("__limit__", limit);

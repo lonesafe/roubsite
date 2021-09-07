@@ -40,14 +40,14 @@ public class BaseCURD {
 	 * @param types 参数类型数组 java.sql.Types中的常量
 	 * @return 查询结果列表
 	 */
-	public List<?> query(String sql, Object[] args, int[] types) {
+	public List<Map<String,Object>> query(String sql, Object[] args, int[] types) {
 		log.info("执行的sql:" + sql);
 		try {
 			log.info("传入的参数:" + JsonUtils.convertToString(args));
 		} catch (IOException e1) {
 		}
 		ResultSet resultset = null;
-		LinkedList list = new LinkedList<>();
+		LinkedList<Map<String,Object>> list = new LinkedList<>();
 
 		if (null == args) {
 			args = new Object[] {};
@@ -126,7 +126,7 @@ public class BaseCURD {
 			ResultSetMetaData metaDate = resultset.getMetaData();
 			int columnCount = metaDate.getColumnCount();
 			while (resultset.next()) {
-				Map<Object, Object> rowData = new LinkedHashMap<Object, Object>();
+				Map<String, Object> rowData = new LinkedHashMap<String, Object>();
 				for (int k = 1; k <= columnCount; k++) {
 					String metaDateKey = metaDate.getColumnLabel(k);// 获取列名
 					Object re = resultset.getObject(k);

@@ -71,7 +71,7 @@ public class CodeSign {
 			// 加载模板
 			Template template = conf.getTemplate(inFilePath);
 			// 定义数据
-			Map root = new HashMap();
+			Map<String,Object> root = new HashMap<String,Object>();
 			root.put("pack", pack);
 			root.put("_mode", _mode);
 			root.put("mode", mode);
