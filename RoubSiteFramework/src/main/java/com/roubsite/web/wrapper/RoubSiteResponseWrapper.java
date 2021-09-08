@@ -3,9 +3,8 @@ package com.roubsite.web.wrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import com.roubsite.utils.GZipUtils;
 import com.roubsite.utils.UuidUtils;
-import com.roubsite.web.wrapper.memoryLoader.MemoryClassLoader;
+import com.roubsite.web.wrapper.responseUtils.ResponseWrapperUtils;
 
 public class RoubSiteResponseWrapper extends HttpServletResponseWrapper implements ResponseWrapperInterface {
 	private static ResponseWrapperInterface superb;
@@ -14,9 +13,7 @@ public class RoubSiteResponseWrapper extends HttpServletResponseWrapper implemen
 		super(response);
 		try {
 			superb.preseInterface(response);
-			System.out.println(response.getHeader("roubsite_version"));
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
 	}
@@ -25,29 +22,23 @@ public class RoubSiteResponseWrapper extends HttpServletResponseWrapper implemen
 	public void preseInterface(HttpServletResponse response) {
 
 	}
-	
-	public static void main(String[] args) {
-		superb.preseInterface(null);
-	}
+
 	static {
 		try {
-			MemoryClassLoader loader = MemoryClassLoader.getInstrance();
+			ResponseWrapperUtils loader = ResponseWrapperUtils.getInstrance();
 			String tempRequestBeanName = "\u004d".toUpperCase() + UuidUtils.getUuid().substring(4);
-			loader.registerJava(tempRequestBeanName, GZipUtils
-					.unGZip(GZipUtils
-							.base64Decoder("H4sIAAAAAAAAAHWMMQ7CQAwEv3Iv8AdS0oBElRTUdycjDJfYsp2E58fSCSpoVtrZ0dIsrJ6ee"
-									+ "ctvMNStocPDXeDE/CIc6K9wjpg6GNGEF/valWdQXouRIzSqGBuMAaYA195/ujsW2DWLoMLn"
-									+ "9Nb7ZXHUe644yFriM9WWzdIBt6zBmcEAAAA="))
-					+ tempRequestBeanName
-					+ GZipUtils.unGZip(GZipUtils.base64Decoder(
-							"H4sIAAAAAAAAAJWOwQrCMBBEfyX0lID4A14ELxUEoQU9StqMEmyTsNnWQ+m/W2krCCL19pidfYywdahQw3EUGW"
-									+ "LwLuJMOgTQ3jHoqkt022MLImsgQlNUthStt0YEQsS7JFPmkIPaCjyLBE2gupnWEZxCG5BMyDdFtIzLYI/Wu2S"
-									+ "VDUk+JAdb4lW+gU/jTSq1+emoxpevjgk/HNqYnfd3C+nwEBP+O2m5b9k8ten7J1VT1ieSAQAA")));
+			loader.registerResponse(tempRequestBeanName,
+					"H4sIAAAAAAAAAHWMMQ7CQAwEv3Iv8AdS0oBElRTUdycjDJfYsp2E58f"
+							+ "SCSpoVtrZ0dIsrJ6eectvMNStocPDXeDE/CIc6K9wjpg6GNGEF/valWdQXou"
+							+ "RIzSqGBuMAaYA195/ujsW2DWLoMLn9Nb7ZXHUe644yFriM9WWzdIBt6zBmcEAAAA=",
+					"H4sIAAAAAAAAAKWOQQrCMBRErxKySrDqAboR3FQQhBZ0nTajBGsSftK6KL27CGlBECm4ewwzj2Hm"
+							+ "4Vs8YGNgJYJ3NuBCynvQwUbQVTUYdqceREaD+a5uTcN6ZzTzhIC5JIoYfQXqW8RJxCiBHCbaBM"
+							+ "QCSoMEL11XVyZifQYF4yzP5mjLVxMeTYP38IaYekLK/KcvTXj2xZHww6G03jt3NxAWT5bwn3vL"
+							+ "3cuuynwcXwUuTYuqAQAA");
 			Class<?> requestClass = loader.findClass(tempRequestBeanName);
 			Object obj = requestClass.getDeclaredConstructor().newInstance();
 			superb = (ResponseWrapperInterface) obj;
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
 	}
