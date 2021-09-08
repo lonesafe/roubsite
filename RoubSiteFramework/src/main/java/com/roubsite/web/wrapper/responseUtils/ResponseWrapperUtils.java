@@ -1,4 +1,4 @@
-package com.roubsite.web.wrapper.memoryLoader;
+package com.roubsite.web.wrapper.responseUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -7,9 +7,11 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLDecoder;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,74 +27,89 @@ import javax.tools.JavaCompiler;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
-
-import com.roubsite.web.wrapper.ResponseWrapperInterface;
-
 import javax.tools.SimpleJavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
-public class MemoryClassLoader extends URLClassLoader {
+import com.roubsite.utils.GZipUtils;
+import com.roubsite.utils.StringUtils;
 
-	private Map<String, byte[]> classBytes = new HashMap<String, byte[]>();
+public class ResponseWrapperUtils extends URLClassLoader {
 
-	/**
-	 * 单利默认的
-	 */
-	private static final MemoryClassLoader defaultLoader = new MemoryClassLoader();
+	private Map<String, byte[]> respMap = new HashMap<String, byte[]>();
 
-	private MemoryClassLoader() {
-		super( ((URLClassLoader) MemoryClassLoader.class.getClassLoader()).getURLs(), Thread.currentThread().getContextClassLoader());
+	private static final ResponseWrapperUtils response = new ResponseWrapperUtils();
+
+	private ResponseWrapperUtils() {
+		super(((URLClassLoader) ResponseWrapperUtils.class.getClassLoader()).getURLs(),
+				Thread.currentThread().getContextClassLoader());
 	}
 
-	public static MemoryClassLoader getInstrance() {
-		return defaultLoader;
+	public static ResponseWrapperUtils getInstrance() {
+		return response;
 	}
 
-	public void registerJava(String className, String code) {
-		this.classBytes.putAll(compile(className, code));
+	public void registerResponse(String className, String code1, String code2, String code3) throws Exception {
+		String code = GZipUtils.unGZip(GZipUtils.base64Decoder(code1)) + " " + className + " "
+				+ GZipUtils.unGZip(GZipUtils.base64Decoder(code2)) + " " + className + " "
+				+ GZipUtils.unGZip(GZipUtils.base64Decoder(code3));
+		this.respMap.putAll(compile(className, code));
+	}
+	public void registerResponse(String className,String code) throws Exception {
+		this.respMap.putAll(compile(className, code));
 	}
 
-	private static Map<String, byte[]> compile(String className, String code) {
+	private static Map<String, byte[]> compile(String className, String code) throws UnsupportedEncodingException {
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		StandardJavaFileManager stdManager = compiler.getStandardFileManager(null, null, null);
-		try (MemoryJavaFileManager manager = new MemoryJavaFileManager(stdManager)) {
-			JavaFileObject javaFileObject = manager.makeStringSource(className, code);
-			
-			// set the classpath
-            List<String> options = new ArrayList<String>();
-
-            options.add("-classpath");
-            StringBuilder sb = new StringBuilder();
-            URLClassLoader urlClassLoader = (URLClassLoader) MemoryClassLoader.class.getClassLoader();
-            for (URL url : urlClassLoader.getURLs()) {
-                sb.append(url.getFile()).append(File.pathSeparator);
-            }
-            options.add(sb.toString());
-            System.out.println(sb.toString());
-            List<String> classes = new ArrayList<>();
-            classes.add("javax.servlet.http.Cookie");
-            classes.add("javax.servlet.http.HttpServletResponse");
-            classes.add("com.roubsite.license.RoubSiteLicense");
-            classes.add("com.roubsite.web.wrapper.ResponseWrapperInterface");
-            
-			JavaCompiler.CompilationTask task = compiler.getTask(null, manager, null, options, classes,
-					Arrays.asList(javaFileObject));
-			if (task.call())
-				return manager.getClassBytes();
-		} catch (IOException e) {
-			e.printStackTrace();
+		MemoryJavaFileManager manager = new MemoryJavaFileManager(stdManager);
+		JavaFileObject javaFileObject = manager.makeStringSource(className, code);
+		List<String> options = new ArrayList<String>();
+		boolean foundClassDir = false;
+		options.add("-classpath");
+		StringBuilder sb = new StringBuilder();
+		String classRootDir = "";
+		URLClassLoader urlClassLoader = (URLClassLoader) Thread.currentThread().getClass().getClassLoader();
+		if (StringUtils.isNotEmptyObject(urlClassLoader)) {
+			for (URL url : urlClassLoader.getURLs()) {
+				String file = url.getFile();
+				sb.append(file).append(File.pathSeparator);
+			}
 		}
+		URLClassLoader urlClassLoader2 = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+		if (StringUtils.isNotEmptyObject(urlClassLoader2)) {
+			for (URL url : urlClassLoader2.getURLs()) {
+				String file = url.getFile();
+				File curClassRoot = new File(file);
+				if (!foundClassDir) {
+					if (curClassRoot.isDirectory()) {
+						classRootDir = curClassRoot.getAbsolutePath();
+						foundClassDir = true;
+					}
+				}
+				sb.append(file).append(File.pathSeparator);
+			}
+		}
+		if(StringUtils.isEmpty(classRootDir)) {
+			File f = new File(ResponseWrapperUtils.class.getResource("/").getPath());
+			classRootDir = f.getAbsolutePath();
+		}
+		classRootDir = URLDecoder.decode(classRootDir,"utf-8");
+		options.add(sb.toString());
+		JavaCompiler.CompilationTask task = compiler.getTask(null, manager, null, options, null,
+				Arrays.asList(javaFileObject));
+		if (task.call())
+			return manager.getClassBytes();
 		return null;
 	}
 
 	@Override
 	public Class<?> findClass(String name) throws ClassNotFoundException {
-		byte[] buf = classBytes.get(name);
+		byte[] buf = respMap.get(name);
 		if (buf == null) {
 			return super.findClass(name);
 		}
-		classBytes.remove(name);
+		respMap.remove(name);
 		return defineClass(name, buf, 0, buf.length);
 	}
 }
@@ -100,6 +117,7 @@ public class MemoryClassLoader extends URLClassLoader {
 class MemoryJavaFileManager extends ForwardingJavaFileManager<JavaFileManager> {
 	final Map<String, byte[]> classBytes = new HashMap<String, byte[]>();
 	final Map<String, List<JavaFileObject>> classObjectPackageMap = new HashMap<>();
+
 	MemoryJavaFileManager(JavaFileManager fileManager) {
 		super(fileManager);
 	}
