@@ -133,10 +133,10 @@ public class Record {
 		}
 	}
 
-	public Object toBean(Class<?> clazz) {
+	public <T> T toBean(Class<T> clazz) {
 		try {
 			BeanInfo beanInfo = Introspector.getBeanInfo(clazz); // 获取类属性
-			Object obj = clazz.getDeclaredConstructor().newInstance(); // 创建 JavaBean 对象
+			T obj = clazz.getDeclaredConstructor().newInstance(); // 创建 JavaBean 对象
 			if (null == this.data) {
 				return obj;
 			}
