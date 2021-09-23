@@ -1,114 +1,186 @@
 package com.roubsite.utils;
 
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class HttpUtil {
-    private static Logger log = LoggerFactory.getLogger(HttpUtil.class);
+	private static Logger log = LoggerFactory.getLogger(HttpUtil.class);
 
-    /**
-     * 使用Get方式获取数据
-     *
-     * @param url     URL包括参数，http://HOST/XX?XX=XX&XXXX=XXXX
-     * @param charset
-     * @return
-     */
-    public static String sendGet(String url, String charset) {
-        String result = "";
-        try {
-            URL realUrl = new URL(url);
-            // 打开和URL之间的连接
-            URLConnection connection = realUrl.openConnection();
-            connection.setConnectTimeout(30000);
-            connection.setReadTimeout(30000);
-            // 设置通用的请求属性
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
-            // 建立实际的连接
-            connection.connect();
-            // 定义 BufferedReader输入流来读取URL的响应
-            result = IOUtils.toString(connection.getInputStream(), charset);
-        } catch (Exception e) {
-            log.error("发送GET请求出现异常:", e);
-        }
-        return result;
-    }
+	/**
+	 * 使用Get方式获取数据
+	 *
+	 * @param url URL包括参数，http://HOST/XX?XX=XX&XXXX=XXXX
+	 * @return
+	 * @throws IOException
+	 */
+	public static String sendGet(String url) throws IOException {
+		return sendGet(url, null, "utf-8");
+	}
 
-    /**
-     * POST请求，字符串形式数据
-     *
-     * @param url     请求地址
-     * @param param   请求数据
-     * @param charset 编码方式
-     */
-    public static String sendPostUrl(String url, String param, String charset) {
-        try {
-            return IOUtils.toString(sendPostUrl_I(url, param, charset), charset);
-        } catch (IOException e) {
-            log.error("转码失败:", e);
-            return "";
-        }
-    }
+	/**
+	 * 使用Get方式获取数据
+	 *
+	 * @param url    URL包括参数，http://HOST/XX?XX=XX&XXXX=XXXX
+	 * @param header 头部信息
+	 * @return
+	 * @throws IOException
+	 */
+	public static String sendGet(String url, Map<String, String> header) throws IOException {
+		return sendGet(url, header, "utf-8");
+	}
 
-    /**
-     * POST请求，Map形式数据
-     *
-     * @param url     请求地址
-     * @param param   请求数据
-     * @param charset 编码方式
-     */
-    @SuppressWarnings("deprecation")
-    public static String sendPost(String url, Map<String, String> param, String charset) {
+	/**
+	 * 使用Get方式获取数据
+	 *
+	 * @param url     URL包括参数，http://HOST/XX?XX=XX&XXXX=XXXX
+	 * @param header  头部信息
+	 * @param charset 编码
+	 * @return
+	 * @throws IOException
+	 */
+	public static String sendGet(String url, Map<String, String> header, String charset) throws IOException {
+		return IOUtils.toString(sendGet_I(url, header), charset);
+	}
 
-        StringBuffer buffer = new StringBuffer();
-        if (param != null && !param.isEmpty()) {
-            for (Map.Entry<String, String> entry : param.entrySet()) {
-                buffer.append(entry.getKey()).append("=").append(URLEncoder.encode(entry.getValue())).append("&");
+	/**
+	 * 使用Get方式获取数据
+	 *
+	 * @param url     URL包括参数，http://HOST/XX?XX=XX&XXXX=XXXX
+	 * @param header  头部信息
+	 * @param charset 编码
+	 * @return
+	 * @throws IOException
+	 */
+	public static InputStream sendGet_I(String url) throws IOException {
+		return sendGet_I(url, null);
+	}
 
-            }
-        }
-        if (buffer.length() > 2) {
-            buffer.deleteCharAt(buffer.length() - 1);
-        }
-        String result = "";
-        try {
-            return sendPostUrl(url, buffer.toString(), charset);
-        } catch (Exception e) {
-            log.error("发送 POST 请求出现异常！", e);
-        }
-        return result;
-    }
+	/**
+	 * 使用Get方式获取数据
+	 *
+	 * @param url     URL包括参数，http://HOST/XX?XX=XX&XXXX=XXXX
+	 * @param header  头部信息
+	 * @param charset 编码
+	 * @return
+	 */
+	public static InputStream sendGet_I(String url, Map<String, String> header) {
+		try {
+			URL realUrl = new URL(url);
+			// 打开和URL之间的连接
+			URLConnection connection = realUrl.openConnection();
+			if (StringUtils.isNotEmptyObject(header)) {
+				for (String key : header.keySet()) {
+					String value = header.get(key);
+					connection.setRequestProperty(key, value);
+				}
+			}
+			connection.setConnectTimeout(30000);
+			connection.setReadTimeout(30000);
+			// 设置通用的请求属性
+			connection.setRequestProperty("User-Agent",
+					"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
+			// 建立实际的连接
+			connection.connect();
+			// 定义 BufferedReader输入流来读取URL的响应
+			return connection.getInputStream();
+		} catch (Exception e) {
+			log.error("发送GET请求出现异常:", e);
+		}
+		return null;
+	}
 
-    public static InputStream sendPostUrl_I(String url, String param, String charset) {
-        PrintWriter out = null;
-        try {
-            URL realUrl = new URL(url);
-            // 打开和URL之间的连接
-            URLConnection conn = realUrl.openConnection();
-            // 设置通用的请求属性
-            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
-            // 发送POST请求必须设置如下两行
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            // 获取URLConnection对象对应的输出流
-            out = new PrintWriter(conn.getOutputStream());
-            // 发送请求参数
-            out.print(param);
-            // flush输出流的缓冲
-            out.flush();
-            // 定义BufferedReader输入流来读取URL的响应
-            return conn.getInputStream();
-        } catch (Exception e) {
-            log.error("发送 POST 请求出现异常:", e);
-        }
-        return null;
-    }
+	/**
+	 * POST请求，字符串形式数据
+	 *
+	 * @param url   请求地址
+	 * @param param 请求数据
+	 */
+	public static String sendPostUrl(String url, String param) {
+		return sendPostUrl(url, param, null, "utf-8");
+	}
+
+	/**
+	 * POST请求，字符串形式数据
+	 *
+	 * @param url    请求地址
+	 * @param param  请求数据
+	 * @param header 头部信息
+	 */
+	public static String sendPostUrl(String url, String param, Map<String, String> header) {
+		return sendPostUrl(url, param, header, "utf-8");
+	}
+
+	/**
+	 * POST请求，字符串形式数据
+	 *
+	 * @param url     请求地址
+	 * @param param   请求数据
+	 * @param header  头部信息
+	 * @param charset 编码方式
+	 */
+	public static String sendPostUrl(String url, String param, Map<String, String> header, String charset) {
+		try {
+			return IOUtils.toString(sendPostUrl_I(url, param, header), charset);
+		} catch (IOException e) {
+			log.error("转码失败:", e);
+			return "";
+		}
+	}
+
+	/**
+	 * POST请求，字符串形式数据
+	 *
+	 * @param url   请求地址
+	 * @param param 请求数据
+	 */
+	public static InputStream sendPostUrl_I(String url, String param) {
+		return sendPostUrl_I(url, param, null);
+	}
+
+	/**
+	 * POST请求，字符串形式数据
+	 *
+	 * @param url     请求地址
+	 * @param param   请求数据
+	 * @param header  头部信息
+	 */
+	public static InputStream sendPostUrl_I(String url, String param, Map<String, String> header) {
+		PrintWriter out = null;
+		try {
+			URL realUrl = new URL(url);
+			// 打开和URL之间的连接
+			URLConnection conn = realUrl.openConnection();
+			conn.setRequestProperty("User-Agent",
+					"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
+			if (StringUtils.isNotEmptyObject(header)) {
+				for (String key : header.keySet()) {
+					String value = header.get(key);
+					conn.setRequestProperty(key, value);
+				}
+			}
+
+			// 发送POST请求必须设置如下两行
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
+			// 获取URLConnection对象对应的输出流
+			out = new PrintWriter(conn.getOutputStream());
+			// 发送请求参数
+			out.print(param);
+			// flush输出流的缓冲
+			out.flush();
+			// 定义BufferedReader输入流来读取URL的响应
+			return conn.getInputStream();
+		} catch (Exception e) {
+			log.error("发送 POST 请求出现异常:", e);
+		}
+		return null;
+	}
 }
