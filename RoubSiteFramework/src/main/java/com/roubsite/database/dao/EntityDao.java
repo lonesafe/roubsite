@@ -12,6 +12,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.sql.Types;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -159,7 +160,20 @@ public class EntityDao extends BaseCURD {
 					fields.append(beanName + ",");
 					valueList.add(o);
 					values.append("?,");
-					types.add(Types.VARCHAR);
+					if (o instanceof Date) {
+						types.add(DATE);
+					} else if (o instanceof BigInteger) {
+						types.add(BIGINT);
+					} else if (o instanceof Integer) {
+						types.add(INTEGER);
+					} else if (o instanceof Float) {
+						types.add(FLOAT);
+					} else if (o instanceof Double) {
+						types.add(DOUBLE);
+					} else {
+						types.add(VARCHAR);
+					}
+
 				}
 				if (fields.toString().length() > 1) {
 					String sql = "INSERT INTO " + dbName + " ("
@@ -202,7 +216,7 @@ public class EntityDao extends BaseCURD {
 			sql.append(" AND ");
 			sql.append(key + " = ?");
 			args.add(where.get(key));
-			types.add(Types.VARCHAR);
+			types.add(VARCHAR);
 		}
 		int[] _types = new int[types.size()];
 		for (int i = 0; i < types.size(); i++) {
@@ -248,7 +262,7 @@ public class EntityDao extends BaseCURD {
 				dbName = dbName.substring(1, dbName.length());
 				// 给 JavaBean 对象的属性赋值
 				PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-				LinkedHashMap<String,Object> where = new LinkedHashMap<>();
+				LinkedHashMap<String, Object> where = new LinkedHashMap<>();
 				for (int i = 0; i < propertyDescriptors.length; i++) {
 					PropertyDescriptor descriptor = propertyDescriptors[i];
 					String fieldName = descriptor.getName();
@@ -307,7 +321,7 @@ public class EntityDao extends BaseCURD {
 			}
 			sql.append(key + " " + _operator + " ?");
 			args.add(where.get(key));
-			types.add(Types.VARCHAR);
+			types.add(VARCHAR);
 		}
 		int[] _types = new int[types.size()];
 		for (int i = 0; i < types.size(); i++) {
