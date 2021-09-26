@@ -11,6 +11,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import org.apache.commons.io.IOUtils;
+
 import com.roubsite.utils.StringUtils;
 
 public class RoubSiteRequestWrapper extends HttpServletRequestWrapper {
@@ -88,22 +90,19 @@ public class RoubSiteRequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	public String getPostJsonString() {
+		return new String(getPostData());
+	}
+
+	public byte[] getPostData() {
 		String contentType = request.getContentType();
 		if (null != contentType && contentType.toUpperCase().contains("APPLICATION/JSON")) {
 			try {
-				BufferedReader streamReader = new BufferedReader(
-						new InputStreamReader(request.getInputStream(), request.getCharacterEncoding()));
-				StringBuilder responseStrBuilder = new StringBuilder();
-				String inputStr;
-				while ((inputStr = streamReader.readLine()) != null) {
-					responseStrBuilder.append(inputStr);
-				}
-				return responseStrBuilder.toString();
+				return IOUtils.toByteArray(request.getInputStream());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return "";
+		return new byte[] {};
 	}
 
 }
