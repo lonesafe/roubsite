@@ -6,6 +6,7 @@ import com.roubsite.database.pool.DataSourcePool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -116,6 +117,7 @@ public class RSDataSource {
             log.info("正在关闭数据源：[" + key + "]");
             try {
                 value.getDataSource().close();
+                DriverManager.deregisterDriver(value.getDataSource().getDriver());
             } catch (SQLException e) {
                 log.error("数据源:[" + key + "]关闭失败", e);
             }
