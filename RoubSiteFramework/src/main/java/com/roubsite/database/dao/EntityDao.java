@@ -352,7 +352,8 @@ public class EntityDao extends BaseCURD {
 		try {
 			List<Map<String, Object>> retCount = super.query(
 					new PageHelper().getCountSql(sql), args, types);
-			int total = Integer.parseInt(retCount.get(0).get("COUNT").toString());
+			Object[] countVal = retCount.get(0).values().toArray();
+			int total = Integer.parseInt(countVal[0].toString());
 			if (total > 0) {
 				// 如果有数据则执行查询方法
 				if (isByPage) {
