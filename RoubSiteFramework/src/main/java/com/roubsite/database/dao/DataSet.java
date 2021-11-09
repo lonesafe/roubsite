@@ -2,12 +2,12 @@ package com.roubsite.database.dao;
 
 import java.util.List;
 
-public class DataSet {
+public class DataSet<T> {
 	private String code = "0";
 	private String message;
 	private int total;
 	private int count;
-	private List<?> rows;
+	private List<T> rows;
 
 	public int getTotal() {
 		return total;
@@ -25,11 +25,11 @@ public class DataSet {
 		this.count = count;
 	}
 
-	public List<?> getRows() {
+	public List<T> getRows() {
 		return rows;
 	}
 
-	public void setRows(List<?> rows) {
+	public void setRows(List<T> rows) {
 		this.rows = rows;
 	}
 
