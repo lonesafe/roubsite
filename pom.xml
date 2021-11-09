@@ -118,6 +118,11 @@
 			<artifactId>batik-transcoder</artifactId>
 			<version>1.11</version>
 		</dependency>
+		<dependency>
+		    <groupId>com.github.jsqlparser</groupId>
+		    <artifactId>jsqlparser</artifactId>
+		    <version>4.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -134,7 +139,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.7</version>
@@ -163,7 +168,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
@@ -182,6 +187,7 @@
 			</plugin>
 		</plugins>
 	</build>
+	<!-- 
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -192,4 +198,5 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
+	 -->
 </project>

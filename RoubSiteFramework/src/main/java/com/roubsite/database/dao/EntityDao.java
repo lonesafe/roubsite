@@ -3,6 +3,8 @@ package com.roubsite.database.dao;
 import com.roubsite.database.RSConnection;
 import com.roubsite.database.annotation.bean.KeyFields;
 import com.roubsite.database.bean.Record;
+import com.roubsite.database.page.PageHelper;
+import com.roubsite.database.page.parser.SqlServerParser;
 import com.roubsite.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -201,11 +203,11 @@ public class EntityDao extends BaseCURD {
 	 * @param tableName 表名
 	 * @param where     where的Map集合
 	 * @param isByPage  是否开启分页
-	 * @param start     开始的记录行
+	 * @param offset     开始的记录行
 	 * @param rows      取出的数据条数
 	 * @return 查询结果
 	 */
-	public List<Map<String, Object>> query(String tableName, Map<String, Object> where, boolean isByPage, int start,
+	public List<Map<String, Object>> query(String tableName, Map<String, Object> where, boolean isByPage, int offset,
 			int rows) {
 		StringBuffer sql = new StringBuffer("SELECT * FROM " + tableName + " WHERE 1=1");
 		List<Object> args = new ArrayList<>();
@@ -223,7 +225,7 @@ public class EntityDao extends BaseCURD {
 			_types[i] = (int) types.get(i);
 		}
 		try {
-			return this.queryByPage(sql.toString(), args.toArray(), _types, rows, rows);
+			return this.queryByPage(sql.toString(), args.toArray(), _types, offset, rows);
 		} catch (Exception e) {
 			this.getConn().setError(true);
 			log.error("query方法执行失败", e);
@@ -237,12 +239,12 @@ public class EntityDao extends BaseCURD {
 	 * @param bean     数据表实体类
 	 * @param operator where的运算符集合(key为字段名的大写，value为运算符："=","like")(尽量使用LinkedHashMap)
 	 * @param isByPage 是否开启分页
-	 * @param start    开始的记录行
+	 * @param offset    开始的记录行
 	 * @param rows     取出的数据条数
 	 * @param bean     bean名称
 	 * @return 查询结果DataSet类型
 	 */
-	public DataSet queryBean(Object bean, Map<String, String> operator, boolean isByPage, int start, int rows) {
+	public DataSet queryBean(Object bean, Map<String, String> operator, boolean isByPage, int offset, int rows) {
 		BeanInfo beanInfo;
 		boolean opIsNotDef = true;
 		if (null == operator || operator.size() <= 0) {
@@ -281,7 +283,7 @@ public class EntityDao extends BaseCURD {
 					}
 
 				}
-				return queryBean(dbName, where, operator, isByPage, start, rows, clazz);
+				return queryBean(dbName, where, operator, isByPage, offset, rows, clazz);
 			}
 		} catch (Exception e) {
 			this.getConn().setError(true);
@@ -337,24 +339,24 @@ public class EntityDao extends BaseCURD {
 	 * @param args     占位符所对应数据
 	 * @param types    占位符对应的数据类型
 	 * @param isByPage 是否分页
-	 * @param start    开始行数
+	 * @param offset    开始行数
 	 * @param rows     数量
 	 * @param bean     bean名称
 	 * @return 查询结果DataSet类型
 	 */
-	public DataSet queryBean(String sql, Object[] args, int[] types, boolean isByPage, int start, int rows,
+	public DataSet queryBean(String sql, Object[] args, int[] types, boolean isByPage, int offset, int rows,
 			Class<?> bean) {
 		DataSet ds = new DataSet();
 		List<Object> recordList = new ArrayList<>();
 		List<Map<String, Object>> ret = new ArrayList<>();
 		try {
 			List<Map<String, Object>> retCount = super.query(
-					sql.replaceFirst("(?i)SELECT (.+?) FROM", "SELECT COUNT(1) AS COUNT FROM "), args, types);
+					new PageHelper().getCountSql(sql), args, types);
 			int total = Integer.parseInt(retCount.get(0).get("COUNT").toString());
 			if (total > 0) {
 				// 如果有数据则执行查询方法
 				if (isByPage) {
-					ret = (List<Map<String, Object>>) this.queryByPage(sql, args, types, start, rows);
+					ret = (List<Map<String, Object>>) this.queryByPage(sql, args, types, offset, rows);
 				} else {
 					ret = (List<Map<String, Object>>) super.query(sql, args, types);
 				}
@@ -382,18 +384,21 @@ public class EntityDao extends BaseCURD {
 	 * @param sql   sql语句
 	 * @param args  占位符所对应数据
 	 * @param types 占位符对应的数据类型
-	 * @param start 开始行数
+	 * @param offset 开始行数
 	 * @param rows  取出数量
 	 * @return 查询结果DataSet类型
 	 */
-	public List<Map<String, Object>> queryByPage(String sql, Object[] args, int[] types, int start, int rows) {
+	public List<Map<String, Object>> queryByPage(String sql, Object[] args, int[] types, int offset, int rows) {
 		switch (super.getDataSourceType()) {
 		case "1":// mysql
-			sql += " limit " + start + "," + rows;
+			sql += " limit " + offset + "," + rows;
 			break;
 		case "2":// oracle
-			sql = "SELECT * FROM ( SELECT A.*, ROWNUM RN FROM (" + sql + ") A WHERE ROWNUM <= " + (start + rows)
-					+ ")WHERE RN > " + start;
+			sql = "SELECT * FROM ( SELECT A.*, ROWNUM RN FROM (" + sql + ") A WHERE ROWNUM <= " + (offset + rows)
+					+ ")WHERE RN > " + offset;
+			break;
+		case "3": //sqlserver
+			sql = new SqlServerParser().convertToPageSql(sql, offset, rows);
 			break;
 
 		default:
