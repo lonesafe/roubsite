@@ -22,22 +22,29 @@ public abstract class AbstractDialect implements Dialect {
 	}
 
 	protected Object[] rebuildParams(Object[] params, Object... objs) {
-		List<Object> list1 = new LinkedList<>(Arrays.asList(params));
-		List<Object> list2 = new LinkedList<>(Arrays.asList(objs));
-		list1.addAll(list2);
-		return list1.toArray();
+		if (StringUtils.isNotEmptyObject(params)) {
+			List<Object> list1 = new LinkedList<>(Arrays.asList(params));
+			List<Object> list2 = new LinkedList<>(Arrays.asList(objs));
+			list1.addAll(list2);
+			return list1.toArray();
+		} else {
+			return new Object[] {};
+		}
+
 	}
 
 	protected int[] rebuildTypes(int[] params, int... objs) {
 		LinkedList<Integer> alist = new LinkedList<Integer>();
-
-        for (int j = 0; j < params.length; j++) {
-            alist.add(params[j]);
-        }
-
-        for (int k = 0; k < objs.length; k++) {
-            alist.add(objs[k]);
-        }
+		if (StringUtils.isNotEmptyObject(params)) {
+			for (int j = 0; j < params.length; j++) {
+				alist.add(params[j]);
+			}
+		}
+		if (StringUtils.isNotEmptyObject(objs)) {
+			for (int k = 0; k < objs.length; k++) {
+				alist.add(objs[k]);
+			}
+		}
 		int c[] = new int[alist.size()];
 		for (int i = 0; i < alist.size(); i++) {
 			c[i] = alist.get(i);
