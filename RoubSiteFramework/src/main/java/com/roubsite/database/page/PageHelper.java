@@ -6,7 +6,7 @@ import com.roubsite.database.page.parser.CountSqlParser;
 import com.roubsite.utils.StringUtils;
 
 public class PageHelper {
-	Cache<String, String> cache_count_sql = CacheFactory.createCache("count");
+	private static Cache<String, String> cache_count_sql = CacheFactory.createCache("count");
 	public String getCountSql(String sourceSql) {
 		String cacheSql = cache_count_sql.get(sourceSql);
 		if(StringUtils.isNotEmpty(cacheSql)) {
