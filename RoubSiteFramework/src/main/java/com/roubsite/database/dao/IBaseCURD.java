@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.roubsite.database.RSConnection;
+import com.roubsite.database.page.PageHelper;
 
 public interface IBaseCURD {
-	public void init(RSConnection conn, String ds) throws Exception;
+	public void init(RSConnection conn, PageHelper pageHelper, String ds) throws Exception;
 
 	/**
 	 * 执行查询语句，返回查询结果
@@ -17,7 +18,7 @@ public interface IBaseCURD {
 	 * @return 查询结果列表
 	 * @throws Exception
 	 */
-	public List<Map<String,Object>> query(String sql, Object[] args, int[] types) throws Exception;
+	public List<Map<String, Object>> query(String sql, Object[] args, int[] types) throws Exception;
 
 	/**
 	 * 执行某个sql语句,并返回影响行数

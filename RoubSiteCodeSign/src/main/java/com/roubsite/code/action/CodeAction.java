@@ -33,7 +33,8 @@ public class CodeAction extends RSAction {
 	public void doCodeSubmitForm() throws SQLException, Exception {
 		String dataSource = getString(this.$_P("dataSource"));
 		ICodeDao codeDao = (ICodeDao) new RSDaoFactory().getDao(CodeDao.class, dataSource,
-				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection()));
+				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection(),
+						RSDataSourceHolder.getInstance().get().getPageHelperMap(dataSource)));
 		try {
 			// 通过配置文件获取数据库类型
 			String type = ConfUtils.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSource + ".type", "");
@@ -90,7 +91,8 @@ public class CodeAction extends RSAction {
 	public void doGetTables() throws Exception {
 		String dataSource = this.$_G("dataSource");
 		ICodeDao codeDao = (ICodeDao) new RSDaoFactory().getDao(CodeDao.class, dataSource,
-				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection()));
+				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection(),
+						RSDataSourceHolder.getInstance().get().getPageHelperMap(dataSource)));
 		try {
 			String type = ConfUtils.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSource + ".type", "");
 			String sql = "select   *   from   user_tables";
@@ -117,7 +119,8 @@ public class CodeAction extends RSAction {
 		String dataSource = this.$_G("dataSource");
 		String tableName = this.$_G("tableName");
 		ICodeDao codeDao = (ICodeDao) new RSDaoFactory().getDao(CodeDao.class, dataSource,
-				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection()));
+				new RSConnection(RSDataSourceHolder.getInstance().get().getDataSource(dataSource).getConnection(),
+						RSDataSourceHolder.getInstance().get().getPageHelperMap(dataSource)));
 		try {
 			String type = ConfUtils.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSource + ".type", "");
 			String sql = "";

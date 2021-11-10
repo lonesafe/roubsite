@@ -1,6 +1,8 @@
 package com.roubsite.database.dao;
 
 import com.roubsite.database.RSConnection;
+import com.roubsite.database.page.PageHelper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,10 +14,11 @@ import java.lang.reflect.Proxy;
 public class RSDaoFactory implements InvocationHandler {
 	static Logger log = LoggerFactory.getLogger(RSDaoFactory.class);
 	Object obj;
+
 	/**
 	 * 获取dao（自定义数据源）
 	 * 
-	 * @param clazz      类的全路径
+	 * @param clazz          类的全路径
 	 * @param dataSourceName 数据源名称
 	 * @return Dao接口
 	 */
@@ -23,8 +26,8 @@ public class RSDaoFactory implements InvocationHandler {
 		try {
 			Constructor<?> cons = clazz.getDeclaredConstructor((Class[]) null);
 			obj = cons.newInstance();
-			Method init = clazz.getMethod("init", new Class[] { RSConnection.class, String.class });
-			init.invoke(obj, new Object[] { conn, dataSourceName });
+			Method init = clazz.getMethod("init", new Class[] { RSConnection.class, PageHelper.class, String.class });
+			init.invoke(obj, new Object[] { conn, conn.getPageHelper(), dataSourceName });
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

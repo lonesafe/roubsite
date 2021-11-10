@@ -1,6 +1,7 @@
 package com.roubsite.database.dao;
 
 import com.roubsite.database.RSConnection;
+import com.roubsite.database.page.PageHelper;
 import com.roubsite.utils.ConfUtils;
 import com.roubsite.utils.JsonUtils;
 import org.slf4j.Logger;
@@ -19,13 +20,15 @@ import java.util.Map;
 
 public class BaseCURD {
 	private RSConnection conn = null;
+	private PageHelper pageHelper;
 	private String dataSource;
 	private PreparedStatement pStatement = null;
 	static Logger log = LoggerFactory.getLogger(BaseCURD.class);
 
-	public void init(RSConnection conn, String ds) throws Exception {
+	public void init(RSConnection conn, PageHelper pageHelper, String ds) throws Exception {
 		this.dataSource = ds;
-		this.conn = (conn);
+		this.conn = conn;
+		this.setPageHelper(pageHelper);
 	}
 
 	public String getDataSourceType() {
@@ -40,14 +43,14 @@ public class BaseCURD {
 	 * @param types 参数类型数组 java.sql.Types中的常量
 	 * @return 查询结果列表
 	 */
-	public List<Map<String,Object>> query(String sql, Object[] args, int[] types) {
+	public List<Map<String, Object>> query(String sql, Object[] args, int[] types) {
 		log.info("执行的sql:" + sql);
 		try {
 			log.info("传入的参数:" + JsonUtils.convertToString(args));
 		} catch (IOException e1) {
 		}
 		ResultSet resultset = null;
-		LinkedList<Map<String,Object>> list = new LinkedList<>();
+		LinkedList<Map<String, Object>> list = new LinkedList<>();
 
 		if (null == args) {
 			args = new Object[] {};
@@ -288,5 +291,13 @@ public class BaseCURD {
 
 	public RSConnection getConn() {
 		return conn;
+	}
+
+	public PageHelper getPageHelper() {
+		return pageHelper;
+	}
+
+	public void setPageHelper(PageHelper pageHelper) {
+		this.pageHelper = pageHelper;
 	}
 }

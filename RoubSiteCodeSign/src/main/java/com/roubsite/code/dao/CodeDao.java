@@ -149,9 +149,6 @@ public class CodeDao extends EntityDao implements ICodeDao {
 	}
 
 	public String getTplString(String tplPath) throws IOException {
-//		InputStream is = this.getClass().getResourceAsStream(tplPath);
-//		return IOUtils.toString(is, "utf-8");
 		return tplPath;
 	}
-
 }

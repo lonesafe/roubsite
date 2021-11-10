@@ -1,19 +1,22 @@
 package com.roubsite.database.page;
 
-import com.roubsite.database.page.cache.Cache;
-import com.roubsite.database.page.cache.CacheFactory;
-import com.roubsite.database.page.parser.CountSqlParser;
-import com.roubsite.utils.StringUtils;
+import com.roubsite.database.page.dialect.AbstractDialect;
 
-public class PageHelper {
-	private static Cache<String, String> cache_count_sql = CacheFactory.createCache("count");
+public class PageHelper extends AbstractDialect {
+	private Dialect dialect;
+
+	public PageHelper(String url) {
+		String dialect = PageAutoDialect.fromJdbcUrl(url);
+		this.dialect = PageAutoDialect.instanceDialect(dialect);
+	}
+
+	@Override
 	public String getCountSql(String sourceSql) {
-		String cacheSql = cache_count_sql.get(sourceSql);
-		if(StringUtils.isNotEmpty(cacheSql)) {
-			return cacheSql;
-		}
-		cacheSql = new CountSqlParser().getSmartCountSql(sourceSql);
-		cache_count_sql.put(sourceSql, cacheSql);
-		return cacheSql;
+		return dialect.getCountSql(sourceSql);
+	}
+
+	@Override
+	public Page getPageSql(String sourceSql, Object[] params, int[] types, int offset, int rows) {
+		return dialect.getPageSql(sourceSql, params, types, offset, rows);
 	}
 }

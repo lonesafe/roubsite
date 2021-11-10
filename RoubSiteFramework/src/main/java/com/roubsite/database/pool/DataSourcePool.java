@@ -6,16 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.roubsite.database.page.PageHelper;
 import com.roubsite.utils.ConfUtils;
 
-public class DataSourcePool // implements DataSource
-{
+public class DataSourcePool {
 	private String url = null;
 	private String username = null;
 	private String password = null;
 	private int size = 10;
-	// private ConcurrentLinkedQueue<Connection> list = new
-	// ConcurrentLinkedQueue<Connection>();
 	DruidDataSource dataSource = new DruidDataSource();
 	private static Logger log = LoggerFactory.getLogger(DataSourcePool.class);
 	private boolean keepAlive = false;
@@ -42,7 +40,7 @@ public class DataSourcePool // implements DataSource
 				.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSourceName + ".driverClassName", ""));
 		dataSource.setUsername(username);// 用户名
 		dataSource.setPassword(password);// 密码
-		dataSource.setUrl(url);// 链接字符串
+		dataSource.setUrl(getUrl());// 链接字符串
 		dataSource.setInitialSize(size);// 初始化连接数
 		dataSource.setMinIdle(-1);
 		dataSource.setMaxActive(size);// 最大连接数
@@ -101,5 +99,9 @@ public class DataSourcePool // implements DataSource
 	 */
 	public DruidDataSource getDataSource() throws SQLException {
 		return dataSource;
+	}
+
+	public String getUrl() {
+		return url;
 	}
 }
