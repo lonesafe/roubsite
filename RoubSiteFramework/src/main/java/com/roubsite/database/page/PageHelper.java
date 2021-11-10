@@ -1,13 +1,19 @@
 package com.roubsite.database.page;
 
-import com.roubsite.database.page.dialect.AbstractDialect;
+import com.roubsite.database.page.cache.Cache;
+import com.roubsite.database.page.cache.CacheFactory;
+import com.roubsite.database.page.parser.CountSqlParser;
+import com.roubsite.utils.StringUtils;
 
-public class PageHelper extends AbstractDialect {
-
-	public static void main(String[] args) {
-		System.out.println(new PageHelper().getCountSql(
-				"SELECT WEBSITE_ID, DOMAIN, ORIGIN_TYPE, IS_GZIP, IS_STATIC_CACHE, CACHE_TIME, IS_SSL, IS_REWRITE_TO_SSL, CERT_PATH, KEY_PATH, USER_ID, STATUS, LAST_UPDATE_TIME, "
-						+ "( SELECT GROUP_CONCAT( CONCAT( IF ( ORIGIN_PORT = \"443\", \"https://\", \"http://\" ), ORIGIN_IP, \":\", ORIGIN_PORT ) ) FROM CDN_DOMAIN_ORIGIN "
-						+ "WHERE CDN_DOMAIN_ORIGIN.WEBSITE_ID = CDN_DOMAIN.WEBSITE_ID ) ORIGIN FROM CDN_DOMAIN WHERE USER_ID = ?"));
+public class PageHelper {
+	Cache<String, String> cache_count_sql = CacheFactory.createCache("count");
+	public String getCountSql(String sourceSql) {
+		String cacheSql = cache_count_sql.get(sourceSql);
+		if(StringUtils.isNotEmpty(cacheSql)) {
+			return cacheSql;
+		}
+		cacheSql = new CountSqlParser().getSmartCountSql(sourceSql);
+		cache_count_sql.put(sourceSql, cacheSql);
+		return cacheSql;
 	}
 }
