@@ -4,6 +4,9 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.roubsite.database.dao.EntityDao;
 import com.roubsite.database.page.PageHelper;
 import com.roubsite.database.pool.DataSourcePool;
+import com.roubsite.utils.ConfUtils;
+import com.roubsite.utils.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +33,6 @@ public class RSDataSource {
 		log.debug("初始化数据源" + dataSourceName);
 		DataSourcePool dsp = new DataSourcePool(dataSourceName);
 		dataSourcePoolMap.put(dataSourceName, dsp);
-		pageHelperMap.put(dataSourceName, new PageHelper(dsp.getUrl()));
 		return dsp;
 	}
 
@@ -130,6 +132,13 @@ public class RSDataSource {
 	}
 
 	public PageHelper getPageHelperMap(String dataSourceName) {
-		return pageHelperMap.get(dataSourceName);
+		PageHelper pageHelper = pageHelperMap.get(dataSourceName);
+		if (!StringUtils.isNotEmptyObject(pageHelperMap.get(dataSourceName))) {
+			log.info("获取数据源[" + dataSourceName + "]分页插件");
+			pageHelper = new PageHelper(
+					ConfUtils.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSourceName + ".url", ""));
+			pageHelperMap.put(dataSourceName, pageHelper);
+		}
+		return pageHelper;
 	}
 }
