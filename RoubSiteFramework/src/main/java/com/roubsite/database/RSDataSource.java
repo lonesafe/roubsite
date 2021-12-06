@@ -1,6 +1,7 @@
 package com.roubsite.database;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.proxy.DruidDriver;
 import com.roubsite.database.dao.EntityDao;
 import com.roubsite.database.page.PageHelper;
 import com.roubsite.database.pool.DataSourcePool;
@@ -10,8 +11,11 @@ import com.roubsite.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Method;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -129,6 +133,20 @@ public class RSDataSource {
 			}
 			log.info("数据源：[" + key + "]关闭成功");
 		});
+		Enumeration drivers = DriverManager.getDrivers();
+		while (drivers.hasMoreElements()) {
+			Driver driver = (Driver) drivers.nextElement();
+			try {
+				DriverManager.deregisterDriver(driver);
+			} catch (SQLException e) {
+			}
+		}
+		try {
+			Class clazz = Class.forName("com.mysql.jdbc.AbandonedConnectionCleanupThread");
+			Method method = clazz.getMethod("checkedShutdown");
+			method.invoke(null);
+		} catch (Exception e) {
+		}
 	}
 
 	public PageHelper getPageHelperMap(String dataSourceName) {
