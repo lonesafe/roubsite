@@ -7,7 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
+
+import java.lang.reflect.Method;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.EnumSet;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +24,20 @@ public class RSConfigListenerContext implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent arg0) {
 		// tomcat结束时执行
 		RSDataSourceHolder.getInstance().get().closeAll();
+		Enumeration drivers = DriverManager.getDrivers();
+		while (drivers.hasMoreElements()) {
+			Driver driver = (Driver) drivers.nextElement();
+			try {
+				DriverManager.deregisterDriver(driver);
+			} catch (SQLException e) {
+			}
+		}
+		try {
+			Class clazz = Class.forName("com.mysql.jdbc.AbandonedConnectionCleanupThread");
+			Method method = clazz.getMethod("checkedShutdown");
+			method.invoke(null);
+		} catch (Exception e) {
+		}
 	}
 
 	@Override
