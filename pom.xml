@@ -6,13 +6,13 @@
 	<groupId>com.roubsite</groupId>
 	<artifactId>RoubSite</artifactId>
 	<packaging>pom</packaging>
-	<version>4.1.3</version>
+	<version>4.1.4</version>
 	<name>RoubSite</name>
 	<description>RoubSite Framework parent project</description>
 	<url>https://www.roubsite.com</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<roubsite_version>4.1.3</roubsite_version>
+		<roubsite_version>4.1.4</roubsite_version>
 	</properties>
 	<organization>
 		<name>RoubSite</name>
@@ -58,24 +58,14 @@
 			<version>1.9.4</version>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.1</version>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.30</version>
+			<version>1.7.32</version>
 		</dependency>
 		<dependency>
 			<groupId>org.yaml</groupId>
 			<artifactId>snakeyaml</artifactId>
-			<version>1.26</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.xmlgraphics</groupId>
-			<artifactId>batik-transcoder</artifactId>
-			<version>1.11</version>
+			<version>1.30</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.ecf</groupId>
@@ -90,43 +80,42 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.8.1</version>
-			<scope>compile</scope>
+			<version>3.12.0</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.7</version>
+			<version>2.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.12.5</version>
+			<version>2.13.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>1.1.23</version>
+			<version>1.2.8</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.13</version>
+			<version>1.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>batik-transcoder</artifactId>
-			<version>1.11</version>
+			<version>1.14</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.jsqlparser</groupId>
 			<artifactId>jsqlparser</artifactId>
-			<version>4.2</version>
+			<version>4.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>19.0</version>
+			<version>31.0.1-jre</version>
 		</dependency>
 	</dependencies>
 	<build>
