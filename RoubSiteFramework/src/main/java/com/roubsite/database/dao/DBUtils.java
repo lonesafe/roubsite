@@ -2,6 +2,7 @@ package com.roubsite.database.dao;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.roubsite.holder.RSDataSourceHolder;
+import com.roubsite.utils.ConfUtils;
 import com.roubsite.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,10 @@ public class DBUtils {
 			int size, boolean keepAlive, long maxWaitMillis, int maxWaitThreadCount) throws SQLException {
 		this.setDataSource(RSDataSourceHolder.getInstance().get().getDataSource(dataSourceName, driverClassName, url,
 				username, password, size, keepAlive, maxWaitMillis, maxWaitThreadCount));
+	}
+
+	public DBUtils(String dataSource) throws SQLException {
+		this.setDataSource(RSDataSourceHolder.getInstance().get().getDataSource(dataSource));
 	}
 
 	/**

@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,27 +47,24 @@ public class RSErrorPage {
 	}
 
 	public void die(Exception e) {
-		resp.setStatus(500);
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter writer = new PrintWriter(stringWriter);
+		e.printStackTrace(writer);
+		String errorMessage = stringWriter.toString();
+		resp.setStatus(this.errorCode);
 		if (StringUtils.isEmpty(errorPage)) {
-			String html = "<html>\r\n" + 
-					" <head>\r\n" + 
-					"  <title>RoubSite - Error report</title>\r\n" + 
-					"  <style><!--H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}HR {color : #525D76;}--></style> \r\n" + 
-					" </head>\r\n" + 
-					" <body>\r\n" + 
-					"  <h1>HTTP 状态码 "+this.errorCode+" - "+e.toString()+"</h1>\r\n" + 
-					"  <hr size=\"1\" noshade=\"noshade\" />\r\n" + 
-					"  <p><b>类型</b> 异常</p>\r\n" + 
-					"  <p><b>信息</b> <u>"+e.toString()+"</u></p>\r\n" + 
-					"  <p><b>exception</b> </p>\r\n" + 
-					"  <pre>"+this.message+
-					"  </pre>\r\n" + 
-					"  <p></p>\r\n" + 
-					"  <p><b>note</b> <u>The full stack trace of the root cause is available in the Apache Tomcat logs.</u></p>\r\n" + 
-					"  <hr size=\"1\" noshade=\"noshade\" />\r\n" + 
-					"  <h3><a href='http://www.roubsite.com'>RoubSite V2.0</a></h3>\r\n" + 
-					" </body>\r\n" + 
-					"</html>";
+			String html = "<html><head><title>RoubSite - Error report</title><style><!--H1 {font-family:Tahoma,Arial,sans-serif;"
+					+ "color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;"
+					+ "background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-c"
+					+ "olor:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;"
+					+ "} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,"
+					+ "sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}HR {color :"
+					+ " #525D76;}--></style></head><body><h1>HTTP 状态码 " + this.errorCode + " - " + e.toString()
+					+ "</h1>" + "  <hr size=\"1\" noshade=\"noshade\" /><p><b>类型</b> 异常</p><p><b>信息</b> <u>"
+					+ errorMessage + "</u></p><p><b>exception</b> </p><pre>" + this.message
+					+ "</pre><p></p><p><b>note</b> <u>The full stack trace of the root cause is available in the Apache Tomcat logs.</u></p>"
+					+ "<hr size=\"1\" noshade=\"noshade\" /><h3><a href='http://www.roubsite.com'>RoubSite V2.0</a></h3>"
+					+ " </body></html>";
 			try {
 				resp.getWriter().println(html);
 			} catch (IOException e1) {
@@ -84,6 +84,7 @@ public class RSErrorPage {
 				String str = sb.toString();
 				str.replaceAll("\\{\\$errorCode\\}", Integer.toString(this.errorCode));
 				str.replaceAll("\\{\\$message\\}", this.message);
+				str.replaceAll("\\{\\$errorMessage\\}", errorMessage);
 				resp.getWriter().println(str);
 			} catch (Exception e2) {
 				e2.printStackTrace();

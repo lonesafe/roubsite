@@ -1,7 +1,6 @@
 package com.roubsite.holder;
 
 import com.roubsite.context.RSFilterContext;
-import com.roubsite.utils.ClassBean;
 
 public class RSFilterContextHolder {
 	private final static ThreadLocal<RSFilterContext> contexts = new ThreadLocal<RSFilterContext>();
@@ -9,11 +8,10 @@ public class RSFilterContextHolder {
 	private RSFilterContextHolder() {
 	}
 
-	public static void setLocalRequestContext(ActionClassBean actionClassBean, ClassBean classBean) {
+	public static RSFilterContext initRequestContext() {
 		RSFilterContext rc = new RSFilterContext();
-		rc.setActionClassBean(actionClassBean);
-		rc.setClassBean(classBean);
 		contexts.set(rc);
+		return rc;
 	}
 
 	/**

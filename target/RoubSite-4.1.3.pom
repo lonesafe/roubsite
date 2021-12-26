@@ -119,6 +119,11 @@
 			<version>3.8.1</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-transcoder</artifactId>
+			<version>1.11</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

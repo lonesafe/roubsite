@@ -70,7 +70,10 @@ public class RSConfigListenerContext implements ServletContextListener {
 			log.info("注册druid web监控中心完成");
 		}
 		// 保证关闭contextHolder的拦截器
-		FilterRegistration rSContextFilter = sc.addFilter("RScontextFilter", "com.roubsite.web.filter.RSContextFilter");
+		FilterRegistration rSContextFilter = sc.addFilter("RScontextFilter", "com.roubsite.web.filter.RSContextFilter");;
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("excludes", ConfUtils.getStringConf("RoubSite.global.static_suffix", ""));
+		rSContextFilter.setInitParameters(param);
 		rSContextFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.INCLUDE), true,
 				"/*");
 		// 防注入拦截器
@@ -86,8 +89,6 @@ public class RSConfigListenerContext implements ServletContextListener {
 		// 获取action并向dao中注入数据源
 		FilterRegistration rSInitFilter = sc.addFilter("RSFilter",
 				"com.roubsite.web.filter.RoubSiteInjectDatabaseFilter");
-		Map<String, String> param = new HashMap<String, String>();
-		param.put("excludes", ConfUtils.getStringConf("RoubSite.global.static_suffix", ""));
 		rSInitFilter.setInitParameters(param);
 		rSInitFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.INCLUDE), true, "/*");
 		// 权限控制器

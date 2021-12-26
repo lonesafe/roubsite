@@ -1,51 +1,46 @@
 package com.roubsite.web.filter;
 
-import com.roubsite.database.dao.DBUtils;
-import com.roubsite.utils.ConfUtils;
-import com.roubsite.utils.StringUtils;
-import com.roubsite.utils.UuidUtils;
-import com.roubsite.web.error.RSErrorPage;
-import com.roubsite.web.error.RSFrameworkException;
-import com.roubsite.web.wrapper.SecurityRequestWrapper;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RSWebSecurityFilter implements Filter {
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.roubsite.database.dao.DBUtils;
+import com.roubsite.utils.StringUtils;
+import com.roubsite.utils.UuidUtils;
+import com.roubsite.web.error.RSErrorPage;
+import com.roubsite.web.error.RSFrameworkException;
+import com.roubsite.web.wrapper.SecurityRequestWrapper;
+
+public class RSParamCheck {
 
 	// get拦截规则
-	static String getFilter = "\\<.+javascript:window\\[.{1}\\\\x|<.*=(&#\\d+?;?)+?>|<.*(data|src)=data:text\\/html.*>|\\b(alert\\(|confirm\\(|expression\\(|prompt\\(|benchmark\\s*?"
+	private final static String getFilter = "\\<.+javascript:window\\[.{1}\\\\x|<.*=(&#\\d+?;?)+?>|<.*(data|src)=data:text\\/html.*>|\\b(alert\\(|confirm\\(|expression\\(|prompt\\(|benchmark\\s*?"
 			+ "\\(.*\\)|sleep\\s*?\\(.*\\)|\\b(group_)?concat[\\s\\/\\*]*?\\([^\\)]+?\\)|\\bcase[\\s\\/\\*]*?when[\\s\\/\\*]*?\\([^\\)]+?\\)|load_file\\s*?\\()|<[a-z]+?\\b[^>]*?"
 			+ "\\bon([a-z]{4,})\\s*?=|^\\+\\/v(8|9)|\\b(and|or)\\b\\s*?([\\(\\)'\"\\d]+?=[\\(\\)'\"\\d]+?|[\\(\\)'\"a-zA-Z]+?=[\\(\\)'\"a-zA-Z]+?|>|<|\\s+?[\\w]+?\\s+?\\bin\\b\\s*?"
 			+ "\\(|\\blike\\b\\s+?[\"'])|\\/\\*.*\\*\\/|<\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT\\s*(\\(.+\\)\\s*|@{1,2}.+?\\s*|\\s+?.+?|(`|'|\").*?(`|'|\")\\s*)|UPDATE\\s*(\\(.+\\)\\s"
 			+ "*|@{1,2}.+?\\s*|\\s+?.+?|(`|'|\").*?(`|'|\")\\s*)SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE)@{0,2}(\\(.+\\)|\\s+?.+?\\s+?|(`|'|\").*?(`|'|\"))FROM(\\(.+\\)|\\s+?.+?|(`|'|\")"
 			+ ".*?(`|'|\"))|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";
 	// post拦截规则
-	static String postFilter = "<.*=(&#\\d+?;?)+?>|<.*data=data:text\\/html.*>|\\b(alert\\(|confirm\\(|expression\\(|prompt\\(|benchmark\\s*?\\(.*\\)|sleep\\s*?\\(.*\\)|\\b(group_)?concat"
+	private final static String postFilter = "<.*=(&#\\d+?;?)+?>|<.*data=data:text\\/html.*>|\\b(alert\\(|confirm\\(|expression\\(|prompt\\(|benchmark\\s*?\\(.*\\)|sleep\\s*?\\(.*\\)|\\b(group_)?concat"
 			+ "[\\s\\/\\*]*?\\([^\\)]+?\\)|\\bcase[\\s\\/\\*]*?when[\\s\\/\\*]*?\\([^\\)]+?\\)|load_file\\s*?\\()|<[^>]*?\\b(onerror|onmousemove|onload|onclick|onmouseover)\\b|\\b"
 			+ "(and|or)\\b\\s*?([\\(\\)'\"\\d]+?=[\\(\\)'\"\\d]+?|[\\(\\)'\"a-zA-Z]+?=[\\(\\)'\"a-zA-Z]+?|>|<|\\s+?[\\w]+?\\s+?\\bin\\b\\s*?\\(|\\blike\\b\\s+?[\"'])|\\/\\*.*\\*\\/|"
 			+ "<\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT\\s*(\\(.+\\)\\s*|@{1,2}.+?\\s*|\\s+?.+?|(`|'|\").*?(`|'|\")\\s*)|UPDATE\\s*(\\(.+\\)\\s*|@{1,2}.+?\\s*|\\s+?.+?|(`|'|\").*?(`|'|\")"
 			+ "\\s*)SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE)(\\(.+\\)|\\s+?.+?\\s+?|(`|'|\").*?(`|'|\"))FROM(\\(.+\\)|\\s+?.+?|(`|'|\").*?(`|'|\"))|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";
 	// cookie拦截规则
-	static String cookieFilter = "benchmark\\s*?\\(.*\\)|sleep\\s*?\\(.*\\)|load_file\\s*?\\(|\\b(and|or)\\b\\s*?([\\(\\)'\"\\d]+?=[\\(\\)'\"\\d]+?|[\\(\\)'\"a-zA-Z]+?=[\\(\\)'\"a-zA-Z]+?|>"
+	private final static String cookieFilter = "benchmark\\s*?\\(.*\\)|sleep\\s*?\\(.*\\)|load_file\\s*?\\(|\\b(and|or)\\b\\s*?([\\(\\)'\"\\d]+?=[\\(\\)'\"\\d]+?|[\\(\\)'\"a-zA-Z]+?=[\\(\\)'\"a-zA-Z]+?|>"
 			+ "|<|\\s+?[\\w]+?\\s+?\\bin\\b\\s*?\\(|\\blike\\b\\s+?[\"'])|\\/\\*.*\\*\\/|<\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT\\s*(\\(.+\\)\\s*|@{1,2}.+?\\s*|\\s+?.+?|(`|'|\").*?(`|"
 			+ "'|\")\\s*)|UPDATE\\s*(\\(.+\\)\\s*|@{1,2}.+?\\s*|\\s+?.+?|(`|'|\").*?(`|'|\")\\s*)SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE)@{0,2}(\\(.+\\)|\\s+?.+?\\s+?|(`|'|\").*?(`|'"
 			+ "|\"))FROM(\\(.+\\)|\\s+?.+?|(`|'|\").*?(`|'|\"))|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";
 
-	@Override
-	public void destroy() {
-
-	}
-
-	@Override
-	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain arg2)
-			throws IOException, ServletException {
+	public boolean check(ServletRequest req, ServletResponse resp) throws IOException, ServletException {
 		SecurityRequestWrapper request = new SecurityRequestWrapper((HttpServletRequest) req);
 		Map<String, String> get = request.$_get;
 		Map<String, Object> post = request.$_post;
@@ -55,7 +50,7 @@ public class RSWebSecurityFilter implements Filter {
 				RSFrameworkException e = new RSFrameworkException(403, "GET检测到非法数据",
 						((HttpServletRequest) request).getServletPath());
 				new RSErrorPage((HttpServletResponse) resp, (HttpServletRequest) req, 403, null, "GET检测到非法数据").die(e);
-				return;
+				return false;
 			}
 		}
 
@@ -65,7 +60,7 @@ public class RSWebSecurityFilter implements Filter {
 				RSFrameworkException e = new RSFrameworkException(403, "POST检测到非法数据",
 						((HttpServletRequest) request).getServletPath());
 				new RSErrorPage((HttpServletResponse) resp, (HttpServletRequest) req, 403, null, "POST检测到非法数据").die(e);
-				return;
+				return false;
 			}
 		}
 
@@ -76,14 +71,10 @@ public class RSWebSecurityFilter implements Filter {
 						((HttpServletRequest) request).getServletPath());
 				new RSErrorPage((HttpServletResponse) resp, (HttpServletRequest) req, 403, null, "COOKIE检测到非法数据")
 						.die(e);
-				return;
+				return false;
 			}
 		}
-		arg2.doFilter(req, resp);
-	}
-
-	@Override
-	public void init(FilterConfig arg0) throws ServletException {
+		return true;
 	}
 
 	/**
@@ -94,7 +85,7 @@ public class RSWebSecurityFilter implements Filter {
 	 * @param ArrFiltReq   拦截规则
 	 * @param method       提交类型 post/get/cookie
 	 */
-	public boolean stopAttack(String StrFiltKey, Object StrFiltValue, String ArrFiltReq, String method,
+	private boolean stopAttack(String StrFiltKey, Object StrFiltValue, String ArrFiltReq, String method,
 			SecurityRequestWrapper request) {
 		// 忽略大小写的写法
 		Pattern pattern = Pattern.compile("/" + ArrFiltReq + "/is", Pattern.CASE_INSENSITIVE);
@@ -126,16 +117,11 @@ public class RSWebSecurityFilter implements Filter {
 	 * @param request_uri 访问完整地址
 	 * @throws SQLException
 	 */
-	public void addLog(String ip, String time, String page, String method, String rKey, Object rData, String user_agent,
-			String request_uri) throws SQLException {
+	private void addLog(String ip, String time, String page, String method, String rKey, Object rData,
+			String user_agent, String request_uri) throws SQLException {
 		String sql = "INSERT INTO RS_ATTACK_LOG(ID, IP, TIME, PAGE, METHOD, P_KEY, P_VALUE, UA, URL) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		String dataSource = "dataSource";
-		DBUtils db = new DBUtils(dataSource,
-				ConfUtils.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSource + ".driverClassName", ""),
-				ConfUtils.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSource + ".url", ""),
-				ConfUtils.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSource + ".username", ""),
-				ConfUtils.getStringConf("RoubSite.DataSourcePool.dataSources." + dataSource + ".password", ""), 12,
-				true, 100L, 100);
+		DBUtils db = new DBUtils(dataSource);
 		db.execUpdate(sql, new String[] { UuidUtils.getUuid(), ip, time, page, method, rKey, rData.toString(),
 				user_agent, request_uri });
 
