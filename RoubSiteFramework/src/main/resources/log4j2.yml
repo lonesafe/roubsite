@@ -1,0 +1,96 @@
+Configuration:
+   status: DEBUG
+   Properties: # 定义全局变量  
+      Property:
+      -  name: log.path
+         value: D:/RoubSite-log
+   Loggers:
+      Root:
+         level: DEBUG
+         AppenderRef:
+         -  ref: CONSOLE
+         -  ref: ROOT_LOG
+      Logger:
+      -  name: com.roubsite.web
+         additivity: true
+         level: DEBUG
+         AppenderRef:
+         -  ref: ROUBSITE_FRAMEWORK
+      -  name: com.roubsite.database
+         additivity: true
+         level: DEBUG
+         AppenderRef:
+         -  ref: ROUBSITE_DATABASE
+      -  name: com.roubsite.security
+         additivity: true
+         level: DEBUG
+         AppenderRef:
+         -  ref: ROUBSITE_SECURITY
+      -  name: org.activiti
+         additivity: true
+         level: DEBUG
+         AppenderRef:
+         -  ref: ROUBSITE_ACTIVITI
+   Appenders:
+      Console: #输出到控制台  
+         name: CONSOLE
+         target: SYSTEM_OUT
+         follow: true
+         PatternLayout:
+            pattern: '%n%m%n'
+      RollingFile: # 输出到文件，超过128MB归档  
+      -  name: ROOT_LOG
+         ignoreExceptions: false
+         fileName: ${log.path}/root.log
+         filePattern: ${log.path}/%d{yyyy-MM-dd}-%i-root.log.gz
+         PatternLayout:
+            pattern: '[%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}][%l]%n%m%n '
+         Policies:
+            SizeBasedTriggeringPolicy:
+               size: 128 MB
+         DefaultRolloverStrategy:
+            max: 1000
+      -  name: ROUBSITE_FRAMEWORK
+         ignoreExceptions: false
+         fileName: ${log.path}/roubsite_framework.log
+         filePattern: ${log.path}/%d{yyyy-MM-dd}-%i-roubsite_framework.log.gz
+         PatternLayout:
+            pattern: '[%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}][%l]%n%m%n '
+         Policies:
+            SizeBasedTriggeringPolicy:
+               size: 128 MB
+         DefaultRolloverStrategy:
+            max: 1000
+      -  name: ROUBSITE_SECURITY
+         ignoreExceptions: false
+         fileName: ${log.path}/roubsite_security.log
+         filePattern: ${log.path}/%d{yyyy-MM-dd}-%i-roubsite_security.log.gz
+         PatternLayout:
+            pattern: '[%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}][%l]%n%m%n '
+         Policies:
+            SizeBasedTriggeringPolicy:
+               size: 128 MB
+         DefaultRolloverStrategy:
+            max: 1000
+      -  name: ROUBSITE_DATABASE
+         ignoreExceptions: false
+         fileName: ${log.path}/roubsite_database.log
+         filePattern: ${log.path}/%d{yyyy-MM-dd}-%i-roubsite_database.log.gz
+         PatternLayout:
+            pattern: '[%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}][%l]%n%m%n '
+         Policies:
+            SizeBasedTriggeringPolicy:
+               size: 128 MB
+         DefaultRolloverStrategy:
+            max: 1000
+      -  name: ROUBSITE_ACTIVITI
+         ignoreExceptions: false
+         fileName: ${log.path}/roubsite_activiti.log
+         filePattern: ${log.path}/%d{yyyy-MM-dd}-%i-roubsite_activiti.log.gz
+         PatternLayout:
+            pattern: '[%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}][%l]%n%m%n '
+         Policies:
+            SizeBasedTriggeringPolicy:
+               size: 128 MB
+         DefaultRolloverStrategy:
+            max: 1000
