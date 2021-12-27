@@ -16,6 +16,12 @@ import com.roubsite.web.error.RSErrorPage;
 import com.roubsite.web.wrapper.RoubSiteRequestWrapper;
 import com.roubsite.web.wrapper.RoubSiteResponseWrapper;
 
+/**
+ * action注入类
+ * 
+ * @author lones 王振骁
+ *
+ */
 public class RSInvokeAction {
 	private Logger logger = LoggerFactory.getLogger(RSInvokeAction.class);
 	private ClassBean cb;

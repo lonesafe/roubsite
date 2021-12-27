@@ -60,8 +60,8 @@ public class RSErrorPage {
 					+ "} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,"
 					+ "sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}HR {color :"
 					+ " #525D76;}--></style></head><body><h1>HTTP 状态码 " + this.errorCode + " - " + e.toString()
-					+ "</h1>" + "  <hr size=\"1\" noshade=\"noshade\" /><p><b>类型</b> 异常</p><p><b>信息</b> <u>"
-					+ errorMessage + "</u></p><p><b>exception</b> </p><pre>" + this.message
+					+ "</h1>" + "  <hr size=\"1\" noshade=\"noshade\" /><p><b>类型</b> 异常</p><p><b>信息</b> <u><pre>"
+					+ errorMessage + "</pre></u></p><p><b>exception</b> </p><pre>" + this.message
 					+ "</pre><p></p><p><b>note</b> <u>The full stack trace of the root cause is available in the Apache Tomcat logs.</u></p>"
 					+ "<hr size=\"1\" noshade=\"noshade\" /><h3><a href='http://www.roubsite.com'>RoubSite V2.0</a></h3>"
 					+ " </body></html>";

@@ -34,8 +34,7 @@ import com.roubsite.web.filter.impl.RSSecurityInterface;
 public class SecurityFilter implements RSSecurityInterface {
 	private static Logger logger = LoggerFactory.getLogger(SecurityFilter.class);
 
-	public boolean isPermitted(ServletRequest request, ServletResponse response, ActionClassBean acb)
-			throws IOException, ServletException {
+	public boolean isPermitted(ServletRequest request, ServletResponse response, ActionClassBean acb) throws Exception {
 
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
@@ -139,11 +138,5 @@ public class SecurityFilter implements RSSecurityInterface {
 				return false;
 			}
 		}
-	}
-
-	@Override
-	public boolean isPermitted() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

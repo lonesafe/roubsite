@@ -8,7 +8,7 @@ public class ClassUtils {
 	 * 根据servletPath字符串获取类名
 	 *
 	 * @param servletPath
-	 * @return
+	 * @return ClassBean
 	 */
 	public ClassBean getClassBean(String servletPath) {
 		ClassBean cb = new ClassBean();
@@ -69,6 +69,9 @@ public class ClassUtils {
 
 	/**
 	 * 将字符串的首字母大写
+	 * 
+	 * @param str 字符串
+	 * @return 处理后的字符串
 	 */
 	public String capitalize(String str) {
 		StringBuilder sb = new StringBuilder();

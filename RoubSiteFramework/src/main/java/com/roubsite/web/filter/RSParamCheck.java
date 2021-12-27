@@ -19,6 +19,12 @@ import com.roubsite.web.error.RSErrorPage;
 import com.roubsite.web.error.RSFrameworkException;
 import com.roubsite.web.wrapper.SecurityRequestWrapper;
 
+/**
+ * 入参防注入拦截
+ * 
+ * @author lones 王振骁
+ *
+ */
 public class RSParamCheck {
 
 	// get拦截规则

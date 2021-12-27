@@ -30,6 +30,11 @@ import com.roubsite.web.filter.impl.RSSecurityInterface;
 import com.roubsite.web.wrapper.RoubSiteRequestWrapper;
 import com.roubsite.web.wrapper.RoubSiteResponseWrapper;
 
+/**
+ * 框架拦截器
+ * @author lones 王振骁
+ *
+ */
 public class RSContextFilter implements Filter {
 	private final static Logger logger = LoggerFactory.getLogger(RSContextFilter.class);
 	private final static String securityClassPath = ConfUtils.getStringConf("RoubSite.security.class", "");
@@ -45,7 +50,7 @@ public class RSContextFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		RoubSiteRequestWrapper req = new RoubSiteRequestWrapper((HttpServletRequest) request);
-		RoubSiteResponseWrapper resp = new RoubSiteResponseWrapper((HttpServletResponse) request);
+		RoubSiteResponseWrapper resp = new RoubSiteResponseWrapper((HttpServletResponse) response);
 		// 防注入拦截
 		if (ConfUtils.getBooleanConf("RoubSite.injection") && !new RSParamCheck().check(req, resp)) {
 			// 存在非法字符，直接返回，不执行后续操作
@@ -74,8 +79,9 @@ public class RSContextFilter implements Filter {
 			if (StringUtils.isNotEmpty(cb.getErroMessage())) {
 				// 获取ClassBean失败
 				logger.error(cb.getErroMessage());
-				new RSErrorPage(resp, req, 404, null, "未找到该url对应的action")
-						.die(new RuntimeException("错误的url:" + servletPath));
+//				new RSErrorPage(resp, req, 404, null, "未找到该url对应的action")
+//						.die(new RuntimeException("错误的url:" + servletPath));
+				chain.doFilter(request, response);
 				return;
 			} else {
 				// 反射实例化action类
@@ -86,7 +92,7 @@ public class RSContextFilter implements Filter {
 				if (StringUtils.isNotEmpty(securityClassPath)) {
 					RSSecurityInterface serurityCheck = (RSSecurityInterface) Class.forName(securityClassPath)
 							.getDeclaredConstructor().newInstance();
-					if (!serurityCheck.isPermitted()) {
+					if (!serurityCheck.isPermitted(request, response, acb)) {
 						// 权限检查失败，直接返回
 						return;
 					}

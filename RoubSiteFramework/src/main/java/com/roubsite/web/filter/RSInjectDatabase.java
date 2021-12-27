@@ -17,6 +17,12 @@ import com.roubsite.database.annotation.Trans;
 import com.roubsite.database.dao.RSDaoFactory;
 import com.roubsite.holder.RSDataSourceHolder;
 
+/**
+ * 数据库注入
+ * 
+ * @author lones 王振骁
+ *
+ */
 public class RSInjectDatabase {
 	public final static Logger logger = LoggerFactory.getLogger(RSInjectDatabase.class);
 	RSFilterContext rfc;

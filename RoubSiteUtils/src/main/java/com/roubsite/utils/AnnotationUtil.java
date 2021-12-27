@@ -19,14 +19,11 @@ public class AnnotationUtil {
 	/**
 	 * 读取注解值
 	 * 
-	 * @param annotationClasss
-	 *            处理Annotation类名称
-	 * @param annotationField
-	 *            处理Annotation类属性名称
-	 * @param className
-	 *            处理Annotation的使用类名称
-	 * @return
-	 * @throws Exception
+	 * @param annotationClasss 处理Annotation类名称
+	 * @param annotationField  处理Annotation类属性名称
+	 * @param className        处理Annotation的使用类名称
+	 * @return 注解值
+	 * @throws Exception 可能发生的错误
 	 */
 	@SuppressWarnings("all")
 	public Map<String, String> loadVlaue(Class annotationClasss, String annotationField, String className)
