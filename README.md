@@ -149,62 +149,104 @@ RoubSite:
 #        poolSize: 12
 ```
 
-#### log4j.properties(必须)
-```properties
-LOG_DIR=D:/RoubSite-log/demo
-
-log4j.rootCategory=DEBUG,ROOT_LOG
-log4j.appender.ROOT_LOG= org.apache.log4j.FileAppender 
-log4j.appender.ROOT_LOG.layout= org.apache.log4j.PatternLayout 
-log4j.appender.ROOT_LOG.layout.ConversionPattern= [%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}]%n%m%n 
-log4j.appender.ROOT_LOG.Append= TRUE 
-log4j.appender.ROOT_LOG.File= ${LOG_DIR}/root.log 
-log4j.appender.ROOT_LOG.Encoding= UTF-8 
-
-log4j.category.com.roubsite.web=DEBUG,ROUBSITE_FRAMEWORK
-#框架日志
-log4j.appender.ROUBSITE_FRAMEWORK= org.apache.log4j.FileAppender 
-log4j.appender.ROUBSITE_FRAMEWORK.layout= org.apache.log4j.PatternLayout 
-log4j.appender.ROUBSITE_FRAMEWORK.layout.ConversionPattern= [%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}]%n%m%n 
-log4j.appender.ROUBSITE_FRAMEWORK.Append= TRUE 
-log4j.appender.ROUBSITE_FRAMEWORK.File= ${LOG_DIR}/roubsite_framework.log 
-log4j.appender.ROUBSITE_FRAMEWORK.Encoding= UTF-8 
-
-
-log4j.category.com.roubsite.database=DEBUG,ROUBSITE_DATABASE
-#数据库日志
-log4j.appender.ROUBSITE_SECURITY= org.apache.log4j.FileAppender 
-log4j.appender.ROUBSITE_SECURITY.layout= org.apache.log4j.PatternLayout 
-log4j.appender.ROUBSITE_SECURITY.layout.ConversionPattern= [%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}]%n%m%n 
-log4j.appender.ROUBSITE_SECURITY.Append= TRUE 
-log4j.appender.ROUBSITE_SECURITY.File= ${LOG_DIR}/roubsite_security.log 
-log4j.appender.ROUBSITE_SECURITY.Encoding= UTF-8 
-
-log4j.category.com.roubsite.security=DEBUG,ROUBSITE_SECURITY
-#权限管理日志
-log4j.appender.ROUBSITE_DATABASE= org.apache.log4j.FileAppender 
-log4j.appender.ROUBSITE_DATABASE.layout= org.apache.log4j.PatternLayout 
-log4j.appender.ROUBSITE_DATABASE.layout.ConversionPattern= [%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}]%n%m%n 
-log4j.appender.ROUBSITE_DATABASE.Append= TRUE 
-log4j.appender.ROUBSITE_DATABASE.File= ${LOG_DIR}/roubsite_database.log 
-log4j.appender.ROUBSITE_DATABASE.Encoding= UTF-8 
-
-
-log4j.category.org.activiti=DEBUG,ROUBSITE_ACTIVITI
-#activiti日志
-log4j.appender.ROUBSITE_ACTIVITI= org.apache.log4j.FileAppender 
-log4j.appender.ROUBSITE_ACTIVITI.layout= org.apache.log4j.PatternLayout 
-log4j.appender.ROUBSITE_ACTIVITI.layout.ConversionPattern= [%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}]%n%m%n 
-log4j.appender.ROUBSITE_ACTIVITI.Append= TRUE 
-log4j.appender.ROUBSITE_ACTIVITI.File= ${LOG_DIR}/roubsite_database.log 
-log4j.appender.ROUBSITE_ACTIVITI.Encoding= UTF-8 
-
-log4j.rootLogger=DEBUG,A1
-#输出到控制台A2
-log4j.appender.A1= org.apache.log4j.ConsoleAppender 
-log4j.appender.A1.layout= org.apache.log4j.PatternLayout 
-log4j.appender.A1.layout.ConversionPattern= %n%m%n 
-log4j.appender.A1.Target= System.out 
+#### log4j2.yml(可选，没有该配置影响log4j打印日志)
+```yaml
+Configuration:
+   status: DEBUG
+   Properties: # 定义全局变量  
+      Property:
+      -  name: log.path
+         value: D:/RoubSite-log
+   Loggers:
+      Root:
+         level: DEBUG
+         AppenderRef:
+         -  ref: CONSOLE
+         -  ref: ROOT_LOG
+      Logger:
+      -  name: com.roubsite.web
+         additivity: true
+         level: DEBUG
+         AppenderRef:
+         -  ref: ROUBSITE_FRAMEWORK
+      -  name: com.roubsite.database
+         additivity: true
+         level: DEBUG
+         AppenderRef:
+         -  ref: ROUBSITE_DATABASE
+      -  name: com.roubsite.security
+         additivity: true
+         level: DEBUG
+         AppenderRef:
+         -  ref: ROUBSITE_SECURITY
+      -  name: org.activiti
+         additivity: true
+         level: DEBUG
+         AppenderRef:
+         -  ref: ROUBSITE_ACTIVITI
+   Appenders:
+      Console: #输出到控制台  
+         name: CONSOLE
+         target: SYSTEM_OUT
+         follow: true
+         PatternLayout:
+            pattern: '%n%m%n'
+      RollingFile: # 输出到文件，超过128MB归档  
+      -  name: ROOT_LOG
+         ignoreExceptions: false
+         fileName: ${log.path}/root.log
+         filePattern: ${log.path}/%d{yyyy-MM-dd}-%i-root.log.gz
+         PatternLayout:
+            pattern: '[%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}][%l]%n%m%n '
+         Policies:
+            SizeBasedTriggeringPolicy:
+               size: 128 MB
+         DefaultRolloverStrategy:
+            max: 1000
+      -  name: ROUBSITE_FRAMEWORK
+         ignoreExceptions: false
+         fileName: ${log.path}/roubsite_framework.log
+         filePattern: ${log.path}/%d{yyyy-MM-dd}-%i-roubsite_framework.log.gz
+         PatternLayout:
+            pattern: '[%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}][%l]%n%m%n '
+         Policies:
+            SizeBasedTriggeringPolicy:
+               size: 128 MB
+         DefaultRolloverStrategy:
+            max: 1000
+      -  name: ROUBSITE_SECURITY
+         ignoreExceptions: false
+         fileName: ${log.path}/roubsite_security.log
+         filePattern: ${log.path}/%d{yyyy-MM-dd}-%i-roubsite_security.log.gz
+         PatternLayout:
+            pattern: '[%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}][%l]%n%m%n '
+         Policies:
+            SizeBasedTriggeringPolicy:
+               size: 128 MB
+         DefaultRolloverStrategy:
+            max: 1000
+      -  name: ROUBSITE_DATABASE
+         ignoreExceptions: false
+         fileName: ${log.path}/roubsite_database.log
+         filePattern: ${log.path}/%d{yyyy-MM-dd}-%i-roubsite_database.log.gz
+         PatternLayout:
+            pattern: '[%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}][%l]%n%m%n '
+         Policies:
+            SizeBasedTriggeringPolicy:
+               size: 128 MB
+         DefaultRolloverStrategy:
+            max: 1000
+      -  name: ROUBSITE_ACTIVITI
+         ignoreExceptions: false
+         fileName: ${log.path}/roubsite_activiti.log
+         filePattern: ${log.path}/%d{yyyy-MM-dd}-%i-roubsite_activiti.log.gz
+         PatternLayout:
+            pattern: '[%-5p][%-22d{yyyy/MM/dd HH:mm:ssS}][%l]%n%m%n '
+         Policies:
+            SizeBasedTriggeringPolicy:
+               size: 128 MB
+         DefaultRolloverStrategy:
+            max: 1000 
 ```
 
 ### hello world
