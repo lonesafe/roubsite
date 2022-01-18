@@ -7,7 +7,9 @@ import com.roubsite.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,7 +89,17 @@ public class DBUtils {
 				// 设置参数列表
 				for (int i = 0; i < params.length; i++) {
 					// 因为问号参数的索引是从1开始，所以是i+1，将所有值都转为字符串形式，好让setObject成功运行
-					pstmt.setObject(i + 1, params[i] + "");
+					if (params[i] instanceof byte[]) {
+						pstmt.setBinaryStream(i + 1, new ByteArrayInputStream((byte[]) params[i]));
+					} else if (params[i] instanceof InputStream) {
+						pstmt.setBinaryStream(i + 1, (InputStream) params[i]);
+					} else if (params[i] instanceof Blob) {
+						pstmt.setBinaryStream(i + 1, ((Blob) params[i]).getBinaryStream());
+					} else if (params[i] instanceof Date) {
+						pstmt.setObject(i + 1, params[i], Types.DATE);
+					} else {
+						pstmt.setObject(i + 1, params[i]);
+					}
 				}
 			}
 			int a = pstmt.executeUpdate(); // 执行更新，并返回影响行数
@@ -126,8 +138,7 @@ public class DBUtils {
 			if (params != null) {
 				// 设置参数列表
 				for (int i = 0; i < params.length; i++) {
-					// 因为问号参数的索引是从1开始，所以是i+1，将所有值都转为字符串形式，好让setObject成功运行
-					pstmt.setObject(i + 1, params[i] + "");
+					pstmt.setObject(i + 1, params[i]);
 				}
 			}
 
