@@ -1,22 +1,31 @@
 package com.roubsite.database.dao;
 
-import com.roubsite.database.RSConnection;
-import com.roubsite.database.page.PageHelper;
-import com.roubsite.utils.ConfUtils;
-import com.roubsite.utils.JsonUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Types;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.roubsite.database.RSConnection;
+import com.roubsite.database.page.PageHelper;
+import com.roubsite.utils.ConfUtils;
+import com.roubsite.utils.JsonUtils;
 
 public class BaseCURD {
 	private RSConnection conn = null;
@@ -247,7 +256,48 @@ public class BaseCURD {
 		for (int i = 0; i < args.length; i++) {
 			Object objParm = args[i];
 			try {
-				pStatement.setObject(++iPos, objParm, types[i]);
+				switch (types[i]) {
+				case Types.BLOB:
+					if (objParm instanceof Blob) {
+						pStatement.setBlob(++iPos, (Blob) objParm);
+					} else if (objParm instanceof byte[]) {
+						pStatement.setBlob(++iPos, new ByteArrayInputStream((byte[]) objParm));
+					} else if (objParm instanceof InputStream) {
+						pStatement.setBlob(++iPos, (InputStream) objParm);
+					} else if (objParm instanceof String) {
+						pStatement.setBlob(++iPos, new ByteArrayInputStream(((String) objParm).getBytes()));
+					} else {
+						pStatement.setObject(++iPos, objParm, types[i]);
+					}
+					break;
+				case Types.CLOB:
+					if (objParm instanceof Clob) {
+						pStatement.setClob(++iPos, (Clob) objParm);
+					} else if (objParm instanceof byte[]) {
+						pStatement.setClob(++iPos, new InputStreamReader(new ByteArrayInputStream((byte[]) objParm)));
+					} else if (objParm instanceof InputStream) {
+						pStatement.setClob(++iPos, new InputStreamReader((InputStream) objParm));
+					} else if (objParm instanceof String) {
+						pStatement.setClob(++iPos, new StringReader(((String) objParm)));
+					} else {
+						pStatement.setObject(++iPos, objParm, types[i]);
+					}
+					break;
+				case Types.DATE:
+					if (objParm instanceof Date) {
+						pStatement.setDate(++iPos, new java.sql.Date(((Date) objParm).getTime()));
+					} else if (objParm instanceof java.sql.Date) {
+						pStatement.setDate(++iPos, (java.sql.Date) objParm);
+					} else if (objParm instanceof Long) {
+						pStatement.setDate(++iPos, new java.sql.Date((Long) objParm));
+					} else {
+						pStatement.setObject(++iPos, objParm, types[i]);
+					}
+					break;
+				default:
+					pStatement.setObject(++iPos, objParm, types[i]);
+					break;
+				}
 			} catch (SQLException e) {
 				this.conn.setError(true);
 				log.error("sql编译错误", e);
