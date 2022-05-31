@@ -264,5 +264,4 @@ Configuration:
 1.  RoubSiteFramework RoubSite框架，Action、Dao的代码实现都在里面。
 2.  RoubSiteSecurity 权限管理，在Action中使用注解方式对方法进行权限控制，自己写权限管理可以不用它。
 3.  RoubSiteSmarty4j 模板解释器，参考了github上的代码，原作者实在是没找到。
-4.  RoubSiteCodeSign 代码生成机，这可是一个重头戏，它可以直接将数据库的表生成对应的增删改查的代码，页面也同时生成，减少工作量的首选。(`页面需要加群获取`)
-5.  RoubSiteAdmin 一个完整的后台管理框架，可以直接拿来用，权限啥的都写好了（`加群获取`）
+4.  RoubSiteCodeSign 代码生成机，这可是一个重头戏，它可以直接将数据库的表生成对应的增删改查的代码，页面也同时生成，减少工作量的首选。（可以通过https://gitee.com/lonesafe/roub-site-admin 项目使用）
