@@ -12,7 +12,8 @@ public class ConfUtils {
 	/**
 	 * 获取yaml配置项
 	 *
-	 * @param yamlKeys 配置项路径（通过.分割）
+	 * @param key 配置项路径（通过.分割）
+	 * @param defaultValue 默认值
 	 * @return 值
 	 */
 	public static String getStringConf(String key, String defaultValue) {

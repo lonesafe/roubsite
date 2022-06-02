@@ -23,7 +23,7 @@ import com.roubsite.web.wrapper.RoubSiteResponseWrapper;
  *
  */
 public class RSInvokeAction {
-	private Logger logger = LoggerFactory.getLogger(RSInvokeAction.class);
+	private final static Logger logger = LoggerFactory.getLogger(RSInvokeAction.class);
 	private ClassBean cb;
 	private ActionClassBean acb;
 	private RoubSiteRequestWrapper req;

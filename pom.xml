@@ -4,13 +4,12 @@
 	<groupId>com.roubsite</groupId>
 	<artifactId>RoubSite</artifactId>
 	<packaging>pom</packaging>
-	<version>4.1.5</version>
+	<version>4.1.6</version>
 	<name>RoubSite</name>
 	<description>RoubSite Framework parent project</description>
 	<url>https://www.roubsite.com</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<roubsite_version>4.1.5</roubsite_version>
 	</properties>
 	<organization>
 		<name>RoubSite</name>
@@ -99,14 +98,18 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.13.2.1</version>
+			<version>2.13.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-yaml</artifactId>
-			<version>2.13.1</version>
+			<version>2.13.3</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.13.3</version>
+		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>

@@ -6,65 +6,64 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class JsonUtils {
-	static ObjectMapper objectMapper;
-	static {
-		objectMapper = new ObjectMapper();
-		// 从JSON到java object
-		// 没有匹配的属性名称时不作失败处理
-		objectMapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+    static ObjectMapper objectMapper;
 
-		// 反序列化
-		// 禁止遇到空原始类型时抛出异常，用默认值代替。
-		objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
-		objectMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
-		// 禁止遇到未知（新）属性时报错，支持兼容扩展
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+    static {
+        objectMapper = new ObjectMapper();
+        // 从JSON到java object
+        // 没有匹配的属性名称时不作失败处理
+        objectMapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
 
-		objectMapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
-		objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-		objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, true);
-		objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
-		objectMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
-		objectMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
+        // 反序列化
+        // 禁止遇到空原始类型时抛出异常，用默认值代替。
+        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
+        objectMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
+        // 禁止遇到未知（新）属性时报错，支持兼容扩展
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 
-		// 序列化
-		// 禁止序列化空值
-		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-		objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
-		objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, true);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
+        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+        objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, true);
+        objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
+        objectMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
+        objectMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
 
-		objectMapper.configure(SerializationFeature.FLUSH_AFTER_WRITE_VALUE, true);
-	}
+        // 序列化
+        // 禁止序列化空值
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+        objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, true);
+        //解决java8的时间格式化
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.FLUSH_AFTER_WRITE_VALUE, true);
+    }
 
-	/**
-	 * 将Bean转换成json字符串
-	 * 
-	 * @param obj
-	 * @return
-	 * @throws IOException
-	 */
-	public static String convertToString(Object obj) throws IOException {
-		if (obj == null)
-			return null;
+    /**
+     * 将Bean转换成json字符串
+     *
+     * @param obj
+     * @return json字符串
+     */
+    public static String convertToString(Object obj) throws IOException {
+        if (obj == null) return null;
 
-		return objectMapper.writeValueAsString(obj);
-	}
+        return objectMapper.writeValueAsString(obj);
+    }
 
-	/**
-	 * 将json字符串转换成Bean
-	 * 
-	 * @param str json字符串
-	 * @param cla Bean类
-	 * @return
-	 * @throws IOException
-	 */
-	public static <T> T readToObject(String str, Class<T> cla) throws IOException {
-		if (str == null)
-			return null;
+    /**
+     * 将json字符串转换成Bean
+     *
+     * @param str json字符串
+     * @param cla Bean类
+     * @return bean
+     */
+    public static <T> T readToObject(String str, Class<T> cla) throws IOException {
+        if (str == null) return null;
 
-		return objectMapper.readValue(str, cla);
-	}
+        return objectMapper.readValue(str, cla);
+    }
 }

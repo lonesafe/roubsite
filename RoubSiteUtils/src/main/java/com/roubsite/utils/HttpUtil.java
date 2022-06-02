@@ -17,9 +17,9 @@ public class HttpUtil {
 	/**
 	 * 使用Get方式获取数据
 	 *
-	 * @param url URL包括参数，http://HOST/XX?XX=XX&XXXX=XXXX
-	 * @return
-	 * @throws IOException
+	 * @param url URL包括参数
+	 * @return 字符串数据
+	 * @throws IOException 异常
 	 */
 	public static String sendGet(String url) throws IOException {
 		return sendGet(url, null, "utf-8");
@@ -28,10 +28,10 @@ public class HttpUtil {
 	/**
 	 * 使用Get方式获取数据
 	 *
-	 * @param url    URL包括参数，http://HOST/XX?XX=XX&XXXX=XXXX
+	 * @param url    URL包括参数
 	 * @param header 头部信息
-	 * @return
-	 * @throws IOException
+	 * @return 字符串数据
+	 * @throws IOException 异常
 	 */
 	public static String sendGet(String url, Map<String, String> header) throws IOException {
 		return sendGet(url, header, "utf-8");
@@ -40,11 +40,11 @@ public class HttpUtil {
 	/**
 	 * 使用Get方式获取数据
 	 *
-	 * @param url     URL包括参数，http://HOST/XX?XX=XX&XXXX=XXXX
+	 * @param url     URL包括参数
 	 * @param header  头部信息
 	 * @param charset 编码
-	 * @return
-	 * @throws IOException
+	 * @return 字符串数据
+	 * @throws IOException 异常
 	 */
 	public static String sendGet(String url, Map<String, String> header, String charset) throws IOException {
 		return IOUtils.toString(sendGet_I(url, header), charset);
@@ -53,10 +53,8 @@ public class HttpUtil {
 	/**
 	 * 使用Get方式获取数据
 	 *
-	 * @param url     URL包括参数，http://HOST/XX?XX=XX&XXXX=XXXX
-	 * @param header  头部信息
-	 * @param charset 编码
-	 * @return
+	 * @param url     URL包括参数
+	 * @return 取回的流数据
 	 * @throws IOException
 	 */
 	public static InputStream sendGet_I(String url) throws IOException {
@@ -66,10 +64,9 @@ public class HttpUtil {
 	/**
 	 * 使用Get方式获取数据
 	 *
-	 * @param url     URL包括参数，http://HOST/XX?XX=XX&XXXX=XXXX
+	 * @param url     URL包括参数
 	 * @param header  头部信息
-	 * @param charset 编码
-	 * @return
+	 * @return 取回的流数据
 	 */
 	public static InputStream sendGet_I(String url, Map<String, String> header) {
 		try {
@@ -102,6 +99,7 @@ public class HttpUtil {
 	 *
 	 * @param url   请求地址
 	 * @param param 请求数据
+	 * @return 字符串数据
 	 */
 	public static String sendPostUrl(String url, String param) {
 		return sendPostUrl(url, param, null, "utf-8");
@@ -113,6 +111,7 @@ public class HttpUtil {
 	 * @param url    请求地址
 	 * @param param  请求数据
 	 * @param header 头部信息
+	 * @return 字符串数据
 	 */
 	public static String sendPostUrl(String url, String param, Map<String, String> header) {
 		return sendPostUrl(url, param, header, "utf-8");
@@ -125,6 +124,7 @@ public class HttpUtil {
 	 * @param param   请求数据
 	 * @param header  头部信息
 	 * @param charset 编码方式
+	 * @return 字符串数据
 	 */
 	public static String sendPostUrl(String url, String param, Map<String, String> header, String charset) {
 		try {
@@ -140,6 +140,7 @@ public class HttpUtil {
 	 *
 	 * @param url   请求地址
 	 * @param param 请求数据
+	 * @return 取回的流数据
 	 */
 	public static InputStream sendPostUrl_I(String url, String param) {
 		return sendPostUrl_I(url, param, null);
@@ -151,6 +152,7 @@ public class HttpUtil {
 	 * @param url     请求地址
 	 * @param param   请求数据
 	 * @param header  头部信息
+	 * @return 取回的流数据
 	 */
 	public static InputStream sendPostUrl_I(String url, String param, Map<String, String> header) {
 		PrintWriter out = null;
