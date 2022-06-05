@@ -47,8 +47,7 @@ public class RSContextFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         RoubSiteRequestWrapper req = new RoubSiteRequestWrapper((HttpServletRequest) request);
         RoubSiteResponseWrapper resp = new RoubSiteResponseWrapper((HttpServletResponse) response);
         // 防注入拦截
@@ -58,8 +57,7 @@ public class RSContextFilter implements Filter {
         }
 
         // 判断静态资源
-        if (excludes.matches(req)
-                || (null != request.getAttribute(isInclude) && (boolean) request.getAttribute(isInclude))) {
+        if (excludes.matches(req) || (null != request.getAttribute(isInclude) && (boolean) request.getAttribute(isInclude))) {
             chain.doFilter(req, resp);
             return;
         } else {
@@ -85,13 +83,12 @@ public class RSContextFilter implements Filter {
                 return;
             } else {
                 // 反射实例化action类
-                ActionClassBean acb = new ActionClassBean(cb.getClassPath(), cb.getMethod());
+                ActionClassBean acb = new ActionClassBean(cb.getClassPath(), cb.getMethod(), resp, req);
                 rfc.setActionClassBean(acb);
                 rfc.setClassBean(cb);
                 // 权限检查
                 if (StringUtils.isNotEmpty(securityClassPath)) {
-                    RSSecurityInterface serurityCheck = (RSSecurityInterface) Class.forName(securityClassPath)
-                            .getDeclaredConstructor().newInstance();
+                    RSSecurityInterface serurityCheck = (RSSecurityInterface) Class.forName(securityClassPath).getDeclaredConstructor().newInstance();
                     if (!serurityCheck.isPermitted(request, response, acb)) {
                         // 权限检查失败，直接返回
                         return;
@@ -109,8 +106,7 @@ public class RSContextFilter implements Filter {
             logger.error("action错误:" + servletPath, e);
             new RSErrorPage(resp, req, 500, null, "系统错误，请稍后再试！").die(e);
         } finally {
-            closeConn(RSFilterContextHolder.getRSFilterContext().getDbConnList(),
-                    !RSFilterContextHolder.getRSFilterContext().isTrans());
+            closeConn(RSFilterContextHolder.getRSFilterContext().getDbConnList(), !RSFilterContextHolder.getRSFilterContext().isTrans());
             RSFilterContextHolder.destoryRSFilterContext();
         }
     }
