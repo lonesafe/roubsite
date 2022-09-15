@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>RoubSite</artifactId>
 		<groupId>com.roubsite</groupId>
-		<version>4.1.6</version>
+		<version>4.1.7</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>jar</packaging>
@@ -16,12 +16,12 @@
 		<dependency>
 			<groupId>com.roubsite</groupId>
 			<artifactId>RoubSiteSmarty4j</artifactId>
-			<version>4.1.6</version>
+			<version>4.1.7</version>
 		</dependency>
 		<dependency>
 			<groupId>com.roubsite</groupId>
 			<artifactId>RoubSiteUtils</artifactId>
-			<version>4.1.6</version>
+			<version>4.1.7</version>
 		</dependency>
 	</dependencies>
 	<build>
