@@ -85,7 +85,7 @@ public class CodeSign {
 			root.put("_allFields", _allFields);
 			root.put("utils", new CodeUtils());
 			root.put("_searchFields", _searchFields);
-
+			template.setEncoding("utf-8");
 			// 定义输出
 			Writer out = new FileWriter(outFilePath);
 			template.process(root, out);
