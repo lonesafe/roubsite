@@ -1,12 +1,10 @@
 package com.roubsite.code.dao;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
-import java.util.*;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+
+import java.io.*;
+import java.util.*;
 
 public class CodeSign {
     private String pack;
@@ -85,7 +83,7 @@ public class CodeSign {
             root.put("_searchFields", _searchFields);
             template.setEncoding("UTF-8");
             // 定义输出
-            Writer out = new FileWriter(outFilePath);
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFilePath), "UTF-8"));
             template.process(root, out);
             System.out.println("转换成功" + outFilePath);
             out.flush();
