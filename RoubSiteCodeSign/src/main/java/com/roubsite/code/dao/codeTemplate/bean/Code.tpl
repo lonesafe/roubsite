@@ -7,15 +7,15 @@ public class ${mode} {
 	<#if value.key == _keyField>
 	@KeyFields
 	</#if>
-	private String ${value.key};
+	private ${value.type} ${value.key};
 </#list>
 
 <#list _allFields as value>
-	public String get${value.key?cap_first}(){
+	public ${value.type} get${value.key?cap_first}(){
 		return this.${value.key};
 	}
 	
-	public void set${value.key?cap_first}(String ${value.key}){
+	public void set${value.key?cap_first}(${value.type} ${value.key}){
 		this.${value.key}=${value.key};
 	}
 	
